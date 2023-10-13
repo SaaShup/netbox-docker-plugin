@@ -1,11 +1,11 @@
 """API URLs definition"""
 
 from netbox.api.routers import NetBoxRouter
-from netbox_saashup.api import views
+from netbox_docker.api import views
 
-APP_NAME = "netbox_saashup"
+APP_NAME = "netbox_docker"
 
 router = NetBoxRouter()
-router.register("engine", views.EngineViewSet)
+router.register("host", views.HostViewSet)
 
 urlpatterns = router.urls

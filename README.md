@@ -1,3 +1,3 @@
-# Netbox SaaShup Plugin
+# Netbox Docker Plugin
 
-Manage SaaShup Engine with style.
+Manage Docker with style.

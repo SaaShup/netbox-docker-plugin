@@ -2,23 +2,23 @@
 
 from rest_framework import serializers
 from netbox.api.serializers import NetBoxModelSerializer
-from netbox_saashup import models
+from netbox_docker import models
 
 
-class EngineSerializer(NetBoxModelSerializer):
-    """Engine Serializer class"""
+class HostSerializer(NetBoxModelSerializer):
+    """Host Serializer class"""
 
     url = serializers.HyperlinkedIdentityField(
-        view_name="plugins-api:netbox_saashup-api:engine-detail"
+        view_name="plugins-api:netbox_docker-api:host-detail"
     )
 
     class Meta:
-        model = models.Engine
+        model = models.Host
         fields = (
             "id",
             "url",
-            "domain",
-            "port",
+            "endpoint",
+            "name",
             "custom_fields",
             "created",
             "last_updated",
