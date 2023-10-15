@@ -1,4 +1,4 @@
-"""Initial Migration File"""
+"""Migration file"""
 
 import django.core.validators
 from django.db import migrations, models
@@ -7,6 +7,7 @@ import utilities.json
 
 
 class Migration(migrations.Migration):
+    """Migration Class"""
     initial = True
 
     dependencies = [
@@ -15,7 +16,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name="Engine",
+            name="Host",
             fields=[
                 (
                     "id",
@@ -34,22 +35,21 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 (
-                    "domain",
+                    "endpoint",
                     models.CharField(
-                        max_length=255,
-                        validators=[
-                            django.core.validators.MinLengthValidator(limit_value=2),
-                            django.core.validators.MaxLengthValidator(limit_value=255),
-                        ],
+                        max_length=1024,
+                        validators=[django.core.validators.URLValidator()],
                     ),
                 ),
                 (
-                    "port",
-                    models.IntegerField(
+                    "name",
+                    models.CharField(
+                        max_length=255,
+                        unique=True,
                         validators=[
-                            django.core.validators.MinValueValidator(limit_value=1),
-                            django.core.validators.MaxValueValidator(limit_value=65535),
-                        ]
+                            django.core.validators.MinLengthValidator(limit_value=1),
+                            django.core.validators.MaxLengthValidator(limit_value=255),
+                        ],
                     ),
                 ),
                 (
@@ -60,8 +60,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "ordering": ("domain",),
-                "unique_together": {("domain", "port")},
+                "ordering": ("name",),
             },
         ),
     ]

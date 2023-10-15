@@ -1,9 +1,9 @@
 from setuptools import find_packages, setup
 
 setup(
-    name='netbox-saashup',
+    name='netbox-docker',
     version='0.0.1',
-    description='Manage SaaShup Engine',
+    description='Manage Docker',
     install_requires=[],
     packages=find_packages(),
     include_package_data=True,
