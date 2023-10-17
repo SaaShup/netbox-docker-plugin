@@ -55,7 +55,7 @@ jobs:
     - name: Install netbox Dependencies
       working-directory: netbox
       run: |
-        ln -s $(pwd)/../netbox-docker/testing/netbox_configuration_testing.py netbox/netbox/configuration.py
+        ln -s $(pwd)/../netbox-docker/netbox_configuration/configuration_testing.py netbox/netbox/configuration.py
         python -m pip install --upgrade pip
         pip install -r requirements.txt -U
     - name: Run tests
