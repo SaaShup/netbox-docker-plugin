@@ -10,4 +10,4 @@ class HostViewSet(NetBoxModelViewSet):
 
     queryset = models.Host.objects.all()
     serializer_class = HostSerializer
-    http_method_names = ["get", "post", "patch", "delete"]
+    http_method_names = ["get", "post", "patch", "delete", "options"]
