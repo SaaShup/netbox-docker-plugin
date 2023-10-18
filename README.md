@@ -10,13 +10,19 @@ Manage Docker with style.
 
 Requirements:
 * Python 3.11
-* PostgreSQL 15
+* PostgreSQL 15 [Official Netbox doc](https://github.com/netbox-community/netbox/blob/master/docs/installation/1-postgresql.md)
   - user: netbox (with database creation right)
   - password: netbox
   - database: netbox
   - port: 5432
 * Redis 7.2
   - port: 6379
+
+Set a PROJECT variable :
+
+```
+PROJECT="/project/netbox"
+```
 
 Create a project directory `$PROJECT``:
 
