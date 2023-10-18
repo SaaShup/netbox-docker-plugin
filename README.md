@@ -24,7 +24,7 @@ Set a PROJECT variable :
 PROJECT="/project/netbox"
 ```
 
-Create a project directory `$PROJECT``:
+Create a project directory `$PROJECT`:
 
 ```bash
 mkdir $PROJECT
