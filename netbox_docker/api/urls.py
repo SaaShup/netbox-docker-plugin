@@ -7,5 +7,6 @@ APP_NAME = "netbox_docker"
 
 router = NetBoxRouter()
 router.register("host", views.HostViewSet)
+router.register("image", views.ImageViewSet)
 
 urlpatterns = router.urls
