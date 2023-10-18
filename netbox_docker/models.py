@@ -6,6 +6,8 @@ from django.core.validators import (
     URLValidator,
     MinLengthValidator,
     MaxLengthValidator,
+    MinValueValidator,
+    MaxValueValidator,
 )
 from utilities.choices import ChoiceSet
 from netbox.models import NetBoxModel
@@ -72,6 +74,13 @@ class Image(NetBoxModel):
         choices=ImageProviderChoices,
         default=ImageProviderChoices.DEFAULT_VALUE,
         blank=False,
+    )
+    size = models.IntegerField(
+        default=0,
+        validators=[
+            MinValueValidator(limit_value=0),
+            MaxValueValidator(limit_value=4096),
+        ],
     )
 
     class Meta:

@@ -16,7 +16,7 @@ class ImageTestCase(
     """Image Test Case Class"""
 
     model = Image
-    brief_fields = ["id", "name", "provider", "url", "version"]
+    brief_fields = ["id", "name", "provider", "size", "url", "version"]
 
     @classmethod
     def setUpTestData(cls) -> None:
