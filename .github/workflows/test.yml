@@ -10,6 +10,11 @@ jobs:
   testing:
 
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
     strategy:
       max-parallel: 4
       matrix:
@@ -58,7 +63,14 @@ jobs:
         ln -s $(pwd)/../netbox-docker/netbox_configuration/configuration_testing.py netbox/netbox/configuration.py
         python -m pip install --upgrade pip
         pip install -r requirements.txt -U
-    - name: Run tests
+    - name: Run tests with coverage and edit coverage report
       working-directory: netbox
       run: |
-        python netbox/manage.py test netbox_docker.tests -v 2
+        python3 -m pip install coverage
+        coverage run --source=../netbox-docker netbox/manage.py test netbox_docker.tests -v 2
+        coverage xml -o ../coverage.xml
+    - name: Get Cover
+      uses: orgoro/coverage@v3.1
+      with:
+        coverageFile: coverage.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
