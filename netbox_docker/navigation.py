@@ -27,6 +27,7 @@ engine_item = [
         link="plugins:netbox_docker:host_list",
         link_text="Hosts",
         buttons=engine_buttons,
+        permissions=["netbox_docker.view_host"]
     )
 ]
 
