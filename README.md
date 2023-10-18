@@ -1,6 +1,6 @@
 # Netbox Docker Plugin
 
-[![Testing Report](https://github.com/fanshan/netbox-docker/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/fanshan/netbox-docker/actions/workflows/test.yml)
+[![Testing Report](https://github.com/fanshan/netbox-docker/actions/workflows/main_ci.yml/badge.svg)](https://github.com/fanshan/netbox-docker/actions/workflows/main_ci.yml)
 
 Manage Docker with style.
 

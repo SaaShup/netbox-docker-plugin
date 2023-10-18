@@ -1,0 +1,61 @@
+name: main branch CI
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: ["3.11"]
+        netbox-version: ["v3.6.4"]
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: netbox
+          POSTGRES_PASSWORD: netbox
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          path: netbox-docker
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Checkout netbox ${{ matrix.netbox-version }}
+        uses: actions/checkout@v3
+        with:
+          repository: "netbox-community/netbox"
+          ref: ${{ matrix.netbox-version }}
+          path: netbox
+      - name: Install netbox_docker Dependencies
+        working-directory: netbox-docker
+        run: |
+          pip install .
+      - name: Install netbox Dependencies
+        working-directory: netbox
+        run: |
+          ln -s $(pwd)/../netbox-docker/netbox_configuration/configuration_testing.py netbox/netbox/configuration.py
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -U
+      - name: Run tests
+        working-directory: netbox
+        run: |
+          netbox/manage.py test netbox_docker.tests -v 2
