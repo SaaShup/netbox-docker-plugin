@@ -15,6 +15,6 @@ class InitTestCase(APITestCase):
 
         content = json.loads(response.content)
 
-        self.assertTrue("host" in content)
-        self.assertTrue("image" in content)
+        self.assertTrue("hosts" in content)
+        self.assertTrue("images" in content)
         self.assertEqual(response.status_code, 200)
