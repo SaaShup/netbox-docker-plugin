@@ -5,6 +5,7 @@ from netbox.forms import (
     NetBoxModelForm,
     NetBoxModelImportForm,
     NetBoxModelFilterSetForm,
+    NetBoxModelBulkEditForm,
 )
 from utilities.forms.fields import TagFilterField
 from netbox_docker import models
@@ -28,9 +29,7 @@ class HostFilterForm(NetBoxModelFilterSetForm):
     """Host filter form definition class"""
 
     model = models.Host
-    cn = forms.CharField(
-        label="Name", max_length=256, min_length=1, required=False
-    )
+    cn = forms.CharField(label="Name", max_length=256, min_length=1, required=False)
     endpoint = forms.CharField(
         label="Endpoint", max_length=256, min_length=1, required=False
     )
@@ -50,3 +49,15 @@ class HostImportForm(NetBoxModelImportForm):
             "name": "Unique name",
             "endpoint": "Docker instance URL",
         }
+
+
+class HostBulkEditForm(NetBoxModelBulkEditForm):
+    """Host bulk edit form definition class"""
+
+    endpoint = forms.CharField(
+        required=False,
+    )
+
+    model = models.Host
+    fieldsets = (("General", ("endpoint",)),)
+    nullable_fields = ("endpoint",)

@@ -26,6 +26,15 @@ class HostEditView(generic.ObjectEditView):
     form = forms.HostForm
 
 
+class HostBulkEditView(generic.BulkEditView):
+    """Host bulk edition view definition"""
+
+    queryset = models.Host.objects.all()
+    filterset = filtersets.HostFilterSet
+    table = tables.HostTable
+    form = forms.HostBulkEditForm
+
+
 class HostBulkImportView(generic.BulkImportView):
     """Host bulk import view definition"""
 
