@@ -1,4 +1,4 @@
-"""Host Test Case"""
+"""Host API Test Case"""
 
 from utilities.testing import APIViewTestCases
 from netbox_docker.models import Host
@@ -13,7 +13,7 @@ class HostTestCase(
     APIViewTestCases.UpdateObjectViewTestCase,
     APIViewTestCases.DeleteObjectViewTestCase,
 ):
-    """Host Test Case Class"""
+    """Host API Test Case Class"""
 
     model = Host
     brief_fields = ["endpoint", "id", "name", "url"]
