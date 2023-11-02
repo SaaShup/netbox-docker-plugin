@@ -5,7 +5,7 @@ from netbox_docker.models import Image, Host
 from netbox_docker.tests.base import BaseAPITestCase
 
 
-class ImageTestCase(
+class ImageApiTestCase(
     BaseAPITestCase,
     APIViewTestCases.GetObjectViewTestCase,
     APIViewTestCases.ListObjectsViewTestCase,

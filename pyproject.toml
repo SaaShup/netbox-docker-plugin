@@ -17,8 +17,8 @@ classifiers = [
 keywords = ["netbox", "netbox-plugin", "docker"]
 
 [project.urls]
-"Homepage" = "https://github.com/fanshan/netbox-plugin-docker"
-"Bug Tracker" = "https://github.com/fanshan/netbox-plugin-docker/issues/"
+"Homepage" = "https://github.com/fanshan/netbox-docker"
+"Bug Tracker" = "https://github.com/fanshan/netbox-docker/issues/"
 
 [tool.setuptools]
 include-package-data = true

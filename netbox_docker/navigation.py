@@ -7,7 +7,7 @@ from extras.plugins import (
 )
 from utilities.choices import ButtonColorChoices
 
-engine_buttons = [
+host_buttons = [
     PluginMenuButton(
         link="plugins:netbox_docker:host_add",
         title="Add",
@@ -22,12 +22,33 @@ engine_buttons = [
     ),
 ]
 
+image_buttons = [
+    PluginMenuButton(
+        link="plugins:netbox_docker:image_add",
+        title="Add",
+        icon_class="mdi mdi-plus-thick",
+        color=ButtonColorChoices.GREEN,
+    ),
+    PluginMenuButton(
+        link="plugins:netbox_docker:image_import",
+        title="Import",
+        icon_class="mdi mdi-upload",
+        color=ButtonColorChoices.CYAN,
+    ),
+]
+
 engine_item = [
     PluginMenuItem(
         link="plugins:netbox_docker:host_list",
         link_text="Hosts",
-        buttons=engine_buttons,
+        buttons=host_buttons,
         permissions=["netbox_docker.view_host"]
+    ),
+    PluginMenuItem(
+        link="plugins:netbox_docker:image_list",
+        link_text="Images",
+        buttons=image_buttons,
+        permissions=["netbox_docker.view_image"]
     )
 ]
 
