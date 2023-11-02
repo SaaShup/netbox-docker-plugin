@@ -2,7 +2,7 @@
 
 import django_tables2 as tables
 from netbox.tables import NetBoxTable, columns
-from netbox_docker import models
+from . import models
 
 
 class HostTable(NetBoxTable):
@@ -17,6 +17,8 @@ class HostTable(NetBoxTable):
     tags = columns.TagColumn()
 
     class Meta(NetBoxTable.Meta):
+        """Host Table definition Meta class"""
+
         model = models.Host
         fields = ("pk", "id", "name", "endpoint", "image_count", "tags")
         default_columns = ("name", "endpoint", "image_count")
@@ -30,6 +32,8 @@ class ImageTable(NetBoxTable):
     tags = columns.TagColumn()
 
     class Meta(NetBoxTable.Meta):
+        """Image Table definition Meta class"""
+
         model = models.Image
         fields = ("pk", "id", "host", "name", "version", "provider", "size", "tags")
         default_columns = ("name", "version", "provider", "size", "host")
