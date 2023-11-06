@@ -40,6 +40,25 @@ class NestedImageSerializer(WritableNestedSerializer):
         )
 
 
+class NestedVolumeSerializer(WritableNestedSerializer):
+    """Nested Volume Serializer class"""
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name="plugins-api:netbox_docker-api:volume-detail"
+    )
+
+    class Meta:
+        """Nested Volume Serializer Meta class"""
+
+        model = models.Volume
+        fields = (
+            "id",
+            "url",
+            "name",
+            "driver",
+        )
+
+
 class ImageSerializer(NetBoxModelSerializer):
     """Image Serializer class"""
 
@@ -67,6 +86,31 @@ class ImageSerializer(NetBoxModelSerializer):
         )
 
 
+class VolumeSerializer(NetBoxModelSerializer):
+    """Volume Serializer class"""
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name="plugins-api:netbox_docker-api:volume-detail"
+    )
+    host = NestedHostSerializer()
+
+    class Meta:
+        """Volume Serializer Meta class"""
+
+        model = models.Volume
+        fields = (
+            "id",
+            "url",
+            "host",
+            "name",
+            "driver",
+            "custom_fields",
+            "created",
+            "last_updated",
+            "tags",
+        )
+
+
 class HostSerializer(NetBoxModelSerializer):
     """Host Serializer class"""
 
@@ -74,6 +118,7 @@ class HostSerializer(NetBoxModelSerializer):
         view_name="plugins-api:netbox_docker-api:host-detail"
     )
     images = NestedImageSerializer(many=True, read_only=True)
+    volumes = NestedVolumeSerializer(many=True, read_only=True)
 
     class Meta:
         """Host Serializer Meta class"""
@@ -89,4 +134,5 @@ class HostSerializer(NetBoxModelSerializer):
             "last_updated",
             "tags",
             "images",
+            "volumes",
         )

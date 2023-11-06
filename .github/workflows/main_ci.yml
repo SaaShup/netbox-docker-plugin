@@ -55,6 +55,10 @@ jobs:
           ln -s $(pwd)/../netbox-docker/netbox_configuration/configuration_testing.py netbox/netbox/configuration.py
           python -m pip install --upgrade pip
           pip install -r requirements.txt -U
+      - name: Run Pylint
+        run: |
+          pip install pylint
+          pylint --rcfile $(pwd)/netbox-docker/.pylintrc --init-hook 'import os; import sys; sys.path.append(os.getcwd() + "/netbox/netbox")' $(pwd)/netbox-docker/netbox_docker/
       - name: Run tests
         working-directory: netbox
         run: |
