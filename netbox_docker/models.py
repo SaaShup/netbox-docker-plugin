@@ -40,6 +40,8 @@ class Host(NetBoxModel):
     )
 
     class Meta:
+        """Host Model Meta Class"""
+
         ordering = ("name",)
 
     def __str__(self):
@@ -84,6 +86,8 @@ class Image(NetBoxModel):
     )
 
     class Meta:
+        """Image Model Meta Class"""
+
         unique_together = ["host", "name", "version"]
         ordering = ("name", "version")
 

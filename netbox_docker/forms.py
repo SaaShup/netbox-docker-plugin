@@ -1,21 +1,22 @@
 """Forms definitions"""
 
 from django import forms
+from utilities.forms.fields import TagFilterField
 from netbox.forms import (
     NetBoxModelForm,
     NetBoxModelImportForm,
     NetBoxModelFilterSetForm,
     NetBoxModelBulkEditForm,
 )
-from utilities.forms.fields import CSVChoiceField
-from utilities.forms.fields import TagFilterField
-from netbox_docker import models
+from . import models
 
 
 class HostForm(NetBoxModelForm):
     """Host form definition class"""
 
     class Meta:
+        """Host form definition Meta class"""
+
         model = models.Host
         fields = (
             "name",
@@ -41,6 +42,8 @@ class HostImportForm(NetBoxModelImportForm):
     """Host importation form definition class"""
 
     class Meta:
+        """Host importation form definition Meta class"""
+
         model = models.Host
         fields = (
             "name",
@@ -67,6 +70,8 @@ class ImageForm(NetBoxModelForm):
     """Image form definition class"""
 
     class Meta:
+        """Image form definition Meta class"""
+
         model = models.Image
         fields = (
             "host",
@@ -94,7 +99,9 @@ class ImageFilterForm(NetBoxModelFilterSetForm):
         label="Version", max_length=256, min_length=1, required=False
     )
     provider = forms.ChoiceField(
-        label="Provider", choices=models.ImageProviderChoices, required=False,
+        label="Provider",
+        choices=models.ImageProviderChoices,
+        required=False,
     )
     tag = TagFilterField(model)
 
@@ -104,11 +111,11 @@ class ImageImportForm(NetBoxModelImportForm):
 
     version = forms.CharField(required=False, empty_value="latest")
     provider = forms.CharField(required=False, empty_value="dockerhub")
-    size = forms.CharField(
-        required=False, empty_value="0"
-    )
+    size = forms.CharField(required=False, empty_value="0")
 
     class Meta:
+        """Image importation form definition Meta class"""
+
         model = models.Image
         fields = ("name", "version", "provider", "size", "host")
         labels = {

@@ -1,7 +1,8 @@
 """API URLs definition"""
 
 from netbox.api.routers import NetBoxRouter
-from netbox_docker.api import views
+from . import views
+
 
 APP_NAME = "netbox_docker"
 

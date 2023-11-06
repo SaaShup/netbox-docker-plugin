@@ -1,9 +1,9 @@
 """Filtersets definitions"""
 
 from django_filters import filters
-from netbox.filtersets import NetBoxModelFilterSet
 from django.db.models import Q
-from netbox_docker import models
+from netbox.filtersets import NetBoxModelFilterSet
+from . import models
 
 
 class HostFilterSet(NetBoxModelFilterSet):
@@ -12,6 +12,7 @@ class HostFilterSet(NetBoxModelFilterSet):
     name = filters.CharFilter(lookup_expr="icontains")
 
     class Meta:
+        """Host filterset definition meta class"""
         model = models.Host
         fields = ("id", "name", "endpoint")
 
@@ -29,6 +30,7 @@ class ImageFilterSet(NetBoxModelFilterSet):
     name = filters.CharFilter(lookup_expr="icontains")
 
     class Meta:
+        """Image filterset definition meta class"""
         model = models.Image
         fields = ("id", "name", "version", "provider", "size")
 

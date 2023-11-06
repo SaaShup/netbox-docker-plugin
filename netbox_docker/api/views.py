@@ -1,8 +1,8 @@
 """API views definitions"""
 
 from netbox.api.viewsets import NetBoxModelViewSet
-from netbox_docker import models
-from netbox_docker.api.serializers import HostSerializer, ImageSerializer
+from .. import models
+from .serializers import HostSerializer, ImageSerializer
 
 
 class HostViewSet(NetBoxModelViewSet):

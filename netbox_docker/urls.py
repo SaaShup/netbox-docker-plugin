@@ -2,7 +2,7 @@
 
 from django.urls import path
 from netbox.views.generic import ObjectChangeLogView, ObjectJournalView
-from netbox_docker import views, models
+from . import views, models
 
 
 urlpatterns = (

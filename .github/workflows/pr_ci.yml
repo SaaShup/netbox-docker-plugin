@@ -38,16 +38,16 @@ jobs:
         uses: actions/checkout@v3
         with:
           path: netbox-docker
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
       - name: Checkout netbox ${{ matrix.netbox-version }}
         uses: actions/checkout@v3
         with:
           repository: "netbox-community/netbox"
           ref: ${{ matrix.netbox-version }}
           path: netbox
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
       - name: Install netbox_docker Dependencies
         working-directory: netbox-docker
         run: |
@@ -58,6 +58,10 @@ jobs:
           ln -s $(pwd)/../netbox-docker/netbox_configuration/configuration_testing.py netbox/netbox/configuration.py
           python -m pip install --upgrade pip
           pip install -r requirements.txt -U
+      - name: Run Pylint
+        run: |
+          pip install pylint
+          pylint --rcfile $(pwd)/netbox-docker/.pylintrc --init-hook 'import os; import sys; sys.path.append(os.getcwd() + "/netbox/netbox")' $(pwd)/netbox-docker/netbox_docker/
       - name: Run tests with coverage and edit coverage report
         working-directory: netbox
         run: |

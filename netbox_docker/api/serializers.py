@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
-from netbox_docker import models
+from .. import models
 
 
 class NestedHostSerializer(WritableNestedSerializer):
@@ -13,6 +13,8 @@ class NestedHostSerializer(WritableNestedSerializer):
     )
 
     class Meta:
+        """Nested Host Serializer Meta class"""
+
         model = models.Host
         fields = ("id", "url", "endpoint", "name")
 
@@ -25,6 +27,8 @@ class NestedImageSerializer(WritableNestedSerializer):
     )
 
     class Meta:
+        """Nested Image Serializer Meta class"""
+
         model = models.Image
         fields = (
             "id",
@@ -45,6 +49,8 @@ class ImageSerializer(NetBoxModelSerializer):
     host = NestedHostSerializer()
 
     class Meta:
+        """Image Serializer Meta class"""
+
         model = models.Image
         fields = (
             "id",
@@ -70,6 +76,8 @@ class HostSerializer(NetBoxModelSerializer):
     images = NestedImageSerializer(many=True, read_only=True)
 
     class Meta:
+        """Host Serializer Meta class"""
+
         model = models.Host
         fields = (
             "id",

@@ -1,9 +1,8 @@
 """Model views definitions"""
 
 from utilities.utils import count_related
-from utilities.views import ViewTab, register_model_view
 from netbox.views import generic
-from netbox_docker import models, tables, forms, filtersets
+from . import models, tables, forms, filtersets
 
 
 class HostView(generic.ObjectView):
