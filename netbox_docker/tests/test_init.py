@@ -17,4 +17,5 @@ class InitTestCase(APITestCase):
 
         self.assertTrue("hosts" in content)
         self.assertTrue("images" in content)
+        self.assertTrue("volumes" in content)
         self.assertEqual(response.status_code, 200)
