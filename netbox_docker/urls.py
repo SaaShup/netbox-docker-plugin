@@ -52,4 +52,28 @@ urlpatterns = (
         name="image_journal",
         kwargs={"model": models.Image},
     ),
+    # Volume
+    path("volumes/", views.VolumeListView.as_view(), name="volume_list"),
+    path("volumes/add/", views.VolumeEditView.as_view(), name="volume_add"),
+    path("volumes/import/", views.VolumeBulkImportView.as_view(), name="volume_import"),
+    path(
+        "volumes/delete/", views.VolumeBulkDeleteView.as_view(), name="volume_bulk_delete"
+    ),
+    path("volumes/<int:pk>/", views.VolumeView.as_view(), name="volume"),
+    path("volumes/<int:pk>/edit/", views.VolumeEditView.as_view(), name="volume_edit"),
+    path(
+        "volumes/<int:pk>/delete/", views.VolumeDeleteView.as_view(), name="volume_delete"
+    ),
+    path(
+        "volumes/<int:pk>/changelog/",
+        ObjectChangeLogView.as_view(),
+        name="volume_changelog",
+        kwargs={"model": models.Volume},
+    ),
+    path(
+        "volumes/<int:pk>/journal/",
+        ObjectJournalView.as_view(),
+        name="volume_journal",
+        kwargs={"model": models.Volume},
+    ),
 )
