@@ -3,7 +3,10 @@
 from django_filters import filters, ModelMultipleChoiceFilter
 from django.db.models import Q
 from netbox.filtersets import NetBoxModelFilterSet
-from . import models
+from .models.host import Host
+from .models.image import Image
+from .models.volume import Volume
+from .models.network import Network
 
 
 class HostFilterSet(NetBoxModelFilterSet):
@@ -14,7 +17,7 @@ class HostFilterSet(NetBoxModelFilterSet):
     class Meta:
         """Host filterset definition meta class"""
 
-        model = models.Host
+        model = Host
         fields = ("id", "name", "endpoint")
 
     # pylint: disable=W0613
@@ -31,14 +34,14 @@ class ImageFilterSet(NetBoxModelFilterSet):
     name = filters.CharFilter(lookup_expr="icontains")
     host_id = ModelMultipleChoiceFilter(
         field_name="host_id",
-        queryset=models.Host.objects.all(),
+        queryset=Host.objects.all(),
         label="Host (ID)",
     )
 
     class Meta:
         """Image filterset definition meta class"""
 
-        model = models.Image
+        model = Image
         fields = ("id", "name", "version", "provider", "size")
 
     # pylint: disable=W0613
@@ -55,14 +58,14 @@ class VolumeFilterSet(NetBoxModelFilterSet):
     name = filters.CharFilter(lookup_expr="icontains")
     host_id = ModelMultipleChoiceFilter(
         field_name="host_id",
-        queryset=models.Host.objects.all(),
+        queryset=Host.objects.all(),
         label="Host (ID)",
     )
 
     class Meta:
         """Volume filterset definition meta class"""
 
-        model = models.Volume
+        model = Volume
         fields = ("id", "name", "driver")
 
     # pylint: disable=W0613
@@ -79,14 +82,14 @@ class NetworkFilterSet(NetBoxModelFilterSet):
     name = filters.CharFilter(lookup_expr="icontains")
     host_id = ModelMultipleChoiceFilter(
         field_name="host_id",
-        queryset=models.Host.objects.all(),
+        queryset=Host.objects.all(),
         label="Host (ID)",
     )
 
     class Meta:
         """Network filterset definition meta class"""
 
-        model = models.Network
+        model = Network
         fields = ("id", "name", "driver")
 
     # pylint: disable=W0613

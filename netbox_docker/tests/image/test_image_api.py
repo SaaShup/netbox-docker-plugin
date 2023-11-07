@@ -1,7 +1,8 @@
 """Image Test Case"""
 
 from utilities.testing import APIViewTestCases
-from netbox_docker.models import Image, Host
+from netbox_docker.models.host import Host
+from netbox_docker.models.image import Image
 from netbox_docker.tests.base import BaseAPITestCase
 
 

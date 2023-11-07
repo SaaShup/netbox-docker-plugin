@@ -8,7 +8,8 @@ from netbox.forms import (
     NetBoxModelFilterSetForm,
     NetBoxModelBulkEditForm,
 )
-from .. import models
+from ..models.image import Image, ImageProviderChoices
+from ..models.host import Host
 
 
 class ImageForm(NetBoxModelForm):
@@ -17,7 +18,7 @@ class ImageForm(NetBoxModelForm):
     class Meta:
         """Image form definition Meta class"""
 
-        model = models.Image
+        model = Image
         fields = (
             "host",
             "name",
@@ -38,18 +39,18 @@ class ImageForm(NetBoxModelForm):
 class ImageFilterForm(NetBoxModelFilterSetForm):
     """Image filter form definition class"""
 
-    model = models.Image
+    model = Image
     name = forms.CharField(label="Name", max_length=256, min_length=1, required=False)
     version = forms.CharField(
         label="Version", max_length=256, min_length=1, required=False
     )
     provider = forms.ChoiceField(
         label="Provider",
-        choices=models.ImageProviderChoices,
+        choices=ImageProviderChoices,
         required=False,
     )
     host_id = DynamicModelMultipleChoiceField(
-        queryset=models.Host.objects.all(),
+        queryset=Host.objects.all(),
         required=False,
         label="Host",
     )
@@ -66,7 +67,7 @@ class ImageImportForm(NetBoxModelImportForm):
     class Meta:
         """Image importation form definition Meta class"""
 
-        model = models.Image
+        model = Image
         fields = ("name", "version", "provider", "size", "host")
         labels = {
             "name": "Unique Image name",
@@ -83,8 +84,8 @@ class ImageBulkEditForm(NetBoxModelBulkEditForm):
     version = forms.CharField(
         required=False,
     )
-    provider = forms.ChoiceField(choices=models.ImageProviderChoices, required=False)
+    provider = forms.ChoiceField(choices=ImageProviderChoices, required=False)
     size = forms.IntegerField(required=False)
 
-    model = models.Image
+    model = Image
     fieldsets = (("General", ("version", "provider", "size")),)

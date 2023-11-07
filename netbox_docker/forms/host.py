@@ -8,7 +8,7 @@ from netbox.forms import (
     NetBoxModelFilterSetForm,
     NetBoxModelBulkEditForm,
 )
-from .. import models
+from ..models.host import Host
 
 
 class HostForm(NetBoxModelForm):
@@ -17,7 +17,7 @@ class HostForm(NetBoxModelForm):
     class Meta:
         """Host form definition Meta class"""
 
-        model = models.Host
+        model = Host
         fields = (
             "name",
             "endpoint",
@@ -30,7 +30,7 @@ class HostForm(NetBoxModelForm):
 class HostFilterForm(NetBoxModelFilterSetForm):
     """Host filter form definition class"""
 
-    model = models.Host
+    model = Host
     name = forms.CharField(label="Name", max_length=256, min_length=1, required=False)
     endpoint = forms.CharField(
         label="Endpoint", max_length=256, min_length=1, required=False
@@ -44,7 +44,7 @@ class HostImportForm(NetBoxModelImportForm):
     class Meta:
         """Host importation form definition Meta class"""
 
-        model = models.Host
+        model = Host
         fields = (
             "name",
             "endpoint",
@@ -62,5 +62,5 @@ class HostBulkEditForm(NetBoxModelBulkEditForm):
         required=False,
     )
 
-    model = models.Host
+    model = Host
     fieldsets = (("General", ("endpoint",)),)

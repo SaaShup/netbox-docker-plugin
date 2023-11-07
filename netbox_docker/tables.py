@@ -2,7 +2,10 @@
 
 import django_tables2 as tables
 from netbox.tables import NetBoxTable, columns
-from . import models
+from .models.host import Host
+from .models.image import Image
+from .models.volume import Volume
+from .models.network import Network
 
 
 class HostTable(NetBoxTable):
@@ -29,7 +32,7 @@ class HostTable(NetBoxTable):
     class Meta(NetBoxTable.Meta):
         """Host Table definition Meta class"""
 
-        model = models.Host
+        model = Host
         fields = (
             "pk",
             "id",
@@ -59,7 +62,7 @@ class ImageTable(NetBoxTable):
     class Meta(NetBoxTable.Meta):
         """Image Table definition Meta class"""
 
-        model = models.Image
+        model = Image
         fields = ("pk", "id", "host", "name", "version", "provider", "size", "tags")
         default_columns = ("name", "version", "provider", "size", "host")
 
@@ -74,7 +77,7 @@ class VolumeTable(NetBoxTable):
     class Meta(NetBoxTable.Meta):
         """Volume Table definition Meta class"""
 
-        model = models.Volume
+        model = Volume
         fields = ("pk", "id", "host", "name", "driver", "tags")
         default_columns = ("name", "driver", "host")
 
@@ -89,6 +92,6 @@ class NetworkTable(NetBoxTable):
     class Meta(NetBoxTable.Meta):
         """Network Table definition Meta class"""
 
-        model = models.Volume
+        model = Network
         fields = ("pk", "id", "host", "name", "driver", "tags")
         default_columns = ("name", "driver", "host")
