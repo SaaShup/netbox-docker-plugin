@@ -7,7 +7,8 @@ from netbox.forms import (
     NetBoxModelImportForm,
     NetBoxModelFilterSetForm,
 )
-from .. import models
+from ..models.volume import Volume, VolumeDriverChoices
+from ..models.host import Host
 
 
 class VolumeForm(NetBoxModelForm):
@@ -16,7 +17,7 @@ class VolumeForm(NetBoxModelForm):
     class Meta:
         """Volume form definition Meta class"""
 
-        model = models.Volume
+        model = Volume
         fields = (
             "host",
             "name",
@@ -33,15 +34,15 @@ class VolumeForm(NetBoxModelForm):
 class VolumeFilterForm(NetBoxModelFilterSetForm):
     """Volume filter form definition class"""
 
-    model = models.Volume
+    model = Volume
     name = forms.CharField(label="Name", max_length=256, min_length=1, required=False)
     driver = forms.ChoiceField(
         label="Driver",
-        choices=models.VolumeDriverChoices,
+        choices=VolumeDriverChoices,
         required=False,
     )
     host_id = DynamicModelMultipleChoiceField(
-        queryset=models.Host.objects.all(),
+        queryset=Host.objects.all(),
         required=False,
         label="Host",
     )
@@ -56,7 +57,7 @@ class VolumeImportForm(NetBoxModelImportForm):
     class Meta:
         """Volume importation form definition Meta class"""
 
-        model = models.Volume
+        model = Volume
         fields = ("name", "driver", "host")
         labels = {
             "name": "Unique Image name",

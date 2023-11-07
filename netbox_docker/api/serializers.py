@@ -2,7 +2,10 @@
 
 from rest_framework import serializers
 from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
-from .. import models
+from ..models.host import Host
+from ..models.image import Image
+from ..models.volume import Volume
+from ..models.network import Network
 
 
 class NestedHostSerializer(WritableNestedSerializer):
@@ -15,7 +18,7 @@ class NestedHostSerializer(WritableNestedSerializer):
     class Meta:
         """Nested Host Serializer Meta class"""
 
-        model = models.Host
+        model = Host
         fields = ("id", "url", "display", "endpoint", "name")
 
 
@@ -29,7 +32,7 @@ class NestedImageSerializer(WritableNestedSerializer):
     class Meta:
         """Nested Image Serializer Meta class"""
 
-        model = models.Image
+        model = Image
         fields = (
             "id",
             "url",
@@ -50,7 +53,7 @@ class NestedVolumeSerializer(WritableNestedSerializer):
     class Meta:
         """Nested Volume Serializer Meta class"""
 
-        model = models.Volume
+        model = Volume
         fields = (
             "id",
             "url",
@@ -69,7 +72,7 @@ class NestedNetworkSerializer(WritableNestedSerializer):
     class Meta:
         """Nested Network Serializer Meta class"""
 
-        model = models.Network
+        model = Network
         fields = (
             "id",
             "url",
@@ -89,7 +92,7 @@ class ImageSerializer(NetBoxModelSerializer):
     class Meta:
         """Image Serializer Meta class"""
 
-        model = models.Image
+        model = Image
         fields = (
             "id",
             "url",
@@ -116,7 +119,7 @@ class VolumeSerializer(NetBoxModelSerializer):
     class Meta:
         """Volume Serializer Meta class"""
 
-        model = models.Volume
+        model = Volume
         fields = (
             "id",
             "url",
@@ -141,7 +144,7 @@ class NetworkSerializer(NetBoxModelSerializer):
     class Meta:
         """Network Serializer Meta class"""
 
-        model = models.Network
+        model = Network
         fields = (
             "id",
             "url",
@@ -168,7 +171,7 @@ class HostSerializer(NetBoxModelSerializer):
     class Meta:
         """Host Serializer Meta class"""
 
-        model = models.Host
+        model = Host
         fields = (
             "id",
             "url",

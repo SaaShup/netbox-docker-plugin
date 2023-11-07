@@ -1,19 +1,23 @@
 """API views definitions"""
 
 from netbox.api.viewsets import NetBoxModelViewSet
-from .. import models, filtersets
+from .. import filtersets
 from .serializers import (
     HostSerializer,
     ImageSerializer,
     VolumeSerializer,
     NetworkSerializer,
 )
+from ..models.host import Host
+from ..models.image import Image
+from ..models.volume import Volume
+from ..models.network import Network
 
 
 class HostViewSet(NetBoxModelViewSet):
     """Host view set class"""
 
-    queryset = models.Host.objects.prefetch_related("images", "volumes", "tags")
+    queryset = Host.objects.prefetch_related("images", "volumes", "tags")
     filterset_class = filtersets.HostFilterSet
     serializer_class = HostSerializer
     http_method_names = ["get", "post", "patch", "delete", "options"]
@@ -22,7 +26,7 @@ class HostViewSet(NetBoxModelViewSet):
 class ImageViewSet(NetBoxModelViewSet):
     """Image view set class"""
 
-    queryset = models.Image.objects.prefetch_related("host", "tags")
+    queryset = Image.objects.prefetch_related("host", "tags")
     filterset_class = filtersets.ImageFilterSet
     serializer_class = ImageSerializer
     http_method_names = ["get", "post", "patch", "delete", "options"]
@@ -31,7 +35,7 @@ class ImageViewSet(NetBoxModelViewSet):
 class VolumeViewSet(NetBoxModelViewSet):
     """Volume view set class"""
 
-    queryset = models.Volume.objects.prefetch_related("host", "tags")
+    queryset = Volume.objects.prefetch_related("host", "tags")
     filterset_class = filtersets.VolumeFilterSet
     serializer_class = VolumeSerializer
     http_method_names = ["get", "post", "patch", "delete", "options"]
@@ -40,7 +44,7 @@ class VolumeViewSet(NetBoxModelViewSet):
 class NetworkViewSet(NetBoxModelViewSet):
     """Network view set class"""
 
-    queryset = models.Network.objects.prefetch_related("host", "tags")
+    queryset = Network.objects.prefetch_related("host", "tags")
     filterset_class = filtersets.NetworkFilterSet
     serializer_class = NetworkSerializer
     http_method_names = ["get", "post", "patch", "delete", "options"]

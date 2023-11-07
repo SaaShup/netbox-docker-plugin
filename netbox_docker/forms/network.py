@@ -8,7 +8,8 @@ from netbox.forms import (
     NetBoxModelFilterSetForm,
     NetBoxModelBulkEditForm,
 )
-from .. import models
+from ..models.network import Network, NetworkDriverChoices
+from ..models.host import Host
 
 
 class NetworkForm(NetBoxModelForm):
@@ -17,7 +18,7 @@ class NetworkForm(NetBoxModelForm):
     class Meta:
         """Network form definition Meta class"""
 
-        model = models.Network
+        model = Network
         fields = (
             "host",
             "name",
@@ -34,15 +35,15 @@ class NetworkForm(NetBoxModelForm):
 class NetworkFilterForm(NetBoxModelFilterSetForm):
     """Network filter form definition class"""
 
-    model = models.Network
+    model = Network
     name = forms.CharField(label="Name", max_length=256, min_length=1, required=False)
     driver = forms.ChoiceField(
         label="Driver",
-        choices=models.NetworkDriverChoices,
+        choices=NetworkDriverChoices,
         required=False,
     )
     host_id = DynamicModelMultipleChoiceField(
-        queryset=models.Host.objects.all(),
+        queryset=Host.objects.all(),
         required=False,
         label="Host",
     )
@@ -57,7 +58,7 @@ class NetworkImportForm(NetBoxModelImportForm):
     class Meta:
         """Network importation form definition Meta class"""
 
-        model = models.Network
+        model = Network
         fields = ("name", "driver", "host")
         labels = {
             "name": "Unique Network name",
@@ -69,9 +70,9 @@ class NetworkImportForm(NetBoxModelImportForm):
 class NetworkBulkEditForm(NetBoxModelBulkEditForm):
     """Network bulk edit form definition class"""
 
-    driver = forms.ChoiceField(choices=models.NetworkDriverChoices, required=False)
+    driver = forms.ChoiceField(choices=NetworkDriverChoices, required=False)
 
-    model = models.Network
+    model = Network
     fieldsets = (
         (
             "General",

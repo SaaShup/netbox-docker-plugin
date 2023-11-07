@@ -2,27 +2,31 @@
 
 from utilities.utils import count_related
 from netbox.views import generic
-from .. import models, tables, filtersets
+from .. import tables, filtersets
 from ..forms import host
+from ..models.host import Host
+from ..models.image import Image
+from ..models.volume import Volume
+from ..models.network import Network
 
 
 class HostView(generic.ObjectView):
     """Host view definition"""
 
-    queryset = models.Host.objects.prefetch_related("images", "volumes", "networks")
+    queryset = Host.objects.prefetch_related("images", "volumes", "networks")
 
     def get_extra_context(self, request, instance):
         related_models = (
             (
-                models.Image.objects.filter(host=instance),
+                Image.objects.filter(host=instance),
                 "host_id",
             ),
             (
-                models.Volume.objects.filter(host=instance),
+                Volume.objects.filter(host=instance),
                 "host_id",
             ),
             (
-                models.Network.objects.filter(host=instance),
+                Network.objects.filter(host=instance),
                 "host_id",
             ),
         )
@@ -35,10 +39,10 @@ class HostView(generic.ObjectView):
 class HostListView(generic.ObjectListView):
     """Host list view definition"""
 
-    queryset = models.Host.objects.annotate(
-        image_count=count_related(models.Image, "host"),
-        volume_count=count_related(models.Volume, "host"),
-        network_count=count_related(models.Network, "host"),
+    queryset = Host.objects.annotate(
+        image_count=count_related(Image, "host"),
+        volume_count=count_related(Volume, "host"),
+        network_count=count_related(Network, "host"),
     )
     table = tables.HostTable
     filterset = filtersets.HostFilterSet
@@ -48,14 +52,14 @@ class HostListView(generic.ObjectListView):
 class HostEditView(generic.ObjectEditView):
     """Host edition view definition"""
 
-    queryset = models.Host.objects.all()
+    queryset = Host.objects.all()
     form = host.HostForm
 
 
 class HostBulkEditView(generic.BulkEditView):
     """Host bulk edition view definition"""
 
-    queryset = models.Host.objects.all()
+    queryset = Host.objects.all()
     filterset = filtersets.HostFilterSet
     table = tables.HostTable
     form = host.HostBulkEditForm
@@ -64,19 +68,19 @@ class HostBulkEditView(generic.BulkEditView):
 class HostBulkImportView(generic.BulkImportView):
     """Host bulk import view definition"""
 
-    queryset = models.Host.objects.all()
+    queryset = Host.objects.all()
     model_form = host.HostImportForm
 
 
 class HostDeleteView(generic.ObjectDeleteView):
     """Host delete view definition"""
 
-    queryset = models.Host.objects.all()
+    queryset = Host.objects.all()
 
 
 class HostBulkDeleteView(generic.BulkDeleteView):
     """Host bulk delete view definition"""
 
-    queryset = models.Host.objects.all()
+    queryset = Host.objects.all()
     filterset = filtersets.HostFilterSet
     table = tables.HostTable

@@ -2,7 +2,8 @@
 
 from utilities.testing import ViewTestCases
 from netbox_docker.tests.base import BaseModelViewTestCase
-from netbox_docker.models import Host, Image
+from netbox_docker.models.host import Host
+from netbox_docker.models.image import Image
 
 
 class ImageViewsTestCase(

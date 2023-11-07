@@ -1,7 +1,8 @@
 """Volume Test Case"""
 
 from utilities.testing import APIViewTestCases
-from netbox_docker.models import Volume, Host
+from netbox_docker.models.host import Host
+from netbox_docker.models.volume import Volume
 from netbox_docker.tests.base import BaseAPITestCase
 
 

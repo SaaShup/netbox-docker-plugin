@@ -2,7 +2,10 @@
 
 from django.urls import path
 from netbox.views.generic import ObjectChangeLogView, ObjectJournalView
-from . import models
+from .models.host import Host
+from .models.image import Image
+from .models.volume import Volume
+from .models.network import Network
 from .views import (
     host as host_views,
     image as image_views,
@@ -32,13 +35,13 @@ urlpatterns = (
         "hosts/<int:pk>/changelog/",
         ObjectChangeLogView.as_view(),
         name="host_changelog",
-        kwargs={"model": models.Host},
+        kwargs={"model": Host},
     ),
     path(
         "hosts/<int:pk>/journal/",
         ObjectJournalView.as_view(),
         name="host_journal",
-        kwargs={"model": models.Host},
+        kwargs={"model": Host},
     ),
     # Image
     path("images/", image_views.ImageListView.as_view(), name="image_list"),
@@ -67,13 +70,13 @@ urlpatterns = (
         "images/<int:pk>/changelog/",
         ObjectChangeLogView.as_view(),
         name="image_changelog",
-        kwargs={"model": models.Image},
+        kwargs={"model": Image},
     ),
     path(
         "images/<int:pk>/journal/",
         ObjectJournalView.as_view(),
         name="image_journal",
-        kwargs={"model": models.Image},
+        kwargs={"model": Image},
     ),
     # Volume
     path("volumes/", volume_views.VolumeListView.as_view(), name="volume_list"),
@@ -103,13 +106,13 @@ urlpatterns = (
         "volumes/<int:pk>/changelog/",
         ObjectChangeLogView.as_view(),
         name="volume_changelog",
-        kwargs={"model": models.Volume},
+        kwargs={"model": Volume},
     ),
     path(
         "volumes/<int:pk>/journal/",
         ObjectJournalView.as_view(),
         name="volume_journal",
-        kwargs={"model": models.Volume},
+        kwargs={"model": Volume},
     ),
     # Network
     path("networks/", network_views.NetworkListView.as_view(), name="network_list"),
@@ -144,12 +147,12 @@ urlpatterns = (
         "networks/<int:pk>/changelog/",
         ObjectChangeLogView.as_view(),
         name="network_changelog",
-        kwargs={"model": models.Network},
+        kwargs={"model": Network},
     ),
     path(
         "networks/<int:pk>/journal/",
         ObjectJournalView.as_view(),
         name="network_journal",
-        kwargs={"model": models.Network},
+        kwargs={"model": Network},
     ),
 )
