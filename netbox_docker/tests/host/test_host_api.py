@@ -16,7 +16,7 @@ class HostApiTestCase(
     """Host API Test Case Class"""
 
     model = Host
-    brief_fields = ["endpoint", "id", "name", "url"]
+    brief_fields = ["display", "endpoint", "id", "name", "url"]
     create_data = [
         {
             "endpoint": "http://localhost:8083",

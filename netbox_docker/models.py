@@ -139,4 +139,4 @@ class Volume(NetBoxModel):
 
     def get_absolute_url(self):
         """override"""
-        return reverse("plugins:netbox_docker:image", args=[self.pk])
+        return reverse("plugins:netbox_docker:volume", args=[self.pk])

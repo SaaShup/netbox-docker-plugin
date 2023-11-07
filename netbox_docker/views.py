@@ -8,12 +8,16 @@ from . import models, tables, forms, filtersets
 class HostView(generic.ObjectView):
     """Host view definition"""
 
-    queryset = models.Host.objects.prefetch_related("images")
+    queryset = models.Host.objects.prefetch_related("images", "volumes")
 
     def get_extra_context(self, request, instance):
         related_models = (
             (
                 models.Image.objects.filter(host=instance),
+                "host_id",
+            ),
+            (
+                models.Volume.objects.filter(host=instance),
                 "host_id",
             ),
         )
@@ -27,7 +31,8 @@ class HostListView(generic.ObjectListView):
     """Host list view definition"""
 
     queryset = models.Host.objects.annotate(
-        image_count=count_related(models.Image, "host")
+        image_count=count_related(models.Image, "host"),
+        volume_count=count_related(models.Volume, "host"),
     )
     table = tables.HostTable
     filterset = filtersets.HostFilterSet
@@ -80,7 +85,7 @@ class ImageView(generic.ObjectView):
 class ImageListView(generic.ObjectListView):
     """Image list view definition"""
 
-    queryset = models.Image.objects.all()
+    queryset = models.Image.objects.prefetch_related("host")
     table = tables.ImageTable
     filterset = filtersets.ImageFilterSet
     filterset_form = forms.ImageFilterForm
@@ -97,7 +102,7 @@ class ImageBulkEditView(generic.BulkEditView):
     """Image bulk edition view definition"""
 
     queryset = models.Image.objects.all()
-    # filterset = filtersets.HostFilterSet
+    filterset = filtersets.ImageFilterSet
     table = tables.ImageTable
     form = forms.ImageBulkEditForm
 
@@ -119,5 +124,48 @@ class ImageBulkDeleteView(generic.BulkDeleteView):
     """Image bulk delete view definition"""
 
     queryset = models.Image.objects.all()
-    # filterset = filtersets.ImageFilterSet
+    filterset = filtersets.ImageFilterSet
     table = tables.ImageTable
+
+
+class VolumeView(generic.ObjectView):
+    """Volume view definition"""
+
+    queryset = models.Volume.objects.all()
+
+
+class VolumeEditView(generic.ObjectEditView):
+    """Volume edition view definition"""
+
+    queryset = models.Volume.objects.all()
+    form = forms.VolumeForm
+
+
+class VolumeListView(generic.ObjectListView):
+    """Volume list view definition"""
+
+    queryset = models.Volume.objects.prefetch_related("host")
+    table = tables.VolumeTable
+    filterset = filtersets.VolumeFilterSet
+    filterset_form = forms.VolumeFilterForm
+
+
+class VolumeBulkImportView(generic.BulkImportView):
+    """Volume bulk import view definition"""
+
+    queryset = models.Volume.objects.all()
+    model_form = forms.VolumeImportForm
+
+
+class VolumeBulkDeleteView(generic.BulkDeleteView):
+    """Volume bulk delete view definition"""
+
+    queryset = models.Volume.objects.all()
+    filterset = filtersets.VolumeFilterSet
+    table = tables.VolumeTable
+
+
+class VolumeDeleteView(generic.ObjectDeleteView):
+    """Volume delete view definition"""
+
+    queryset = models.Volume.objects.all()
