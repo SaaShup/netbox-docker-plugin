@@ -1,0 +1,66 @@
+"""Host Forms definitions"""
+
+from django import forms
+from utilities.forms.fields import TagFilterField
+from netbox.forms import (
+    NetBoxModelForm,
+    NetBoxModelImportForm,
+    NetBoxModelFilterSetForm,
+    NetBoxModelBulkEditForm,
+)
+from .. import models
+
+
+class HostForm(NetBoxModelForm):
+    """Host form definition class"""
+
+    class Meta:
+        """Host form definition Meta class"""
+
+        model = models.Host
+        fields = (
+            "name",
+            "endpoint",
+            "tags",
+        )
+        help_texts = {"name": "Unique Name", "endpoint": "Docker instance endpoint"}
+        labels = {"name": "Name", "endpoint": "Endpoint"}
+
+
+class HostFilterForm(NetBoxModelFilterSetForm):
+    """Host filter form definition class"""
+
+    model = models.Host
+    name = forms.CharField(label="Name", max_length=256, min_length=1, required=False)
+    endpoint = forms.CharField(
+        label="Endpoint", max_length=256, min_length=1, required=False
+    )
+    tag = TagFilterField(model)
+
+
+class HostImportForm(NetBoxModelImportForm):
+    """Host importation form definition class"""
+
+    class Meta:
+        """Host importation form definition Meta class"""
+
+        model = models.Host
+        fields = (
+            "name",
+            "endpoint",
+        )
+        labels = {
+            "name": "Unique name",
+            "endpoint": "Docker instance URL",
+        }
+
+
+class HostBulkEditForm(NetBoxModelBulkEditForm):
+    """Host bulk edit form definition class"""
+
+    endpoint = forms.CharField(
+        required=False,
+    )
+
+    model = models.Host
+    fieldsets = (("General", ("endpoint",)),)
