@@ -71,3 +71,27 @@ class VolumeFilterSet(NetBoxModelFilterSet):
         if not value.strip():
             return queryset
         return queryset.filter(Q(name__icontains=value))
+
+
+class NetworkFilterSet(NetBoxModelFilterSet):
+    """Network filterset definition class"""
+
+    name = filters.CharFilter(lookup_expr="icontains")
+    host_id = ModelMultipleChoiceFilter(
+        field_name="host_id",
+        queryset=models.Host.objects.all(),
+        label="Host (ID)",
+    )
+
+    class Meta:
+        """Network filterset definition meta class"""
+
+        model = models.Network
+        fields = ("id", "name", "driver")
+
+    # pylint: disable=W0613
+    def search(self, queryset, name, value):
+        """override"""
+        if not value.strip():
+            return queryset
+        return queryset.filter(Q(name__icontains=value))

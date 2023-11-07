@@ -10,5 +10,6 @@ router = NetBoxRouter()
 router.register("hosts", views.HostViewSet)
 router.register("images", views.ImageViewSet)
 router.register("volumes", views.VolumeViewSet)
+router.register("networks", views.NetworkViewSet)
 
 urlpatterns = router.urls

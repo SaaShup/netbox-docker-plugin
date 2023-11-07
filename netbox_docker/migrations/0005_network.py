@@ -18,12 +18,15 @@ fields = [
             ],
         ),
     ),
-    ("driver", models.CharField(default="local", max_length=32)),
+    (
+        "driver",
+        models.CharField(blank=True, default="bridge", max_length=32, null=True),
+    ),
     (
         "host",
         models.ForeignKey(
             on_delete=django.db.models.deletion.CASCADE,
-            related_name="volumes",
+            related_name="networks",
             to="netbox_docker.host",
         ),
     ),
@@ -37,12 +40,12 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("extras", "0098_webhook_custom_field_data_webhook_tags"),
-        ("netbox_docker", "0003_image_size"),
+        ("netbox_docker", "0004_volume"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name="Volume",
+            name="Network",
             fields=fields,
             options={
                 "ordering": ("name",),
