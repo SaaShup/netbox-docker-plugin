@@ -5,6 +5,7 @@ import django.core.validators
 from django.db import migrations, models
 from netbox_docker.migrations import netbox_common_fields
 
+
 fields = [
         (
             "endpoint",

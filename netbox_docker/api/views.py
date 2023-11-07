@@ -2,7 +2,12 @@
 
 from netbox.api.viewsets import NetBoxModelViewSet
 from .. import models, filtersets
-from .serializers import HostSerializer, ImageSerializer, VolumeSerializer
+from .serializers import (
+    HostSerializer,
+    ImageSerializer,
+    VolumeSerializer,
+    NetworkSerializer,
+)
 
 
 class HostViewSet(NetBoxModelViewSet):
@@ -29,4 +34,13 @@ class VolumeViewSet(NetBoxModelViewSet):
     queryset = models.Volume.objects.prefetch_related("host", "tags")
     filterset_class = filtersets.VolumeFilterSet
     serializer_class = VolumeSerializer
+    http_method_names = ["get", "post", "patch", "delete", "options"]
+
+
+class NetworkViewSet(NetBoxModelViewSet):
+    """Network view set class"""
+
+    queryset = models.Network.objects.prefetch_related("host", "tags")
+    filterset_class = filtersets.NetworkFilterSet
+    serializer_class = NetworkSerializer
     http_method_names = ["get", "post", "patch", "delete", "options"]
