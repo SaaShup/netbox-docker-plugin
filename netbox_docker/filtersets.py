@@ -7,6 +7,7 @@ from .models.host import Host
 from .models.image import Image
 from .models.volume import Volume
 from .models.network import Network
+from .models.container import Container
 
 
 class HostFilterSet(NetBoxModelFilterSet):
@@ -91,6 +92,30 @@ class NetworkFilterSet(NetBoxModelFilterSet):
 
         model = Network
         fields = ("id", "name", "driver")
+
+    # pylint: disable=W0613
+    def search(self, queryset, name, value):
+        """override"""
+        if not value.strip():
+            return queryset
+        return queryset.filter(Q(name__icontains=value))
+
+
+class ContainerFilterSet(NetBoxModelFilterSet):
+    """Container filterset definition class"""
+
+    name = filters.CharFilter(lookup_expr="icontains")
+    host_id = ModelMultipleChoiceFilter(
+        field_name="host_id",
+        queryset=Host.objects.all(),
+        label="Host (ID)",
+    )
+
+    class Meta:
+        """Container filterset definition meta class"""
+
+        model = Container
+        fields = ("id", "name")
 
     # pylint: disable=W0613
     def search(self, queryset, name, value):

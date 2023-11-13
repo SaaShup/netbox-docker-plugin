@@ -1,4 +1,4 @@
-"""Volume Test Case"""
+"""Network Test Case"""
 
 from utilities.testing import APIViewTestCases
 from netbox_docker.models.host import Host

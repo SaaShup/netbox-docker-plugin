@@ -1,4 +1,5 @@
 """API Serializer definitions"""
+# pylint: disable=E1101
 
 from rest_framework import serializers
 from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
@@ -6,6 +7,7 @@ from ..models.host import Host
 from ..models.image import Image
 from ..models.volume import Volume
 from ..models.network import Network
+from ..models.container import Container, Port, Env, Label, Mount
 
 
 class NestedHostSerializer(WritableNestedSerializer):
@@ -79,6 +81,20 @@ class NestedNetworkSerializer(WritableNestedSerializer):
             "name",
             "driver",
         )
+
+
+class NestedContainerSerializer(WritableNestedSerializer):
+    """Nested Container Serializer class"""
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name="plugins-api:netbox_docker-api:container-detail"
+    )
+
+    class Meta:
+        """Nested Container Serializer Meta class"""
+
+        model = Container
+        fields = ("id", "url", "name", "state", "status")
 
 
 class ImageSerializer(NetBoxModelSerializer):
@@ -158,6 +174,170 @@ class NetworkSerializer(NetBoxModelSerializer):
         )
 
 
+class PortSerializer(serializers.ModelSerializer):
+    """Container Port Serializer class"""
+
+    class Meta:
+        """Container Port Serializer Meta class"""
+
+        model = Port
+        fields = (
+            "public_port",
+            "private_port",
+            "type",
+        )
+
+
+class EnvSerializer(serializers.ModelSerializer):
+    """Container Env Serializer class"""
+
+    class Meta:
+        """Container Env Serializer Meta class"""
+
+        model = Env
+        fields = (
+            "var_name",
+            "value",
+        )
+
+
+class LabelSerializer(serializers.ModelSerializer):
+    """Container Label Serializer class"""
+
+    class Meta:
+        """Container Label Serializer Meta class"""
+
+        model = Label
+        fields = (
+            "key",
+            "value",
+        )
+
+
+class MountSerializer(serializers.ModelSerializer):
+    """Container Mount Serializer class"""
+
+    volume = NestedVolumeSerializer()
+
+    class Meta:
+        """Container Mount Serializer Meta class"""
+
+        model = Mount
+        fields = (
+            "source",
+            "volume",
+        )
+
+
+class ContainerSerializer(NetBoxModelSerializer):
+    """Container Serializer class"""
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name="plugins-api:netbox_docker-api:container-detail"
+    )
+    host = NestedHostSerializer()
+    image = NestedImageSerializer()
+    network = NestedNetworkSerializer(required=False)
+    ports = PortSerializer(many=True, required=False)
+    env = EnvSerializer(many=True, required=False)
+    labels = LabelSerializer(many=True, required=False)
+    mounts = MountSerializer(many=True, required=False)
+
+    class Meta:
+        """Container Serializer Meta class"""
+
+        model = Container
+        fields = (
+            "id",
+            "url",
+            "host",
+            "image",
+            "network",
+            "name",
+            "state",
+            "status",
+            "ports",
+            "env",
+            "labels",
+            "mounts",
+            "custom_fields",
+            "created",
+            "last_updated",
+            "tags",
+        )
+
+    def validate(self, data):
+        attrs = data.copy()
+        attrs.pop("ports", None)
+        attrs.pop("env", None)
+        attrs.pop("labels", None)
+        attrs.pop("mounts", None)
+
+        super().validate(attrs)
+
+        return data
+
+    def create(self, validated_data):
+        ports_data = validated_data.pop("ports", None)
+        env_data = validated_data.pop("env", None)
+        labels_data = validated_data.pop("labels", None)
+        mounts_data = validated_data.pop("mounts", None)
+
+        container = super().create(validated_data)
+
+        if ports_data is not None:
+            for port in ports_data:
+                Port.objects.create(container=container, **port)
+
+        if env_data is not None:
+            for env in env_data:
+                Env.objects.create(container=container, **env)
+
+        if labels_data is not None:
+            for label in labels_data:
+                Label.objects.create(container=container, **label)
+
+        if mounts_data is not None:
+            for mount in mounts_data:
+                obj = Mount(container=container, **mount)
+                obj.full_clean()
+                obj.save()
+
+        return container
+
+    def update(self, instance, validated_data):
+        ports_data = validated_data.pop("ports", None)
+        env_data = validated_data.pop("env", None)
+        labels_data = validated_data.pop("labels", None)
+        mounts_data = validated_data.pop("mounts", None)
+
+        container = super().update(instance, validated_data)
+
+        Port.objects.filter(container=container).delete()
+        if ports_data is not None:
+            for port in ports_data:
+                Port.objects.create(container=container, **port)
+
+        Env.objects.filter(container=container).delete()
+        if env_data is not None:
+            for env in env_data:
+                Env.objects.create(container=container, **env)
+
+        Label.objects.filter(container=container).delete()
+        if labels_data is not None:
+            for label in labels_data:
+                Label.objects.create(container=container, **label)
+
+        Mount.objects.filter(container=container).delete()
+        if mounts_data is not None:
+            for mount in mounts_data:
+                obj = Mount(container=container, **mount)
+                obj.full_clean()
+                obj.save()
+
+        return container
+
+
 class HostSerializer(NetBoxModelSerializer):
     """Host Serializer class"""
 
@@ -167,6 +347,7 @@ class HostSerializer(NetBoxModelSerializer):
     images = NestedImageSerializer(many=True, read_only=True)
     volumes = NestedVolumeSerializer(many=True, read_only=True)
     networks = NestedNetworkSerializer(many=True, read_only=True)
+    containers = NestedContainerSerializer(many=True, read_only=True)
 
     class Meta:
         """Host Serializer Meta class"""
@@ -185,4 +366,5 @@ class HostSerializer(NetBoxModelSerializer):
             "images",
             "volumes",
             "networks",
+            "containers",
         )
