@@ -12,8 +12,8 @@ from django.core.validators import (
     MaxValueValidator,
 )
 from utilities.choices import ChoiceSet
-from netbox.models import NetBoxModel
 from utilities.querysets import RestrictedQuerySet
+from netbox.models import NetBoxModel
 from .image import Image
 from .host import Host
 from .network import Network

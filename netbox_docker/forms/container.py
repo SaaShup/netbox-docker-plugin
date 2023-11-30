@@ -92,7 +92,8 @@ class ContainerImportForm(NetBoxModelImportForm):
         label="State",
         choices=ContainerStateChoices,
         required=False,
-        help_text="Container State. Can be `created`, `restarting`, `running`, `paused`, `exited`or `dead`.",
+        help_text="Container State. Can be `created`, `restarting`, " +
+            "`running`, `paused`, `exited`or `dead`.",
     )
 
     class Meta:
@@ -105,7 +106,8 @@ class ContainerImportForm(NetBoxModelImportForm):
             "host": "Host identifier",
             "image": "Image identifier",
             "network": "Network identifier",
-            "state": "Container State. Can be `created`, `restarting`, `running`, `paused`, `exited`or `dead`.",
+            "state": "Container State. Can be `created`, `restarting`, " +
+                "`running`, `paused`, `exited`or `dead`.",
         }
 
 
