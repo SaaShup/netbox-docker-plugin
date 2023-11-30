@@ -32,12 +32,29 @@
 <div class="row">
   <div class="col col-md-12">
     <div class="card">
+      <h5 class="card-header">Container</h5>
+      <div class="card-body htmx-container table-responsive"
+        hx-get="{% url 'plugins:netbox_docker:container_list' %}?host_id={{ object.pk }}"
+        hx-trigger="load"
+      ></div>
+      {% if perms.netbox_docker.add_container %}
+        <div class="card-footer text-end noprint">
+          <a href="{% url 'plugins:netbox_docker:container_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Container
+          </a>
+        </div>
+      {% endif %}
+    </div>
+    {% plugin_full_width_page object %}
+  </div>
+  <div class="col col-md-12">
+    <div class="card">
       <h5 class="card-header">Images</h5>
       <div class="card-body htmx-container table-responsive"
         hx-get="{% url 'plugins:netbox_docker:image_list' %}?host_id={{ object.pk }}"
         hx-trigger="load"
       ></div>
-      {% if perms.netbox_docker.add_location %}
+      {% if perms.netbox_docker.add_image %}
         <div class="card-footer text-end noprint">
           <a href="{% url 'plugins:netbox_docker:image_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add an Image
@@ -54,7 +71,7 @@
         hx-get="{% url 'plugins:netbox_docker:volume_list' %}?host_id={{ object.pk }}"
         hx-trigger="load"
       ></div>
-      {% if perms.netbox_docker.add_location %}
+      {% if perms.netbox_docker.add_volume %}
         <div class="card-footer text-end noprint">
           <a href="{% url 'plugins:netbox_docker:volume_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Volume
@@ -71,7 +88,7 @@
         hx-get="{% url 'plugins:netbox_docker:network_list' %}?host_id={{ object.pk }}"
         hx-trigger="load"
       ></div>
-      {% if perms.netbox_docker.add_location %}
+      {% if perms.netbox_docker.add_network %}
         <div class="card-footer text-end noprint">
           <a href="{% url 'plugins:netbox_docker:network_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Network

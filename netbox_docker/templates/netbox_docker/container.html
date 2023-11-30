@@ -1,0 +1,108 @@
+{% extends 'generic/object.html' %}
+
+{% load plugins %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col col-md-6">
+    <div class="card">
+      <h5 class="card-header">CONTAINER</h5>
+      <div class="card-body">
+        <table class="table table-hover attr-table">
+          <tr>
+            <th scope="row">Host</th>
+            <td><a href="{{ object.host.get_absolute_url }}">{{ object.host }}</a></td>
+          </tr>
+          <tr>
+            <th scope="row">Image</th>
+            <td><a href="{{ object.image.get_absolute_url }}">{{ object.host }}</a></td>
+          </tr>
+          <tr>
+            <th scope="row">Network</th>
+            <td>
+                {% if object.network %}
+                <a href="{{ object.network.get_absolute_url }}">{{ object.network|placeholder }}</a>
+                {% else %}
+                {{ object.network|placeholder }}
+                {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">Name</th>
+            <td>{{ object.name }}</td>
+          </tr>
+          <tr>
+            <th scope="row">State</th>
+            <td>{{ object.get_state_display }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Status</th>
+            <td>{{ object.status|placeholder }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    {% include 'inc/panels/custom_fields.html' %}
+    {% include 'inc/panels/tags.html' %}
+    {% plugin_left_page object %}
+  </div>
+  <div class="col col-md-6">
+    <div class="card">
+      <h5 class="card-header">PORT MAPPINGS</h5>
+      <div class="card-body htmx-container table-responsive"
+        hx-get="{% url 'plugins:netbox_docker:port_list' %}?container_id={{ object.pk }}"
+        hx-trigger="load"
+      ></div>
+      {% if perms.netbox_docker.add_env %}
+        <div class="card-footer text-end noprint">
+          <a href="{% url 'plugins:netbox_docker:port_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Port Mapping
+          </a>
+        </div>
+      {% endif %}
+    </div>
+    <div class="card">
+      <h5 class="card-header">MOUNTS</h5>
+      <div class="card-body htmx-container table-responsive"
+        hx-get="{% url 'plugins:netbox_docker:mount_list' %}?container_id={{ object.pk }}"
+        hx-trigger="load"
+      ></div>
+      {% if perms.netbox_docker.add_env %}
+        <div class="card-footer text-end noprint">
+          <a href="{% url 'plugins:netbox_docker:mount_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> New Mount
+          </a>
+        </div>
+      {% endif %}
+    </div>
+    <div class="card">
+      <h5 class="card-header">ENV VARIABLE</h5>
+      <div class="card-body htmx-container table-responsive"
+        hx-get="{% url 'plugins:netbox_docker:env_list' %}?container_id={{ object.pk }}"
+        hx-trigger="load"
+      ></div>
+      {% if perms.netbox_docker.add_env %}
+        <div class="card-footer text-end noprint">
+          <a href="{% url 'plugins:netbox_docker:env_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add an Env Variable
+          </a>
+        </div>
+      {% endif %}
+    </div>
+    <div class="card">
+      <h5 class="card-header">LABELS</h5>
+      <div class="card-body htmx-container table-responsive"
+        hx-get="{% url 'plugins:netbox_docker:label_list' %}?container_id={{ object.pk }}"
+        hx-trigger="load"
+      ></div>
+      {% if perms.netbox_docker.add_env %}
+        <div class="card-footer text-end noprint">
+          <a href="{% url 'plugins:netbox_docker:label_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Label
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock content %}

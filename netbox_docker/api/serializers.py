@@ -38,6 +38,7 @@ class NestedImageSerializer(WritableNestedSerializer):
         fields = (
             "id",
             "url",
+            "display",
             "name",
             "version",
             "provider",
@@ -59,6 +60,7 @@ class NestedVolumeSerializer(WritableNestedSerializer):
         fields = (
             "id",
             "url",
+            "display",
             "name",
             "driver",
         )
@@ -78,6 +80,7 @@ class NestedNetworkSerializer(WritableNestedSerializer):
         fields = (
             "id",
             "url",
+            "display",
             "name",
             "driver",
         )
@@ -112,6 +115,7 @@ class ImageSerializer(NetBoxModelSerializer):
         fields = (
             "id",
             "url",
+            "display",
             "host",
             "name",
             "version",
@@ -139,6 +143,7 @@ class VolumeSerializer(NetBoxModelSerializer):
         fields = (
             "id",
             "url",
+            "display",
             "host",
             "name",
             "driver",
@@ -164,6 +169,7 @@ class NetworkSerializer(NetBoxModelSerializer):
         fields = (
             "id",
             "url",
+            "display",
             "host",
             "name",
             "driver",

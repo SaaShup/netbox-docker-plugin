@@ -67,6 +67,21 @@ network_buttons = [
     ),
 ]
 
+container_buttons = [
+    PluginMenuButton(
+        link="plugins:netbox_docker:container_add",
+        title="Add",
+        icon_class="mdi mdi-plus-thick",
+        color=ButtonColorChoices.GREEN,
+    ),
+    PluginMenuButton(
+        link="plugins:netbox_docker:container_import",
+        title="Import",
+        icon_class="mdi mdi-upload",
+        color=ButtonColorChoices.CYAN,
+    ),
+]
+
 host_item = [
     PluginMenuItem(
         link="plugins:netbox_docker:host_list",
@@ -91,6 +106,12 @@ host_item = [
         link_text="Networks",
         buttons=network_buttons,
         permissions=["netbox_docker.view_network"],
+    ),
+    PluginMenuItem(
+        link="plugins:netbox_docker:container_list",
+        link_text="Containers",
+        buttons=container_buttons,
+        permissions=["netbox_docker.view_container"],
     ),
 ]
 
