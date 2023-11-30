@@ -6,11 +6,17 @@ from .models.host import Host
 from .models.image import Image
 from .models.volume import Volume
 from .models.network import Network
+from .models.container import Container, Env, Label, Port, Mount
 from .views import (
     host as host_views,
     image as image_views,
     volume as volume_views,
     network as network_views,
+    container as container_views,
+    env as env_views,
+    label as label_views,
+    port as port_views,
+    mount as mount_views,
 )
 
 urlpatterns = (
@@ -154,5 +160,142 @@ urlpatterns = (
         ObjectJournalView.as_view(),
         name="network_journal",
         kwargs={"model": Network},
+    ),
+    # Container
+    path(
+        "containers/",
+        container_views.ContainerListView.as_view(),
+        name="container_list",
+    ),
+    path(
+        "containers/add/",
+        container_views.ContainerEditView.as_view(),
+        name="container_add",
+    ),
+    path(
+        "containers/import/",
+        container_views.ContainerBulkImportView.as_view(),
+        name="container_import",
+    ),
+    path(
+        "containers/edit/",
+        container_views.ContainerBulkEditView.as_view(),
+        name="container_bulk_edit",
+    ),
+    path(
+        "containers/delete/",
+        container_views.ContainerBulkDeleteView.as_view(),
+        name="container_bulk_delete",
+    ),
+    path(
+        "containers/<int:pk>/",
+        container_views.ContainerView.as_view(),
+        name="container",
+    ),
+    path(
+        "containers/<int:pk>/edit/",
+        container_views.ContainerEditView.as_view(),
+        name="container_edit",
+    ),
+    path(
+        "containers/<int:pk>/delete/",
+        container_views.ContainerDeleteView.as_view(),
+        name="container_delete",
+    ),
+    path(
+        "containers/<int:pk>/changelog/",
+        ObjectChangeLogView.as_view(),
+        name="container_changelog",
+        kwargs={"model": Container},
+    ),
+    path(
+        "containers/<int:pk>/journal/",
+        ObjectJournalView.as_view(),
+        name="container_journal",
+        kwargs={"model": Container},
+    ),
+    # Env
+    path(
+        "env/",
+        env_views.EnvListView.as_view(),
+        name="env_list",
+    ),
+    path(
+        "env/add/",
+        env_views.EnvEditView.as_view(),
+        name="env_add",
+    ),
+    path(
+        "env/<int:pk>/edit/",
+        env_views.EnvEditView.as_view(),
+        name="env_edit",
+    ),
+    path(
+        "env/<int:pk>/delete/",
+        env_views.EnvDeleteView.as_view(),
+        name="env_delete",
+    ),
+    # Label
+    path(
+        "labels/",
+        label_views.LabelListView.as_view(),
+        name="label_list",
+    ),
+    path(
+        "labels/add/",
+        label_views.LabelEditView.as_view(),
+        name="label_add",
+    ),
+    path(
+        "labels/<int:pk>/edit/",
+        label_views.LabelEditView.as_view(),
+        name="label_edit",
+    ),
+    path(
+        "labels/<int:pk>/delete/",
+        label_views.LabelDeleteView.as_view(),
+        name="label_delete",
+    ),
+    # Port
+    path(
+        "ports/",
+        port_views.PortListView.as_view(),
+        name="port_list",
+    ),
+    path(
+        "ports/add/",
+        port_views.PortEditView.as_view(),
+        name="port_add",
+    ),
+    path(
+        "ports/<int:pk>/edit/",
+        port_views.PortEditView.as_view(),
+        name="port_edit",
+    ),
+    path(
+        "ports/<int:pk>/delete/",
+        port_views.PortDeleteView.as_view(),
+        name="port_delete",
+    ),
+    # Mount
+    path(
+        "mounts/",
+        mount_views.MountListView.as_view(),
+        name="mount_list",
+    ),
+    path(
+        "mounts/add/",
+        mount_views.MountEditView.as_view(),
+        name="mount_add",
+    ),
+    path(
+        "mounts/<int:pk>/edit/",
+        mount_views.MountEditView.as_view(),
+        name="mount_edit",
+    ),
+    path(
+        "mounts/<int:pk>/delete/",
+        mount_views.MountDeleteView.as_view(),
+        name="mount_delete",
     ),
 )

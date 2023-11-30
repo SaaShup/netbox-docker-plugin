@@ -13,6 +13,7 @@ from django.core.validators import (
 )
 from utilities.choices import ChoiceSet
 from netbox.models import NetBoxModel
+from utilities.querysets import RestrictedQuerySet
 from .image import Image
 from .host import Host
 from .network import Network
@@ -113,6 +114,8 @@ class Container(NetBoxModel):
 class Port(models.Model):
     """Container definition class"""
 
+    objects = RestrictedQuerySet.as_manager()
+
     container = models.ForeignKey(
         Container, on_delete=models.CASCADE, related_name="ports"
     )
@@ -155,6 +158,8 @@ class Port(models.Model):
 class Label(models.Model):
     """Label definition class"""
 
+    objects = RestrictedQuerySet.as_manager()
+
     container = models.ForeignKey(
         Container, on_delete=models.CASCADE, related_name="labels"
     )
@@ -192,6 +197,8 @@ class Label(models.Model):
 class Env(models.Model):
     """Env definition class"""
 
+    objects = RestrictedQuerySet.as_manager()
+
     container = models.ForeignKey(
         Container, on_delete=models.CASCADE, related_name="env"
     )
@@ -228,6 +235,8 @@ class Env(models.Model):
 
 class Mount(models.Model):
     """Mount definition class"""
+
+    objects = RestrictedQuerySet.as_manager()
 
     container = models.ForeignKey(
         Container, on_delete=models.CASCADE, related_name="mounts"
