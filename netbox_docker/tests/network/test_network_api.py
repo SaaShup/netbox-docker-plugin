@@ -17,7 +17,7 @@ class NetworkApiTestCase(
     """Network Test Case Class"""
 
     model = Network
-    brief_fields = ["display", "driver", "id", "name", "url"]
+    brief_fields = ["NetworkID", "display", "driver", "id", "name", "url"]
 
     @classmethod
     def setUpTestData(cls) -> None:
