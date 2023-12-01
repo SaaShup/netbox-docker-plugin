@@ -25,7 +25,6 @@ class ImageProviderChoices(ChoiceSet):
         ("github", "GitHub", "blue"),
     ]
 
-
 class Image(NetBoxModel):
     """Image definition class"""
 
@@ -58,12 +57,29 @@ class Image(NetBoxModel):
             MaxValueValidator(limit_value=4096),
         ],
     )
+    ImageID = models.CharField(
+        max_length=128,
+        validators=[
+            MinLengthValidator(limit_value=1),
+            MaxLengthValidator(limit_value=128),
+        ],
+        blank=True,
+        null=True
+    )
 
     class Meta:
         """Image Model Meta Class"""
 
-        unique_together = ["host", "name", "version"]
         ordering = ("name", "version")
+        constraints = (
+            models.UniqueConstraint(
+                fields=["host", "name", "version"],
+                name="%(app_label)s_%(class)s_unique_version_name_host"
+            ),
+            models.UniqueConstraint(
+                fields=["host", "ImageID"], name="%(app_label)s_%(class)s_unique_ImageID_host"
+            )
+        )
 
     def __str__(self):
         return f"{self.name}:{self.version}"

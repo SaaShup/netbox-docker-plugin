@@ -25,6 +25,7 @@ class ImageForm(NetBoxModelForm):
             "version",
             "provider",
             "size",
+            "ImageID",
             "tags",
         )
         labels = {
@@ -33,6 +34,7 @@ class ImageForm(NetBoxModelForm):
             "version": "Version",
             "provider": "Provider",
             "size": "Size",
+            "ImageID": "ImageID"
         }
 
 
@@ -54,6 +56,7 @@ class ImageFilterForm(NetBoxModelFilterSetForm):
         required=False,
         label="Host",
     )
+    ImageID = forms.CharField(label="ImageID", max_length=128, min_length=1, required=False)
     tag = TagFilterField(model)
 
 
@@ -68,13 +71,14 @@ class ImageImportForm(NetBoxModelImportForm):
         """Image importation form definition Meta class"""
 
         model = Image
-        fields = ("name", "version", "provider", "size", "host")
+        fields = ("name", "version", "provider", "size", "host", "ImageID")
         labels = {
             "name": "Unique Image name",
             "version": "Image version",
             "provider": 'Image provider. Can be "dockerhub" and "github"',
             "size": "Optional image size. Default 0",
             "host": "Host identifier",
+            "ImageID": "Docker Image ID"
         }
 
 
@@ -86,6 +90,7 @@ class ImageBulkEditForm(NetBoxModelBulkEditForm):
     )
     provider = forms.ChoiceField(choices=ImageProviderChoices, required=False)
     size = forms.IntegerField(required=False)
+    ImageID = forms.CharField(required=False, label="ImageID")
 
     model = Image
-    fieldsets = (("General", ("version", "provider", "size")),)
+    fieldsets = (("General", ("version", "provider", "size", "ImageID")),)

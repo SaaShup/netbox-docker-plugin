@@ -17,7 +17,16 @@ class ImageApiTestCase(
     """Image Test Case Class"""
 
     model = Image
-    brief_fields = ["display", "id", "name", "provider", "size", "url", "version"]
+    brief_fields = [
+        "ImageID",
+        "display",
+        "id",
+        "name",
+        "provider",
+        "size",
+        "url",
+        "version",
+    ]
 
     @classmethod
     def setUpTestData(cls) -> None:
@@ -26,7 +35,11 @@ class ImageApiTestCase(
 
         Image.objects.create(host=host1, name="image1")
         Image.objects.create(host=host1, name="image2")
-        Image.objects.create(host=host2, name="image3")
+        Image.objects.create(
+            host=host2,
+            name="image3",
+            ImageID="sha256:593aee2afb642798b83a85306d2625fd7f089c0a1242c7e75a237846d80aa2a0",
+        )
 
         cls.create_data = [
             {
