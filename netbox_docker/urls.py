@@ -17,6 +17,7 @@ from .views import (
     label as label_views,
     port as port_views,
     mount as mount_views,
+    network_setting as network_setting_views,
 )
 
 urlpatterns = (
@@ -297,5 +298,26 @@ urlpatterns = (
         "mounts/<int:pk>/delete/",
         mount_views.MountDeleteView.as_view(),
         name="mount_delete",
+    ),
+    # NetworkSetting
+    path(
+        "network-settings/",
+        network_setting_views.NetworkSettingListView.as_view(),
+        name="networksetting_list",
+    ),
+    path(
+        "network-settings/add/",
+        network_setting_views.NetworkSettingEditView.as_view(),
+        name="networksetting_add",
+    ),
+    path(
+        "network-settings/<int:pk>/edit/",
+        network_setting_views.NetworkSettingEditView.as_view(),
+        name="networksetting_edit",
+    ),
+    path(
+        "network-settings/<int:pk>/delete/",
+        network_setting_views.NetworkSettingDeleteView.as_view(),
+        name="networksetting_delete",
     ),
 )

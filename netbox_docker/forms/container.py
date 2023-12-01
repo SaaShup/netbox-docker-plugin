@@ -16,7 +16,6 @@ from ..models.volume import Volume
 from ..models.host import Host
 from ..models.container import Container, ContainerStateChoices
 from ..models.image import Image
-from ..models.network import Network
 
 
 class ContainerForm(NetBoxModelForm):
@@ -31,12 +30,6 @@ class ContainerForm(NetBoxModelForm):
         required=True,
         query_params={"host_id": "$host"},
     )
-    network = DynamicModelChoiceField(
-        label="Network",
-        queryset=Network.objects.all(),
-        required=False,
-        query_params={"host_id": "$host"},
-    )
 
     class Meta:
         """Container form definition Meta class"""
@@ -45,15 +38,15 @@ class ContainerForm(NetBoxModelForm):
         fields = (
             "host",
             "image",
-            "network",
             "name",
+            "state",
             "tags",
         )
         labels = {
             "name": "Name",
             "host": "Host",
             "image": "Image",
-            "network": "Network",
+            "state": "State",
         }
 
 
@@ -71,11 +64,6 @@ class ContainerFilterForm(NetBoxModelFilterSetForm):
         queryset=Image.objects.all(),
         required=False,
         label="Image",
-    )
-    network_id = DynamicModelMultipleChoiceField(
-        queryset=Network.objects.all(),
-        required=False,
-        label="Network",
     )
     state = forms.ChoiceField(
         label="State",
@@ -100,12 +88,11 @@ class ContainerImportForm(NetBoxModelImportForm):
         """Container importation form definition Meta class"""
 
         model = Container
-        fields = ("name", "host", "image", "network", "state")
+        fields = ("name", "host", "image", "state")
         labels = {
             "name": "Unique container name",
             "host": "Host identifier",
             "image": "Image identifier",
-            "network": "Network identifier",
             "state": "Container State. Can be `created`, `restarting`, " +
                 "`running`, `paused`, `exited`or `dead`.",
         }

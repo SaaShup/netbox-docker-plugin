@@ -15,17 +15,7 @@
           </tr>
           <tr>
             <th scope="row">Image</th>
-            <td><a href="{{ object.image.get_absolute_url }}">{{ object.host }}</a></td>
-          </tr>
-          <tr>
-            <th scope="row">Network</th>
-            <td>
-                {% if object.network %}
-                <a href="{{ object.network.get_absolute_url }}">{{ object.network|placeholder }}</a>
-                {% else %}
-                {{ object.network|placeholder }}
-                {% endif %}
-            </td>
+            <td><a href="{{ object.image.get_absolute_url }}">{{ object.image }}</a></td>
           </tr>
           <tr>
             <th scope="row">Name</th>
@@ -71,6 +61,20 @@
         <div class="card-footer text-end noprint">
           <a href="{% url 'plugins:netbox_docker:mount_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> New Mount
+          </a>
+        </div>
+      {% endif %}
+    </div>
+    <div class="card">
+      <h5 class="card-header">NETWORK SETTINGS</h5>
+      <div class="card-body htmx-container table-responsive"
+        hx-get="{% url 'plugins:netbox_docker:networksetting_list' %}?container_id={{ object.pk }}"
+        hx-trigger="load"
+      ></div>
+      {% if perms.netbox_docker.add_network_setting %}
+        <div class="card-footer text-end noprint">
+          <a href="{% url 'plugins:netbox_docker:networksetting_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> New Network Setting
           </a>
         </div>
       {% endif %}

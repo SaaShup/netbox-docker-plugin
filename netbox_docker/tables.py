@@ -6,7 +6,7 @@ from .models.host import Host
 from .models.image import Image
 from .models.volume import Volume
 from .models.network import Network
-from .models.container import Container, Env, Label, Port, Mount
+from .models.container import Container, Env, Label, Port, Mount, NetworkSetting
 
 
 class HostTable(NetBoxTable):
@@ -121,7 +121,6 @@ class ContainerTable(NetBoxTable):
     host = tables.Column(linkify=True)
     image = tables.Column(linkify=True)
     name = tables.Column(linkify=True)
-    network = tables.Column(linkify=True)
     tags = columns.TagColumn()
 
     class Meta(NetBoxTable.Meta):
@@ -134,12 +133,11 @@ class ContainerTable(NetBoxTable):
             "host",
             "name",
             "image",
-            "network",
             "state",
             "status",
             "tags",
         )
-        default_columns = ("name", "host", "image", "network", "state")
+        default_columns = ("name", "host", "image", "state")
 
 
 class EnvTable(NetBoxTable):
@@ -192,3 +190,16 @@ class MountTable(NetBoxTable):
         model = Mount
         fields = ("source", "volume")
         default_columns = ("source", "volume")
+
+
+class NetworkSettingTable(NetBoxTable):
+    """NetworkSetting Table definition class"""
+
+    actions = columns.ActionsColumn(actions=("edit", "delete"))
+
+    class Meta(NetBoxTable.Meta):
+        """NetworkSetting Table definition Meta class"""
+
+        model = NetworkSetting
+        fields = ("network",)
+        default_columns = ("network",)
