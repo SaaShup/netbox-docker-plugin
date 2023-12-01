@@ -43,12 +43,29 @@ class Network(NetBoxModel):
         blank=True,
         null=True,
     )
+    NetworkID = models.CharField(
+        max_length=128,
+        validators=[
+            MinLengthValidator(limit_value=1),
+            MaxLengthValidator(limit_value=128),
+        ],
+        blank=True,
+        null=True
+    )
 
     class Meta:
         """Network Model Meta Class"""
 
-        unique_together = ["host", "name"]
         ordering = ("name",)
+        constraints = (
+            models.UniqueConstraint(
+                fields=["host", "name"],
+                name="%(app_label)s_%(class)s_unique_name_host"
+            ),
+            models.UniqueConstraint(
+                fields=["host", "NetworkID"], name="%(app_label)s_%(class)s_unique_NetworkID_host"
+            )
+        )
 
     def __str__(self):
         return f"{self.name}"

@@ -23,6 +23,7 @@ class NetworkForm(NetBoxModelForm):
             "host",
             "name",
             "driver",
+            "NetworkID",
             "tags",
         )
         labels = {
@@ -46,6 +47,9 @@ class NetworkFilterForm(NetBoxModelFilterSetForm):
         queryset=Host.objects.all(),
         required=False,
         label="Host",
+    )
+    NetworkID = forms.CharField(
+        label="NetworkID", max_length=128, min_length=1, required=False
     )
     tag = TagFilterField(model)
 
@@ -71,11 +75,12 @@ class NetworkBulkEditForm(NetBoxModelBulkEditForm):
     """Network bulk edit form definition class"""
 
     driver = forms.ChoiceField(choices=NetworkDriverChoices, required=False)
+    NetworkID = forms.CharField(required=False, label="NetworkID")
 
     model = Network
     fieldsets = (
         (
             "General",
-            ("driver",),
+            ("driver", "NetworkID"),
         ),
     )

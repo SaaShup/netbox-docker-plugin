@@ -91,7 +91,7 @@ class NetworkFilterSet(NetBoxModelFilterSet):
         """Network filterset definition meta class"""
 
         model = Network
-        fields = ("id", "name", "driver")
+        fields = ("id", "name", "driver", "NetworkID")
 
     # pylint: disable=W0613
     def search(self, queryset, name, value):

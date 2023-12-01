@@ -84,6 +84,7 @@ class NestedNetworkSerializer(WritableNestedSerializer):
             "display",
             "name",
             "driver",
+            "NetworkID",
         )
 
 
@@ -175,6 +176,7 @@ class NetworkSerializer(NetBoxModelSerializer):
             "host",
             "name",
             "driver",
+            "NetworkID",
             "custom_fields",
             "created",
             "last_updated",

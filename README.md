@@ -2,7 +2,7 @@
 
 [![Testing Report](https://github.com/fanshan/netbox-docker/actions/workflows/main_ci.yml/badge.svg)](https://github.com/fanshan/netbox-docker/actions/workflows/main_ci.yml)
 
-Manage Docker with style.
+Manage Docker with Netbox & style.
 
 ## Contribute
 

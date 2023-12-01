@@ -28,6 +28,7 @@ class NetworkViewsTestCase(
             "name": "image5",
             "driver": "bridge",
             "host": host1.pk,
+            "NetworkID": "abcdefghijklmnopqrstuvwxyz"
         }
 
         cls.csv_data = (
