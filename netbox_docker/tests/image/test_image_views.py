@@ -29,6 +29,7 @@ class ImageViewsTestCase(
             "provider": "github",
             "size": 512,
             "host": host1.pk,
+            "ImageID": "abcdefghijklmnopqrstuvwxyz"
         }
 
         cls.csv_data = (

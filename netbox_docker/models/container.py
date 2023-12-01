@@ -84,7 +84,7 @@ class Container(NetBoxModel):
         ordering = ("name",)
         constraints = (
             models.UniqueConstraint(
-                Lower("name"), "host", name="%(app_label)s_%(class)s_unique_name_host'"
+                Lower("name"), "host", name="%(app_label)s_%(class)s_unique_name_host"
             ),
         )
 

@@ -71,7 +71,17 @@ class ImageTable(NetBoxTable):
         """Image Table definition Meta class"""
 
         model = Image
-        fields = ("pk", "id", "host", "name", "version", "provider", "size", "tags")
+        fields = (
+            "pk",
+            "id",
+            "host",
+            "name",
+            "version",
+            "provider",
+            "size",
+            "ImageID",
+            "tags",
+        )
         default_columns = ("name", "version", "provider", "size", "host")
 
 
