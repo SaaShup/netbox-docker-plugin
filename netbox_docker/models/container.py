@@ -57,13 +57,6 @@ class Container(NetBoxModel):
     image = models.ForeignKey(
         Image, on_delete=models.RESTRICT, related_name="containers"
     )
-    network = models.ForeignKey(
-        Network,
-        on_delete=models.RESTRICT,
-        related_name="containers",
-        null=True,
-        blank=True,
-    )
     name = models.CharField(
         max_length=255,
         validators=[
@@ -101,13 +94,6 @@ class Container(NetBoxModel):
         if self.host != self.image.host:
             raise ValidationError(
                 {"image": f"Image {self.image} does not belong to host {self.host}."}
-            )
-
-        if self.network and self.host != self.network.host:
-            raise ValidationError(
-                {
-                    "image": f"Network {self.network} does not belong to host {self.host}."
-                }
             )
 
 
@@ -173,9 +159,9 @@ class Label(models.Model):
     value = models.CharField(
         max_length=4095,
         validators=[
-            MinLengthValidator(limit_value=1),
             MaxLengthValidator(limit_value=4095),
         ],
+        blank=True
     )
 
     class Meta:
@@ -271,5 +257,40 @@ class Mount(models.Model):
             raise ValidationError(
                 {
                     "volume": f"Volume {self.volume} does not belong to host {self.container.host}."
+                }
+            )
+
+
+class NetworkSetting(models.Model):
+    """NetworkSetting definition class"""
+
+    objects = RestrictedQuerySet.as_manager()
+    container = models.ForeignKey(
+        Container, on_delete=models.CASCADE, related_name="network_settings"
+    )
+    network = models.ForeignKey(Network, on_delete=models.RESTRICT)
+
+    class Meta:
+        """NetworkSetting Model Meta Class"""
+
+        ordering = ("container", "network")
+        constraints = (
+            models.UniqueConstraint(
+                fields=["container", "network"],
+                name="%(app_label)s_%(class)s_unique_container_network",
+            ),
+        )
+
+    def __str__(self):
+        return f"{self.container.name}_{self.network.name}"
+
+    def clean(self):
+        super().clean()
+
+        if self.container.host != self.network.host:
+            raise ValidationError(
+                {
+                    "network": f"Network {self.network} does not belong to host " +
+                        f"{self.container.host}."
                 }
             )

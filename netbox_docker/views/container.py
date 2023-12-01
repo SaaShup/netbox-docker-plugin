@@ -10,7 +10,7 @@ class ContainerView(generic.ObjectView):
     """Container view definition"""
 
     queryset = Container.objects.prefetch_related(
-        "host", "image", "network", "env", "labels", "mounts", "ports"
+        "host", "image", "env", "labels", "mounts", "ports", "network_settings"
     )
 
 

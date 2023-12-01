@@ -21,7 +21,13 @@ class ContainerApiTestCase(
 
     model = Container
     brief_fields = ["id", "name", "state", "status", "url"]
-    validation_excluded_fields = ["ports", "env", "labels", "mounts"]
+    validation_excluded_fields = [
+        "ports",
+        "env",
+        "labels",
+        "mounts",
+        "network_settings",
+    ]
 
     @classmethod
     def setUpTestData(cls) -> None:
@@ -38,20 +44,19 @@ class ContainerApiTestCase(
         volume2 = Volume.objects.create(host=host1, name="volume2")
 
         Container.objects.create(
-            host=host1, image=image1, network=network1, name="container1"
+            host=host1, image=image1, name="container1"
         )
         Container.objects.create(
-            host=host1, image=image1, network=network1, name="container2"
+            host=host1, image=image1, name="container2"
         )
         Container.objects.create(
-            host=host2, image=image2, network=network2, name="container3"
+            host=host2, image=image2, name="container3"
         )
 
         cls.create_data = [
             {
                 "host": host1.pk,
                 "image": image1.pk,
-                "network": network1.pk,
                 "name": "container5",
                 "ports": [
                     {"public_port": 80, "private_port": 80, "type": "tcp"},
@@ -69,23 +74,29 @@ class ContainerApiTestCase(
                     {"source": "/data", "volume": volume1.pk},
                     {"source": "/etc", "volume": volume2.pk},
                 ],
+                "network_settings": [
+                    {"network": network1.pk},
+                ]
             },
             {
                 "host": host2.pk,
                 "image": image2.pk,
-                "network": network2.pk,
                 "name": "container6",
+                "network_settings": [
+                    {"network": network2.pk},
+                ]
             },
             {
                 "host": host2.pk,
                 "image": image2.pk,
-                "network": network2.pk,
                 "name": "container7",
+                "network_settings": [
+                    {"network": network2.pk},
+                ]
             },
             {
                 "host": host2.pk,
                 "image": image2.pk,
-                "network": network2.pk,
                 "name": "container8",
                 "ports": [],
                 "env": [],

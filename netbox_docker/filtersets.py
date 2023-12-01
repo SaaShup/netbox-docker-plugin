@@ -7,7 +7,7 @@ from .models.host import Host
 from .models.image import Image
 from .models.volume import Volume
 from .models.network import Network
-from .models.container import Container, Env, Label, Port
+from .models.container import Container, Env, Label, Port, Mount, NetworkSetting
 
 
 class HostFilterSet(NetBoxModelFilterSet):
@@ -194,5 +194,21 @@ class MountFilterSet(BaseFilterSet):
     class Meta:
         """Mount filterset definition meta class"""
 
-        model = Port
+        model = Mount
+        fields = ("id",)
+
+
+class NetworkSettingFilterSet(BaseFilterSet):
+    """NetworkSetting filterset definition class"""
+
+    container_id = ModelMultipleChoiceFilter(
+        field_name="container_id",
+        queryset=Container.objects.all(),
+        label="Container (ID)",
+    )
+
+    class Meta:
+        """NetworkSetting filterset definition meta class"""
+
+        model = NetworkSetting
         fields = ("id",)
