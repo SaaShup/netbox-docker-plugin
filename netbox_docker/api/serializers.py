@@ -99,7 +99,7 @@ class NestedContainerSerializer(WritableNestedSerializer):
         """Nested Container Serializer Meta class"""
 
         model = Container
-        fields = ("id", "url", "name", "state", "status")
+        fields = ("id", "url", "name", "ContainerID", "state", "status")
 
 
 class ImageSerializer(NetBoxModelSerializer):
@@ -263,7 +263,7 @@ class ContainerSerializer(NetBoxModelSerializer):
     env = EnvSerializer(many=True, required=False)
     labels = LabelSerializer(many=True, required=False)
     mounts = MountSerializer(many=True, required=False)
-    network_settings = NetworkSettingSerializer(many = True, required=False)
+    network_settings = NetworkSettingSerializer(many=True, required=False)
 
     class Meta:
         """Container Serializer Meta class"""
@@ -277,6 +277,7 @@ class ContainerSerializer(NetBoxModelSerializer):
             "name",
             "state",
             "status",
+            "ContainerID",
             "ports",
             "env",
             "labels",

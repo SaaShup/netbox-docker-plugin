@@ -135,6 +135,7 @@ class ContainerTable(NetBoxTable):
             "image",
             "state",
             "status",
+            "ContainerID",
             "tags",
         )
         default_columns = ("name", "host", "image", "state")

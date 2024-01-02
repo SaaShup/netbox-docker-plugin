@@ -55,6 +55,9 @@ class ContainerFilterForm(NetBoxModelFilterSetForm):
 
     model = Volume
     name = forms.CharField(label="Name", max_length=256, min_length=1, required=False)
+    ContainerID = forms.CharField(
+        label="Name", max_length=128, min_length=1, required=False
+    )
     host_id = DynamicModelMultipleChoiceField(
         queryset=Host.objects.all(),
         required=False,
@@ -66,9 +69,7 @@ class ContainerFilterForm(NetBoxModelFilterSetForm):
         label="Image",
     )
     state = forms.ChoiceField(
-        label="State",
-        choices=ContainerStateChoices,
-        required=False,
+        label="State", choices=ContainerStateChoices, required=False
     )
     tag = TagFilterField(model)
 
@@ -80,8 +81,8 @@ class ContainerImportForm(NetBoxModelImportForm):
         label="State",
         choices=ContainerStateChoices,
         required=False,
-        help_text="Container State. Can be `created`, `restarting`, " +
-            "`running`, `paused`, `exited`or `dead`.",
+        help_text="Container State. Can be `created`, `restarting`, "
+        + "`running`, `paused`, `exited`or `dead`.",
     )
 
     class Meta:
@@ -93,8 +94,8 @@ class ContainerImportForm(NetBoxModelImportForm):
             "name": "Unique container name",
             "host": "Host identifier",
             "image": "Image identifier",
-            "state": "Container State. Can be `created`, `restarting`, " +
-                "`running`, `paused`, `exited`or `dead`.",
+            "state": "Container State. Can be `created`, `restarting`, "
+            + "`running`, `paused`, `exited`or `dead`.",
         }
 
 
