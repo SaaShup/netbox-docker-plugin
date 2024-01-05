@@ -20,7 +20,7 @@ class ContainerApiTestCase(
     """Container Test Case Class"""
 
     model = Container
-    brief_fields = ["id", "name", "state", "status", "url"]
+    brief_fields = ["ContainerID", "id", "name", "state", "status", "url"]
     validation_excluded_fields = [
         "ports",
         "env",
@@ -43,15 +43,9 @@ class ContainerApiTestCase(
         volume1 = Volume.objects.create(host=host1, name="volume1")
         volume2 = Volume.objects.create(host=host1, name="volume2")
 
-        Container.objects.create(
-            host=host1, image=image1, name="container1"
-        )
-        Container.objects.create(
-            host=host1, image=image1, name="container2"
-        )
-        Container.objects.create(
-            host=host2, image=image2, name="container3"
-        )
+        Container.objects.create(host=host1, image=image1, name="container1")
+        Container.objects.create(host=host1, image=image1, name="container2")
+        Container.objects.create(host=host2, image=image2, name="container3")
 
         cls.create_data = [
             {
@@ -76,7 +70,7 @@ class ContainerApiTestCase(
                 ],
                 "network_settings": [
                     {"network": network1.pk},
-                ]
+                ],
             },
             {
                 "host": host2.pk,
@@ -84,7 +78,7 @@ class ContainerApiTestCase(
                 "name": "container6",
                 "network_settings": [
                     {"network": network2.pk},
-                ]
+                ],
             },
             {
                 "host": host2.pk,
@@ -92,7 +86,7 @@ class ContainerApiTestCase(
                 "name": "container7",
                 "network_settings": [
                     {"network": network2.pk},
-                ]
+                ],
             },
             {
                 "host": host2.pk,

@@ -22,6 +22,10 @@
             <td>{{ object.name }}</td>
           </tr>
           <tr>
+            <th scope="row">ContainerID</th>
+            <td>{{ object.ContainerID|placeholder }}</td>
+          </tr>
+          <tr>
             <th scope="row">State</th>
             <td>{{ object.get_state_display }}</td>
           </tr>

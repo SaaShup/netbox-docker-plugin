@@ -70,6 +70,15 @@ class Container(NetBoxModel):
         default=ContainerStateChoices.DEFAULT_VALUE,
     )
     status = models.CharField(max_length=1024, blank=True, null=True)
+    ContainerID = models.CharField(
+        max_length=128,
+        validators=[
+            MinLengthValidator(limit_value=1),
+            MaxLengthValidator(limit_value=128),
+        ],
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         """Image Model Meta Class"""
@@ -78,6 +87,10 @@ class Container(NetBoxModel):
         constraints = (
             models.UniqueConstraint(
                 Lower("name"), "host", name="%(app_label)s_%(class)s_unique_name_host"
+            ),
+            models.UniqueConstraint(
+                fields=["host", "ContainerID"],
+                name="%(app_label)s_%(class)s_unique_ContainerID_host",
             ),
         )
 
@@ -161,7 +174,7 @@ class Label(models.Model):
         validators=[
             MaxLengthValidator(limit_value=4095),
         ],
-        blank=True
+        blank=True,
     )
 
     class Meta:
@@ -290,7 +303,7 @@ class NetworkSetting(models.Model):
         if self.container.host != self.network.host:
             raise ValidationError(
                 {
-                    "network": f"Network {self.network} does not belong to host " +
-                        f"{self.container.host}."
+                    "network": f"Network {self.network} does not belong to host "
+                    + f"{self.container.host}."
                 }
             )
