@@ -12,7 +12,7 @@ Requirements:
 * Python 3.11
 * PostgreSQL 15 [Official Netbox doc](https://github.com/netbox-community/netbox/blob/master/docs/installation/1-postgresql.md)
   - user: netbox (with database creation right)
-  - password: netbox
+  - password: secret
   - database: netbox
   - port: 5432
 * Redis 7.2
@@ -89,7 +89,7 @@ After installing you development environment, you can run the tests plugin (you 
 
 ```bash
 cd $PROJECT/netbox
-python3 netbox/manage.py test netbox_docker.tests --keepdb -v 2
+python3 netbox/manage.py test netbox_docker_plugin.tests --keepdb -v 2
 ```
 
 With code coverage, install [coverage.py](https://coverage.readthedocs.io/en/7.3.2/) and use it:
@@ -103,6 +103,6 @@ The run the test with coverage.py and print the report:
 
 ```bash
 cd $PROJECT/netbox
-coverage run --source=../netbox-docker netbox/manage.py test netbox_docker.tests --keepdb -v 2
+coverage run --source=../netbox-docker netbox/manage.py test netbox_docker_plugin.tests --keepdb -v 2
 coverage report -m
 ```

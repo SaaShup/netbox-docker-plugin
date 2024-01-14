@@ -34,7 +34,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          path: netbox-docker
+          path: netbox-docker-plugin
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
         with:
@@ -45,21 +45,21 @@ jobs:
           repository: "netbox-community/netbox"
           ref: ${{ matrix.netbox-version }}
           path: netbox
-      - name: Install netbox_docker Dependencies
-        working-directory: netbox-docker
+      - name: Install netbox_docker_plugin Dependencies
+        working-directory: netbox-docker-plugin
         run: |
           pip install .
       - name: Install netbox Dependencies
         working-directory: netbox
         run: |
-          ln -s $(pwd)/../netbox-docker/netbox_configuration/configuration_testing.py netbox/netbox/configuration.py
+          ln -s $(pwd)/../netbox-docker-plugin/netbox_configuration/configuration_testing.py netbox/netbox/configuration.py
           python -m pip install --upgrade pip
           pip install -r requirements.txt -U
       - name: Run Pylint
         run: |
           pip install pylint
-          pylint --rcfile $(pwd)/netbox-docker/.pylintrc --init-hook 'import os; import sys; sys.path.append(os.getcwd() + "/netbox/netbox")' $(pwd)/netbox-docker/netbox_docker/
+          pylint --rcfile $(pwd)/netbox-docker-plugin/.pylintrc --init-hook 'import os; import sys; sys.path.append(os.getcwd() + "/netbox/netbox")' $(pwd)/netbox-docker-plugin/netbox_docker_plugin/
       - name: Run tests
         working-directory: netbox
         run: |
-          netbox/manage.py test netbox_docker.tests -v 2
+          netbox/manage.py test netbox_docker_plugin.tests -v 2

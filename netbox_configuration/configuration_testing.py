@@ -15,7 +15,7 @@ DATABASE = {
 }
 
 PLUGINS = [
-    "netbox_docker",
+    "netbox_docker_plugin",
 ]
 
 REDIS = {
