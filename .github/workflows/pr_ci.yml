@@ -37,7 +37,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          path: netbox-docker
+          path: netbox-docker-plugin
       - name: Checkout netbox ${{ matrix.netbox-version }}
         uses: actions/checkout@v3
         with:
@@ -48,25 +48,25 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Install netbox_docker Dependencies
-        working-directory: netbox-docker
+      - name: Install netbox_docker_plugin Dependencies
+        working-directory: netbox-docker-plugin
         run: |
           pip install .
       - name: Install netbox Dependencies
         working-directory: netbox
         run: |
-          ln -s $(pwd)/../netbox-docker/netbox_configuration/configuration_testing.py netbox/netbox/configuration.py
+          ln -s $(pwd)/../netbox-docker-plugin/netbox_configuration/configuration_testing.py netbox/netbox/configuration.py
           python -m pip install --upgrade pip
           pip install -r requirements.txt -U
       - name: Run Pylint
         run: |
           pip install pylint
-          pylint --rcfile $(pwd)/netbox-docker/.pylintrc --init-hook 'import os; import sys; sys.path.append(os.getcwd() + "/netbox/netbox")' $(pwd)/netbox-docker/netbox_docker/
+          pylint --rcfile $(pwd)/netbox-docker-plugin/.pylintrc --init-hook 'import os; import sys; sys.path.append(os.getcwd() + "/netbox/netbox")' $(pwd)/netbox-docker-plugin/netbox_docker_plugin/
       - name: Run tests with coverage and edit coverage report
         working-directory: netbox
         run: |
           python3 -m pip install coverage
-          coverage run --include='*/netbox_docker/*' netbox/manage.py test netbox_docker.tests -v 2
+          coverage run --include='*/netbox_docker_plugin/*' netbox/manage.py test netbox_docker_plugin.tests -v 2
           coverage report -m
           coverage xml -o coverage.xml
       - name: Get Cover

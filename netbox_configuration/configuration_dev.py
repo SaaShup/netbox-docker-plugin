@@ -8,7 +8,7 @@
 # access to the server via any other hostnames. The first FQDN in the list will be treated as the preferred name.
 #
 # Example: ALLOWED_HOSTS = ['netbox.example.com', 'netbox.internal.local']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # PostgreSQL database configuration. See the Django documentation for a complete list of available parameters:
 #   https://docs.djangoproject.com/en/stable/ref/settings/#databases
@@ -178,7 +178,7 @@ LOGOUT_REDIRECT_URL = "home"
 METRICS_ENABLED = False
 
 # Enable installed plugins. Add the name of each plugin to the list.
-PLUGINS = ["netbox_docker"]
+PLUGINS = ["netbox_docker_plugin"]
 
 # Plugins configuration settings. These settings are used by various plugins that the user may have installed.
 # Each key in the dictionary is the name of an installed plugin and its value is a dictionary of settings.
