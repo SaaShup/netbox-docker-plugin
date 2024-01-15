@@ -2,6 +2,7 @@
 # pylint: disable=E1101
 
 from rest_framework import serializers
+from users.api.nested_serializers import NestedTokenSerializer
 from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
 from ..models.host import Host
 from ..models.image import Image
@@ -387,6 +388,7 @@ class HostSerializer(NetBoxModelSerializer):
     volumes = NestedVolumeSerializer(many=True, read_only=True)
     networks = NestedNetworkSerializer(many=True, read_only=True)
     containers = NestedContainerSerializer(many=True, read_only=True)
+    token = NestedTokenSerializer(read_only=True)
 
     class Meta:
         """Host Serializer Meta class"""
@@ -398,6 +400,7 @@ class HostSerializer(NetBoxModelSerializer):
             "display",
             "endpoint",
             "name",
+            "token",
             "custom_fields",
             "created",
             "last_updated",

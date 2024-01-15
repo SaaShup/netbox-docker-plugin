@@ -1,5 +1,7 @@
 """API views definitions"""
 
+from collections.abc import Sequence
+from users.models import Token
 from netbox.api.viewsets import NetBoxModelViewSet
 from .. import filtersets
 from .serializers import (
@@ -23,6 +25,21 @@ class HostViewSet(NetBoxModelViewSet):
     filterset_class = filtersets.HostFilterSet
     serializer_class = HostSerializer
     http_method_names = ["get", "post", "patch", "delete", "options"]
+
+    def perform_create(self, serializer):
+        if isinstance(serializer.validated_data, Sequence):
+            for obj in serializer.validated_data:
+                token = Token(user=self.request.user, write_enabled=True)
+                token.save()
+
+                obj["token"] = token
+        else:
+            token = Token(user=self.request.user, write_enabled=True)
+            token.save()
+
+            serializer.validated_data["token"] = token
+
+        super().perform_create(serializer)
 
 
 class ImageViewSet(NetBoxModelViewSet):
