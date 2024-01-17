@@ -1,5 +1,6 @@
 """Host views definitions"""
 
+from users.models import Token
 from utilities.utils import count_related
 from netbox.views import generic
 from .. import tables, filtersets
@@ -62,6 +63,15 @@ class HostEditView(generic.ObjectEditView):
 
     queryset = Host.objects.all()
     form = host.HostForm
+
+    def alter_object(self, obj, request, url_args, url_kwargs):
+        if request.method == "POST" and not "pk" in url_kwargs:
+            token = Token(user=self.request.user, write_enabled=True)
+            token.save()
+
+            obj.token = token
+
+        return super().alter_object(obj, request, url_args, url_kwargs)
 
 
 class HostBulkEditView(generic.BulkEditView):
