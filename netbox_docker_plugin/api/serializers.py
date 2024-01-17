@@ -22,7 +22,7 @@ class NestedHostSerializer(WritableNestedSerializer):
         """Nested Host Serializer Meta class"""
 
         model = Host
-        fields = ("id", "url", "display", "endpoint", "name")
+        fields = ("id", "url", "display", "endpoint", "name", "state")
 
 
 class NestedImageSerializer(WritableNestedSerializer):
@@ -400,6 +400,7 @@ class HostSerializer(NetBoxModelSerializer):
             "display",
             "endpoint",
             "name",
+            "state",
             "token",
             "custom_fields",
             "created",
