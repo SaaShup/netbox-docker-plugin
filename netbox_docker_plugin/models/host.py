@@ -7,6 +7,7 @@ from django.core.validators import (
     MinLengthValidator,
     MaxLengthValidator,
 )
+from users.models import Token
 from netbox.models import NetBoxModel
 
 
@@ -22,6 +23,7 @@ class Host(NetBoxModel):
             MaxLengthValidator(limit_value=255),
         ],
     )
+    token = models.ForeignKey(Token, on_delete=models.SET_NULL, null=True, blank=True)
 
     class Meta:
         """Host Model Meta Class"""
