@@ -1,8 +1,13 @@
 """Host Views Test Case"""
 
-from utilities.testing import ViewTestCases
-from netbox_docker_plugin.tests.base import BaseModelViewTestCase
+from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist
+from extras.choices import ObjectChangeActionChoices
+from extras.models import ObjectChange
+from users.models import ObjectPermission
+from utilities.testing import ViewTestCases, post_data
 from netbox_docker_plugin.models.host import Host
+from ..base import BaseModelViewTestCase
 
 
 class HostViewsTestCase(BaseModelViewTestCase, ViewTestCases.PrimaryObjectViewTestCase):
@@ -20,6 +25,41 @@ class HostViewsTestCase(BaseModelViewTestCase, ViewTestCases.PrimaryObjectViewTe
         "host7,http://localhost:8084",
     )
     bulk_edit_data = {"endpoint": "http://localhost:8083"}
+
+    def test_delete_object_with_permission(self):
+        instance = self._get_queryset().first()
+
+        # Assign model-level permission
+        obj_perm = ObjectPermission(name="Test permission", actions=["delete"])
+        obj_perm.save()
+        # pylint: disable=E1101
+        obj_perm.users.add(self.user)
+        # pylint: disable=E1101
+        obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
+
+        # Try GET with model-level permission
+        self.assertHttpStatus(self.client.get(self._get_url("delete", instance)), 200)
+
+        # Try POST with model-level permission
+        request = {
+            "path": self._get_url("delete", instance),
+            "data": post_data({"confirm": True}),
+        }
+        self.assertHttpStatus(self.client.post(**request), 302)
+        with self.assertRaises(ObjectDoesNotExist):
+            self._get_queryset().get(pk=instance.pk)
+
+        objectchanges = ObjectChange.objects.filter(
+            changed_object_type=ContentType.objects.get_for_model(instance),
+            changed_object_id=instance.pk,
+        )
+        self.assertEqual(len(objectchanges), 2)
+        self.assertEqual(
+            objectchanges[0].action, ObjectChangeActionChoices.ACTION_DELETE
+        )
+        self.assertEqual(
+            objectchanges[1].action, ObjectChangeActionChoices.ACTION_UPDATE
+        )
 
     @classmethod
     def setUpTestData(cls):

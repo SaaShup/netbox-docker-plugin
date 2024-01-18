@@ -44,6 +44,7 @@ class HostTable(NetBoxTable):
             "id",
             "name",
             "endpoint",
+            "state",
             "image_count",
             "volume_count",
             "network_count",
@@ -53,6 +54,7 @@ class HostTable(NetBoxTable):
         default_columns = (
             "name",
             "endpoint",
+            "state",
             "image_count",
             "volume_count",
             "network_count",

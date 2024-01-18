@@ -89,6 +89,14 @@ class HostBulkImportView(generic.BulkImportView):
     queryset = Host.objects.all()
     model_form = host.HostImportForm
 
+    def save_object(self, object_form, request):
+        token = Token(user=self.request.user, write_enabled=True)
+        token.save()
+
+        object_form.instance.token = token
+
+        return super().save_object(object_form, request)
+
 
 class HostDeleteView(generic.ObjectDeleteView):
     """Host delete view definition"""

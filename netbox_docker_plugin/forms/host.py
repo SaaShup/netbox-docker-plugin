@@ -8,7 +8,7 @@ from netbox.forms import (
     NetBoxModelFilterSetForm,
     NetBoxModelBulkEditForm,
 )
-from ..models.host import Host
+from ..models.host import Host, HostStateChoices
 
 
 class HostForm(NetBoxModelForm):
@@ -35,6 +35,7 @@ class HostFilterForm(NetBoxModelFilterSetForm):
     endpoint = forms.CharField(
         label="Endpoint", max_length=256, min_length=1, required=False
     )
+    state = forms.ChoiceField(label="State", choices=HostStateChoices, required=False)
     tag = TagFilterField(model)
 
 
