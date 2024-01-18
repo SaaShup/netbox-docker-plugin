@@ -1,6 +1,6 @@
 # Netbox Docker Plugin
 
-[![Testing Report](https://github.com/fanshan/netbox-docker/actions/workflows/main_ci.yml/badge.svg)](https://github.com/fanshan/netbox-docker/actions/workflows/main_ci.yml)
+[![Testing Report](https://github.com/SaaShup/netbox-docker-plugin/actions/workflows/main_ci.yml/badge.svg)](https://github.com/SaaShup/netbox-docker-plugin/actions/workflows/main_ci.yml)
 
 Manage Docker with Netbox & style.
 
@@ -34,7 +34,7 @@ Go inside your project directory, clone this repository and the Netbox repositor
 
 ```bash
 cd $PROJECT
-git clone git@github.com:fanshan/netbox-docker.git
+git@github.com:SaaShup/netbox-docker-plugin.git
 git clone git@github.com:netbox-community/netbox.git
 ```
 
@@ -45,10 +45,10 @@ python -m venv venv
 source venv/bin/activate
 ```
 
-Install netbox-docker dependencies:
+Install netbox-docker-plugin dependencies:
 
 ```bash
-cd $PROJECT/netbox-docker
+cd $PROJECT/netbox-docker-plugin
 pip install -e .
 ```
 
@@ -56,7 +56,7 @@ Configure Netbox and install Netbox dependencies:
 
 ```bash
 cd $PROJECT/netbox
-cp $PROJECT/netbox-docker/netbox_configuration/configuration_dev.py $PROJECT/netbox/netbox/netbox/configuration.py
+cp $PROJECT/netbox-docker-plugin/netbox_configuration/configuration_dev.py $PROJECT/netbox/netbox/netbox/configuration.py
 pip install -r requirements.txt
 ```
 
@@ -103,6 +103,6 @@ The run the test with coverage.py and print the report:
 
 ```bash
 cd $PROJECT/netbox
-coverage run --source=../netbox-docker netbox/manage.py test netbox_docker_plugin.tests --keepdb -v 2
+coverage run --include='*/netbox_docker_plugin/*' netbox/manage.py test netbox_docker_plugin.tests --keepdb -v 2
 coverage report -m
 ```
