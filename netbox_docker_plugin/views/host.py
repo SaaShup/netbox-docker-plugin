@@ -70,6 +70,7 @@ class HostEditView(generic.ObjectEditView):
             token.save()
 
             obj.token = token
+            obj.netbox_base_url = request.META["HTTP_ORIGIN"]
 
         return super().alter_object(obj, request, url_args, url_kwargs)
 
@@ -90,10 +91,11 @@ class HostBulkImportView(generic.BulkImportView):
     model_form = host.HostImportForm
 
     def save_object(self, object_form, request):
-        token = Token(user=self.request.user, write_enabled=True)
+        token = Token(user=request.user, write_enabled=True)
         token.save()
 
         object_form.instance.token = token
+        object_form.instance.netbox_base_url = request.META["HTTP_ORIGIN"]
 
         return super().save_object(object_form, request)
 

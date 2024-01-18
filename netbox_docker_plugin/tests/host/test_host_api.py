@@ -37,6 +37,10 @@ class HostApiTestCase(
         },
     ]
 
+    def setUp(self):
+        super().setUp()
+        self.header["HTTP_ORIGIN"] = "http://localhost:8080"
+
     def test_delete_object(self):
         """
         DELETE a single object identified by its numeric ID.
