@@ -46,6 +46,12 @@ class Host(NetBoxModel):
         default=HostStateChoices.STATE_CREATED,
     )
     token = models.ForeignKey(Token, on_delete=models.SET_NULL, null=True, blank=True)
+    netbox_base_url = models.CharField(
+        max_length=1024,
+        validators=[URLValidator()],
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         """Host Model Meta Class"""

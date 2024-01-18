@@ -2,6 +2,7 @@
 
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
+from django.test import Client
 from extras.choices import ObjectChangeActionChoices
 from extras.models import ObjectChange
 from users.models import ObjectPermission
@@ -25,6 +26,10 @@ class HostViewsTestCase(BaseModelViewTestCase, ViewTestCases.PrimaryObjectViewTe
         "host7,http://localhost:8084",
     )
     bulk_edit_data = {"endpoint": "http://localhost:8083"}
+
+    def setUp(self):
+        super().setUp()
+        self.client.defaults = {"HTTP_ORIGIN": "http://localhost:8080"}
 
     def test_delete_object_with_permission(self):
         instance = self._get_queryset().first()
