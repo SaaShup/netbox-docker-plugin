@@ -26,6 +26,10 @@ class HostViewsTestCase(BaseModelViewTestCase, ViewTestCases.PrimaryObjectViewTe
     )
     bulk_edit_data = {"endpoint": "http://localhost:8083"}
 
+    def setUp(self):
+        super().setUp()
+        self.client.defaults = {"HTTP_ORIGIN": "http://localhost:8080"}
+
     def test_delete_object_with_permission(self):
         instance = self._get_queryset().first()
 

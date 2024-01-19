@@ -33,11 +33,15 @@ class HostViewSet(NetBoxModelViewSet):
                 token.save()
 
                 obj["token"] = token
+                obj["netbox_base_url"] = self.request.stream.META["HTTP_ORIGIN"]
         else:
             token = Token(user=self.request.user, write_enabled=True)
             token.save()
 
             serializer.validated_data["token"] = token
+            serializer.validated_data["netbox_base_url"] = self.request.stream.META[
+                "HTTP_ORIGIN"
+            ]
 
         super().perform_create(serializer)
 

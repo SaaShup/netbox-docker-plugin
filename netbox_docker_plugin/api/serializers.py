@@ -402,6 +402,7 @@ class HostSerializer(NetBoxModelSerializer):
             "name",
             "state",
             "token",
+            "netbox_base_url",
             "custom_fields",
             "created",
             "last_updated",
