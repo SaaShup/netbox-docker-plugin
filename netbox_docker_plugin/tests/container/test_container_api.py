@@ -20,7 +20,7 @@ class ContainerApiTestCase(
     """Container Test Case Class"""
 
     model = Container
-    brief_fields = ["ContainerID", "id", "name", "state", "status", "url"]
+    brief_fields = ["ContainerID", "id", "name", "operation", "state", "status", "url"]
     validation_excluded_fields = [
         "ports",
         "env",

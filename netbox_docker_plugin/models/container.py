@@ -37,6 +37,22 @@ class ContainerStateChoices(ChoiceSet):
     ]
 
 
+class ContainerOperationChoices(ChoiceSet):
+    """Container operation choices definition class"""
+
+    key = "Container.operation"
+
+    DEFAULT_VALUE = "create"
+
+    CHOICES = [
+        ("create", "Create", "dark"),
+        ("start", "Start", "blue"),
+        ("restart", "Restart", "blue"),
+        ("stop", "Stop", "blue"),
+        ("recreate", "Recreate", "blue"),
+    ]
+
+
 class PortTypeChoices(ChoiceSet):
     """Port type choices definition class"""
 
@@ -78,6 +94,11 @@ class Container(NetBoxModel):
         ],
         blank=True,
         null=True,
+    )
+    operation = models.CharField(
+        max_length=32,
+        choices=ContainerOperationChoices,
+        default=ContainerOperationChoices.DEFAULT_VALUE,
     )
 
     class Meta:

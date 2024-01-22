@@ -110,3 +110,13 @@ class ContainerBulkEditForm(NetBoxModelBulkEditForm):
 
     model = Container
     fieldsets = (("General", ("state",)),)
+
+
+class ContainerOperationForm(NetBoxModelForm):
+    """Container Operation form definition class"""
+
+    class Meta:
+        """Container form definition Meta class"""
+
+        model = Container
+        fields = ("operation",)

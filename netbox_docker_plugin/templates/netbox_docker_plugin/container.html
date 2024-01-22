@@ -2,6 +2,40 @@
 
 {% load plugins %}
 
+{% block extra_controls %}
+<form action="{% url 'plugins:netbox_docker_plugin:container_operation' pk=object.id operation='start' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="operation" value="start">
+  <button type="submit" class="btn btn-sm btn-success">
+    <i class="mdi mdi-play"></i> Start
+  </button>
+</form>
+
+<form action="{% url 'plugins:netbox_docker_plugin:container_operation' pk=object.id operation='stop' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="operation" value="stop">
+  <button type="submit" class="btn btn-sm btn-danger">
+    <i class="mdi mdi-stop"></i> Stop
+  </button>
+</form>
+
+<form action="{% url 'plugins:netbox_docker_plugin:container_operation' pk=object.id operation='restart' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="operation" value="restart">
+  <button type="submit" class="btn btn-sm btn-light">
+    <i class="mdi mdi-restart"></i> Restart
+  </button>
+</form>
+
+<form action="{% url 'plugins:netbox_docker_plugin:container_operation' pk=object.id operation='recreate' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="operation" value="recreate">
+  <button type="submit" class="btn btn-sm btn-dark">
+    <i class="mdi mdi-autorenew"></i> Recreate
+  </button>
+</form>
+{% endblock %}
+
 {% block content %}
 <div class="row mb-3">
   <div class="col col-md-6">
@@ -32,6 +66,10 @@
           <tr>
             <th scope="row">Status</th>
             <td>{{ object.status|placeholder }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Operation</th>
+            <td>{{ object.get_operation_display }}</td>
           </tr>
         </table>
       </div>

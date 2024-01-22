@@ -100,7 +100,7 @@ class NestedContainerSerializer(WritableNestedSerializer):
         """Nested Container Serializer Meta class"""
 
         model = Container
-        fields = ("id", "url", "name", "ContainerID", "state", "status")
+        fields = ("id", "url", "name", "ContainerID", "state", "status", "operation")
 
 
 class ImageSerializer(NetBoxModelSerializer):
@@ -277,6 +277,7 @@ class ContainerSerializer(NetBoxModelSerializer):
             "image",
             "name",
             "state",
+            "operation",
             "status",
             "ContainerID",
             "ports",
