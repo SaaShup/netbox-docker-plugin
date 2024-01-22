@@ -58,3 +58,16 @@ class ContainerDeleteView(generic.ObjectDeleteView):
     """Container delete view definition"""
 
     queryset = Container.objects.all()
+
+
+class ContainerOperationView(generic.ObjectEditView):
+    """Container operation view definition"""
+
+    def get_object(self, **kwargs):
+        new_kwargs = {
+            "pk": kwargs['pk']
+        }
+        return super().get_object(**new_kwargs)
+
+    queryset = Container.objects.all()
+    form = container.ContainerOperationForm

@@ -1,4 +1,4 @@
-"""Volume Views Test Case"""
+"""Container Views Test Case"""
 
 from utilities.testing import ViewTestCases
 from netbox_docker_plugin.tests.base import BaseModelViewTestCase

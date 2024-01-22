@@ -215,6 +215,11 @@ urlpatterns = (
         name="container_journal",
         kwargs={"model": Container},
     ),
+    path(
+        "containers/<int:pk>/operation/<str:operation>/",
+        container_views.ContainerOperationView.as_view(),
+        name="container_operation",
+    ),
     # Env
     path(
         "env/",
