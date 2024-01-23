@@ -34,6 +34,7 @@ class ContainerStateChoices(ChoiceSet):
         ("paused", "Paused", "blue"),
         ("exited", "Exited", "blue"),
         ("dead", "Dead", "blue"),
+        ("none", "None", "white"),
     ]
 
 
