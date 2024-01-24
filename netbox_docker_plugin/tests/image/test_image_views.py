@@ -27,23 +27,21 @@ class ImageViewsTestCase(
             "name": "image1",
             "version": "v1.2.3",
             "provider": "github",
-            "size": 512,
-            "host": host1.pk,
-            "ImageID": "abcdefghijklmnopqrstuvwxyz",
+            "host": host1.pk
         }
 
         cls.csv_data = (
-            "name,version,provider,size,host",
-            f"image4,latest,github,64,{host1.pk}",
-            f"image5,,,,{host2.pk}",
-            f"image6,v1.2.3,,,{host3.pk}",
+            "name,version,provider,host",
+            f"image4,latest,github,{host1.pk}",
+            f"image5,,,{host2.pk}",
+            f"image6,v1.2.3,,{host3.pk}",
         )
 
-        cls.bulk_edit_data = {"version": "v1.0.0", "provider": "github", "size": 1024}
+        cls.bulk_edit_data = {"version": "v1.0.0", "provider": "github"}
 
         cls.csv_update_data = (
-            "id,version,provider,size",
-            f"{image1.pk},latest,,",
-            f"{image2.pk},,,",
-            f"{image3.pk},v1.0.0,github,256",
+            "id,version,provider",
+            f"{image1.pk},latest,",
+            f"{image2.pk},,",
+            f"{image3.pk},v1.0.0,github",
         )

@@ -24,8 +24,6 @@ class ImageForm(NetBoxModelForm):
             "name",
             "version",
             "provider",
-            "size",
-            "ImageID",
             "tags",
         )
         labels = {
@@ -33,8 +31,6 @@ class ImageForm(NetBoxModelForm):
             "host": "Host",
             "version": "Version",
             "provider": "Provider",
-            "size": "Size",
-            "ImageID": "ImageID"
         }
 
 
@@ -71,14 +67,12 @@ class ImageImportForm(NetBoxModelImportForm):
         """Image importation form definition Meta class"""
 
         model = Image
-        fields = ("name", "version", "provider", "size", "host", "ImageID")
+        fields = ("name", "version", "provider", "host")
         labels = {
             "name": "Unique Image name",
             "version": "Image version",
             "provider": 'Image provider. Can be "dockerhub" and "github"',
-            "size": "Optional image size. Default 0",
-            "host": "Host identifier",
-            "ImageID": "Docker Image ID"
+            "host": "Host identifier"
         }
 
 
@@ -89,8 +83,6 @@ class ImageBulkEditForm(NetBoxModelBulkEditForm):
         required=False,
     )
     provider = forms.ChoiceField(choices=ImageProviderChoices, required=False)
-    size = forms.IntegerField(required=False)
-    ImageID = forms.CharField(required=False, label="ImageID")
 
     model = Image
-    fieldsets = (("General", ("version", "provider", "size", "ImageID")),)
+    fieldsets = (("General", ("version", "provider")),)
