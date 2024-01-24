@@ -113,4 +113,14 @@ class ContainerApiTestCase(
                     {"source": "/etc", "volume": volume3.pk},
                 ],
             },
+            {
+                "host": host2.pk,
+                "image": image2.pk,
+                "name": "container10",
+                "ports": [],
+                "env": [
+                    {"var_name": "ENV", "value": ""}
+                ],
+                "labels": [],
+            },
         ]

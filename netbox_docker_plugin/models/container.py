@@ -232,9 +232,9 @@ class Env(models.Model):
         ],
     )
     value = models.CharField(
+        blank=True,
         max_length=4096,
         validators=[
-            MinLengthValidator(limit_value=1),
             MaxLengthValidator(limit_value=4096),
         ],
     )
