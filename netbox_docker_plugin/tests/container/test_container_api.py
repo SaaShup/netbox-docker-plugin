@@ -42,6 +42,7 @@ class ContainerApiTestCase(
 
         volume1 = Volume.objects.create(host=host1, name="volume1")
         volume2 = Volume.objects.create(host=host1, name="volume2")
+        volume3 = Volume.objects.create(host=host2, name="volume3")
 
         Container.objects.create(host=host1, image=image1, name="container1")
         Container.objects.create(host=host1, image=image1, name="container2")
@@ -95,6 +96,21 @@ class ContainerApiTestCase(
                 "ports": [],
                 "env": [],
                 "labels": [],
-                "mounts": [],
+                "mounts": [
+                    {"source": "/data", "volume": volume3.pk},
+                    {"source": "/etc", "volume": volume3.pk},
+                ],
+            },
+            {
+                "host": host2.pk,
+                "image": image2.pk,
+                "name": "container9",
+                "ports": [],
+                "env": [],
+                "labels": [],
+                "mounts": [
+                    {"source": "/data", "volume": volume3.pk},
+                    {"source": "/etc", "volume": volume3.pk},
+                ],
             },
         ]

@@ -278,7 +278,7 @@ class Mount(models.Model):
         ordering = ("container", "source", "volume")
         constraints = (
             models.UniqueConstraint(
-                fields=["volume"],
+                fields=["container", "source", "volume"],
                 name="%(app_label)s_%(class)s_unique_volume",
             ),
         )
