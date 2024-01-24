@@ -51,6 +51,7 @@ class ContainerOperationChoices(ChoiceSet):
         ("restart", "Restart", "blue"),
         ("stop", "Stop", "blue"),
         ("recreate", "Recreate", "blue"),
+        ("none", "None", "white"),
     ]
 
 
