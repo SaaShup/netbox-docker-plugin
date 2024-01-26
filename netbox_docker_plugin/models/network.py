@@ -25,6 +25,19 @@ class NetworkDriverChoices(ChoiceSet):
     ]
 
 
+class NetworkStateChoices(ChoiceSet):
+    """Network state choices definition class"""
+
+    key = "Network.state"
+
+    DEFAULT_VALUE = "creating"
+
+    CHOICES = [
+        ("creating", "Creating", "blue"),
+        ("created", "Created", "green"),
+    ]
+
+
 class Network(NetBoxModel):
     """Network definition class"""
 
@@ -51,6 +64,13 @@ class Network(NetBoxModel):
         ],
         blank=True,
         null=True,
+    )
+    state = models.CharField(
+        max_length=32,
+        choices=NetworkStateChoices,
+        default=NetworkStateChoices.DEFAULT_VALUE,
+        blank=False,
+        null=False,
     )
 
     class Meta:

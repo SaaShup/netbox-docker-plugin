@@ -8,7 +8,7 @@ from netbox.forms import (
     NetBoxModelFilterSetForm,
     NetBoxModelBulkEditForm,
 )
-from ..models.network import Network, NetworkDriverChoices
+from ..models.network import Network, NetworkDriverChoices, NetworkStateChoices
 from ..models.host import Host
 
 
@@ -50,6 +50,11 @@ class NetworkFilterForm(NetBoxModelFilterSetForm):
     )
     NetworkID = forms.CharField(
         label="NetworkID", max_length=128, min_length=1, required=False
+    )
+    state = forms.ChoiceField(
+        label="Driver",
+        choices=NetworkStateChoices,
+        required=False,
     )
     tag = TagFilterField(model)
 
