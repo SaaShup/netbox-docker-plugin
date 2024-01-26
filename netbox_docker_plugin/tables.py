@@ -113,8 +113,8 @@ class NetworkTable(NetBoxTable):
         """Network Table definition Meta class"""
 
         model = Network
-        fields = ("pk", "id", "host", "name", "driver", "NetworkID", "tags")
-        default_columns = ("name", "driver", "host")
+        fields = ("pk", "id", "host", "name", "driver", "NetworkID", "state", "tags")
+        default_columns = ("name", "driver", "state", "host")
 
 
 class ContainerTable(NetBoxTable):
