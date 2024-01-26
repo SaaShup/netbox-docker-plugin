@@ -2,7 +2,9 @@
 
 [![Testing Report](https://github.com/SaaShup/netbox-docker-plugin/actions/workflows/main_ci.yml/badge.svg)](https://github.com/SaaShup/netbox-docker-plugin/actions/workflows/main_ci.yml)
 
-Manage Docker with Netbox & style.
+Manage Docker with Netbox & style. Made to work with [netbox-docker-agent](https://github.com/SaaShup/netbox-docker-agent).
+
+![UI Container view with dependencies](/docs/assets/screenshot.png)
 
 ## Contribute
 
@@ -106,3 +108,7 @@ cd $PROJECT/netbox
 coverage run --include='*/netbox_docker_plugin/*' netbox/manage.py test netbox_docker_plugin.tests --keepdb -v 2
 coverage report -m
 ```
+
+# Hosting
+
+Check https://saashup.com for more information.
