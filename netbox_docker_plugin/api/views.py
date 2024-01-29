@@ -49,7 +49,7 @@ class HostViewSet(NetBoxModelViewSet):
 class ImageViewSet(NetBoxModelViewSet):
     """Image view set class"""
 
-    queryset = Image.objects.prefetch_related("host", "tags")
+    queryset = Image.objects.prefetch_related("host", "tags", "containers")
     filterset_class = filtersets.ImageFilterSet
     serializer_class = ImageSerializer
     http_method_names = ["get", "post", "patch", "delete", "options"]
@@ -58,7 +58,7 @@ class ImageViewSet(NetBoxModelViewSet):
 class VolumeViewSet(NetBoxModelViewSet):
     """Volume view set class"""
 
-    queryset = Volume.objects.prefetch_related("host", "tags")
+    queryset = Volume.objects.prefetch_related("host", "tags", "mounts")
     filterset_class = filtersets.VolumeFilterSet
     serializer_class = VolumeSerializer
     http_method_names = ["get", "post", "patch", "delete", "options"]
@@ -67,7 +67,7 @@ class VolumeViewSet(NetBoxModelViewSet):
 class NetworkViewSet(NetBoxModelViewSet):
     """Network view set class"""
 
-    queryset = Network.objects.prefetch_related("host", "tags")
+    queryset = Network.objects.prefetch_related("host", "tags", "network_settings")
     filterset_class = filtersets.NetworkFilterSet
     serializer_class = NetworkSerializer
     http_method_names = ["get", "post", "patch", "delete", "options"]

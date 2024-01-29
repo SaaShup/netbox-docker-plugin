@@ -67,6 +67,12 @@ class ImageTable(NetBoxTable):
 
     host = tables.Column(linkify=True)
     name = tables.Column(linkify=True)
+    size = tables.Column(verbose_name="Size (MB)")
+    container_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:container_list",
+        url_params={"image_id": "pk"},
+        verbose_name="Used by (containers)",
+    )
     tags = columns.TagColumn()
 
     class Meta(NetBoxTable.Meta):
@@ -82,9 +88,17 @@ class ImageTable(NetBoxTable):
             "provider",
             "size",
             "ImageID",
+            "container_count",
             "tags",
         )
-        default_columns = ("name", "version", "provider", "size", "host")
+        default_columns = (
+            "name",
+            "version",
+            "provider",
+            "size",
+            "host",
+            "container_count",
+        )
 
 
 class VolumeTable(NetBoxTable):
@@ -92,14 +106,19 @@ class VolumeTable(NetBoxTable):
 
     host = tables.Column(linkify=True)
     name = tables.Column(linkify=True)
+    mount_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:mount_list",
+        url_params={"volume_id": "pk"},
+        verbose_name="Used by (mounts)",
+    )
     tags = columns.TagColumn()
 
     class Meta(NetBoxTable.Meta):
         """Volume Table definition Meta class"""
 
         model = Volume
-        fields = ("pk", "id", "host", "name", "driver", "tags")
-        default_columns = ("name", "driver", "host")
+        fields = ("pk", "id", "host", "name", "driver", "mount_count", "tags")
+        default_columns = ("name", "driver", "host", "mount_count")
 
 
 class NetworkTable(NetBoxTable):
@@ -107,14 +126,29 @@ class NetworkTable(NetBoxTable):
 
     host = tables.Column(linkify=True)
     name = tables.Column(linkify=True)
+    networksetting_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:networksetting_list",
+        url_params={"network_id": "pk"},
+        verbose_name="Used by (network settings)",
+    )
     tags = columns.TagColumn()
 
     class Meta(NetBoxTable.Meta):
         """Network Table definition Meta class"""
 
         model = Network
-        fields = ("pk", "id", "host", "name", "driver", "NetworkID", "state", "tags")
-        default_columns = ("name", "driver", "state", "host")
+        fields = (
+            "pk",
+            "id",
+            "host",
+            "name",
+            "driver",
+            "NetworkID",
+            "state",
+            "networksetting_count",
+            "tags",
+        )
+        default_columns = ("name", "driver", "state", "host", "networksetting_count")
 
 
 class ContainerTable(NetBoxTable):
@@ -256,5 +290,11 @@ class NetworkSettingTable(NetBoxTable):
         """NetworkSetting Table definition Meta class"""
 
         model = NetworkSetting
-        fields = ("container", "network",)
-        default_columns = ("container", "network",)
+        fields = (
+            "container",
+            "network",
+        )
+        default_columns = (
+            "container",
+            "network",
+        )

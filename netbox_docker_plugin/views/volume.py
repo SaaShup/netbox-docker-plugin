@@ -1,9 +1,11 @@
 """Volume views definitions"""
 
+from utilities.utils import count_related
 from netbox.views import generic
 from .. import tables, filtersets
 from ..forms import volume
 from ..models.volume import Volume
+from ..models.container import Mount
 
 
 class VolumeView(generic.ObjectView):
@@ -22,7 +24,9 @@ class VolumeEditView(generic.ObjectEditView):
 class VolumeListView(generic.ObjectListView):
     """Volume list view definition"""
 
-    queryset = Volume.objects.prefetch_related("host")
+    queryset = Volume.objects.annotate(
+        mount_count=count_related(Mount, "volume"),
+    )
     table = tables.VolumeTable
     filterset = filtersets.VolumeFilterSet
     filterset_form = volume.VolumeFilterForm

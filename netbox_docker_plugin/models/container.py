@@ -263,7 +263,7 @@ class Mount(models.Model):
     container = models.ForeignKey(
         Container, on_delete=models.CASCADE, related_name="mounts"
     )
-    volume = models.ForeignKey(Volume, on_delete=models.RESTRICT)
+    volume = models.ForeignKey(Volume, on_delete=models.RESTRICT, related_name="mounts")
     source = models.CharField(
         max_length=1024,
         validators=[
@@ -304,7 +304,9 @@ class NetworkSetting(models.Model):
     container = models.ForeignKey(
         Container, on_delete=models.CASCADE, related_name="network_settings"
     )
-    network = models.ForeignKey(Network, on_delete=models.RESTRICT)
+    network = models.ForeignKey(
+        Network, on_delete=models.RESTRICT, related_name="network_settings"
+    )
 
     class Meta:
         """NetworkSetting Model Meta Class"""

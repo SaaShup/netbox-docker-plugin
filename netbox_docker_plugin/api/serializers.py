@@ -101,7 +101,42 @@ class NestedContainerSerializer(WritableNestedSerializer):
         """Nested Container Serializer Meta class"""
 
         model = Container
-        fields = ("id", "url", "name", "ContainerID", "state", "status", "operation")
+        fields = (
+            "id",
+            "url",
+            "name",
+            "ContainerID",
+            "state",
+            "status",
+            "operation",
+        )
+
+
+class NestedMountSerializer(WritableNestedSerializer):
+    """Nested Mount Serializer class"""
+
+    class Meta:
+        """Nested Mount Serializer Meta class"""
+
+        model = Mount
+        fields = (
+            "id",
+            "source",
+        )
+
+
+class NestedNetworkSettingSerializer(WritableNestedSerializer):
+    """Nested NetworkSetting Serializer class"""
+
+    network=NestedNetworkSerializer()
+
+    class Meta:
+        """Nested NetworkSetting Serializer Meta class"""
+
+        model = NetworkSetting
+        fields = (
+            "id", "network"
+        )
 
 
 class ImageSerializer(NetBoxModelSerializer):
@@ -111,6 +146,7 @@ class ImageSerializer(NetBoxModelSerializer):
         view_name="plugins-api:netbox_docker_plugin-api:image-detail"
     )
     host = NestedHostSerializer()
+    containers = NestedContainerSerializer(many=True, read_only=True)
 
     class Meta:
         """Image Serializer Meta class"""
@@ -129,6 +165,7 @@ class ImageSerializer(NetBoxModelSerializer):
             "custom_fields",
             "created",
             "last_updated",
+            "containers",
             "tags",
         )
 
@@ -140,6 +177,7 @@ class VolumeSerializer(NetBoxModelSerializer):
         view_name="plugins-api:netbox_docker_plugin-api:volume-detail"
     )
     host = NestedHostSerializer()
+    mounts = NestedMountSerializer(many=True, read_only=True)
 
     class Meta:
         """Volume Serializer Meta class"""
@@ -155,6 +193,7 @@ class VolumeSerializer(NetBoxModelSerializer):
             "custom_fields",
             "created",
             "last_updated",
+            "mounts",
             "tags",
         )
 
@@ -166,6 +205,7 @@ class NetworkSerializer(NetBoxModelSerializer):
         view_name="plugins-api:netbox_docker_plugin-api:network-detail"
     )
     host = NestedHostSerializer()
+    network_settings = NestedNetworkSettingSerializer(many=True, read_only=True)
 
     class Meta:
         """Network Serializer Meta class"""
@@ -183,6 +223,7 @@ class NetworkSerializer(NetBoxModelSerializer):
             "custom_fields",
             "created",
             "last_updated",
+            "network_settings",
             "tags",
         )
 
