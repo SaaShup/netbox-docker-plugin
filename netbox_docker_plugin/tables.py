@@ -123,6 +123,31 @@ class ContainerTable(NetBoxTable):
     host = tables.Column(linkify=True)
     image = tables.Column(linkify=True)
     name = tables.Column(linkify=True)
+    port_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:port_list",
+        url_params={"container_id": "pk"},
+        verbose_name="Ports count",
+    )
+    mount_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:mount_list",
+        url_params={"container_id": "pk"},
+        verbose_name="Mounts count",
+    )
+    networksetting_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:networksetting_list",
+        url_params={"container_id": "pk"},
+        verbose_name="Network Settings count",
+    )
+    env_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:env_list",
+        url_params={"container_id": "pk"},
+        verbose_name="Env variables count",
+    )
+    label_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:label_list",
+        url_params={"container_id": "pk"},
+        verbose_name="Labels count",
+    )
     tags = columns.TagColumn()
 
     class Meta(NetBoxTable.Meta):
@@ -138,13 +163,30 @@ class ContainerTable(NetBoxTable):
             "state",
             "status",
             "ContainerID",
+            "port_count",
+            "mount_count",
+            "networksetting_count",
+            "env_count",
+            "label_count",
             "tags",
         )
-        default_columns = ("name", "host", "image", "state")
+        default_columns = (
+            "name",
+            "host",
+            "image",
+            "state",
+            "port_count",
+            "mount_count",
+            "networksetting_count",
+            "env_count",
+            "label_count",
+        )
 
 
 class EnvTable(NetBoxTable):
     """Env Table definition class"""
+
+    container = tables.Column(linkify=True)
 
     actions = columns.ActionsColumn(actions=("edit", "delete"))
 
@@ -152,12 +194,14 @@ class EnvTable(NetBoxTable):
         """Env Table definition Meta class"""
 
         model = Env
-        fields = ("var_name", "value")
-        default_columns = ("var_name", "value")
+        fields = ("container", "var_name", "value")
+        default_columns = ("container", "var_name", "value")
 
 
 class LabelTable(NetBoxTable):
     """Label Table definition class"""
+
+    container = tables.Column(linkify=True)
 
     actions = columns.ActionsColumn(actions=("edit", "delete"))
 
@@ -165,12 +209,14 @@ class LabelTable(NetBoxTable):
         """Label Table definition Meta class"""
 
         model = Label
-        fields = ("key", "value")
-        default_columns = ("key", "value")
+        fields = ("container", "key", "value")
+        default_columns = ("container", "key", "value")
 
 
 class PortTable(NetBoxTable):
     """Port Table definition class"""
+
+    container = tables.Column(linkify=True)
 
     actions = columns.ActionsColumn(actions=("edit", "delete"))
 
@@ -178,12 +224,15 @@ class PortTable(NetBoxTable):
         """Port Table definition Meta class"""
 
         model = Port
-        fields = ("public_port", "private_port", "type")
-        default_columns = ("public_port", "private_port", "type")
+        fields = ("container", "public_port", "private_port", "type")
+        default_columns = ("container", "public_port", "private_port", "type")
 
 
 class MountTable(NetBoxTable):
     """Mount Table definition class"""
+
+    container = tables.Column(linkify=True)
+    volume = tables.Column(linkify=True)
 
     actions = columns.ActionsColumn(actions=("edit", "delete"))
 
@@ -191,12 +240,15 @@ class MountTable(NetBoxTable):
         """Mount Table definition Meta class"""
 
         model = Mount
-        fields = ("source", "volume")
-        default_columns = ("source", "volume")
+        fields = ("container", "source", "volume", "container")
+        default_columns = ("container", "source", "volume")
 
 
 class NetworkSettingTable(NetBoxTable):
     """NetworkSetting Table definition class"""
+
+    container = tables.Column(linkify=True)
+    network = tables.Column(linkify=True)
 
     actions = columns.ActionsColumn(actions=("edit", "delete"))
 
@@ -204,5 +256,5 @@ class NetworkSettingTable(NetBoxTable):
         """NetworkSetting Table definition Meta class"""
 
         model = NetworkSetting
-        fields = ("network",)
-        default_columns = ("network",)
+        fields = ("container", "network",)
+        default_columns = ("container", "network",)
