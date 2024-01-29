@@ -1,9 +1,10 @@
 """Container views definitions"""
 
+from utilities.utils import count_related
 from netbox.views import generic
 from .. import tables, filtersets
 from ..forms import container
-from ..models.container import Container
+from ..models.container import Container, Mount, Port, NetworkSetting, Env, Label
 
 
 class ContainerView(generic.ObjectView):
@@ -24,7 +25,14 @@ class ContainerEditView(generic.ObjectEditView):
 class ContainerListView(generic.ObjectListView):
     """Container list view definition"""
 
-    queryset = Container.objects.prefetch_related("host")
+    queryset = Container.objects.annotate(
+        port_count=count_related(Port, "container"),
+        mount_count=count_related(Mount, "container"),
+        networksetting_count=count_related(NetworkSetting, "container"),
+        env_count=count_related(Env, "container"),
+        label_count=count_related(Label, "container"),
+    )
+
     table = tables.ContainerTable
     filterset = filtersets.ContainerFilterSet
     filterset_form = container.ContainerFilterForm
@@ -64,9 +72,7 @@ class ContainerOperationView(generic.ObjectEditView):
     """Container operation view definition"""
 
     def get_object(self, **kwargs):
-        new_kwargs = {
-            "pk": kwargs['pk']
-        }
+        new_kwargs = {"pk": kwargs["pk"]}
         return super().get_object(**new_kwargs)
 
     queryset = Container.objects.all()
