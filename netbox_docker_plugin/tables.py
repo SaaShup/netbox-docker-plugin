@@ -7,6 +7,7 @@ from .models.image import Image
 from .models.volume import Volume
 from .models.network import Network
 from .models.container import Container, Env, Label, Port, Mount, NetworkSetting
+from .templatetags.host import remove_password
 
 
 class HostTable(NetBoxTable):
@@ -34,6 +35,10 @@ class HostTable(NetBoxTable):
         verbose_name="Containers count",
     )
     tags = columns.TagColumn()
+
+    def render_endpoint(self, value):
+        """Render endpoint without password"""
+        return remove_password(value)
 
     class Meta(NetBoxTable.Meta):
         """Host Table definition Meta class"""
@@ -67,13 +72,16 @@ class ImageTable(NetBoxTable):
 
     host = tables.Column(linkify=True)
     name = tables.Column(linkify=True)
-    size = tables.Column(verbose_name="Size (MB)")
     container_count = columns.LinkedCountColumn(
         viewname="plugins:netbox_docker_plugin:container_list",
         url_params={"image_id": "pk"},
         verbose_name="Used by (containers)",
     )
     tags = columns.TagColumn()
+
+    def render_size(self, value):
+        """Render the image size with unity"""
+        return f"{value} MB"
 
     class Meta(NetBoxTable.Meta):
         """Image Table definition Meta class"""
