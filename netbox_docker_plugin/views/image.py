@@ -1,9 +1,11 @@
 """Image views definitions"""
 
+from utilities.utils import count_related
 from netbox.views import generic
 from .. import tables, filtersets
 from ..forms import image
-from .. models.image import Image
+from ..models.image import Image
+from ..models.container import Container
 
 
 class ImageView(generic.ObjectView):
@@ -15,7 +17,9 @@ class ImageView(generic.ObjectView):
 class ImageListView(generic.ObjectListView):
     """Image list view definition"""
 
-    queryset = Image.objects.prefetch_related("host")
+    queryset = Image.objects.annotate(
+        container_count=count_related(Container, "image"),
+    )
     table = tables.ImageTable
     filterset = filtersets.ImageFilterSet
     filterset_form = image.ImageFilterForm

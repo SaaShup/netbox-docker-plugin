@@ -2,7 +2,7 @@
 
 from netbox.views import generic
 from .. import tables, filtersets
-from ..forms.mount import MountForm
+from ..forms.mount import MountForm, MountFilterForm
 from ..models.container import Mount
 
 
@@ -12,6 +12,7 @@ class MountListView(generic.ObjectListView):
     queryset = Mount.objects.prefetch_related("container", "volume")
     table = tables.MountTable
     filterset = filtersets.MountFilterSet
+    filterset_form = MountFilterForm
 
 
 class MountEditView(generic.ObjectEditView):

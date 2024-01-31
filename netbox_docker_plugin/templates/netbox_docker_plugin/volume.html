@@ -28,5 +28,14 @@
     {% include 'inc/panels/tags.html' %}
     {% plugin_left_page object %}
   </div>
+  <div class="col col-md-6">
+    <div class="card">
+      <h5 class="card-header">USED BY</h5>
+      <div class="card-body htmx-container table-responsive"
+        hx-get="{% url 'plugins:netbox_docker_plugin:mount_list' %}?volume_id={{ object.pk }}"
+        hx-trigger="load"
+      ></div>
+    </div>
+  </div>
 </div>
 {% endblock content %}

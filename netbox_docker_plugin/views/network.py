@@ -1,10 +1,11 @@
 """Network views definitions"""
 
+from utilities.utils import count_related
 from netbox.views import generic
 from .. import tables, filtersets
 from ..forms import network
 from ..models.network import Network
-
+from ..models.container import NetworkSetting
 
 class NetworkView(generic.ObjectView):
     """Network view definition"""
@@ -15,7 +16,9 @@ class NetworkView(generic.ObjectView):
 class NetworkListView(generic.ObjectListView):
     """Network list view definition"""
 
-    queryset = Network.objects.prefetch_related("host")
+    queryset = Network.objects.annotate(
+        networksetting_count=count_related(NetworkSetting, "network"),
+    )
     table = tables.NetworkTable
     filterset = filtersets.NetworkFilterSet
     filterset_form = network.NetworkFilterForm

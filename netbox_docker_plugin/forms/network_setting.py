@@ -1,8 +1,14 @@
 """NetworkSetting Form definition"""
 
 from django import forms
-from utilities.forms.fields import DynamicModelChoiceField
+from utilities.forms.fields import (
+    DynamicModelMultipleChoiceField,
+    DynamicModelChoiceField,
+)
 from utilities.forms.mixins import BootstrapMixin
+from netbox.forms import (
+    NetBoxModelFilterSetForm,
+)
 from ..models.container import NetworkSetting, Container
 from ..models.network import Network
 
@@ -29,3 +35,18 @@ class NetworkSettingForm(BootstrapMixin, forms.ModelForm):
             "container": "Container",
             "network": "Network",
         }
+
+class NetworkSettingFilterForm(NetBoxModelFilterSetForm):
+    """Mount filter form definition class"""
+
+    model = NetworkSetting
+    container_id = DynamicModelMultipleChoiceField(
+        queryset=Container.objects.all(),
+        required=False,
+        label="Container",
+    )
+    network_id = DynamicModelMultipleChoiceField(
+        queryset=Network.objects.all(),
+        required=False,
+        label="Network",
+    )

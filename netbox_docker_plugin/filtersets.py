@@ -43,7 +43,7 @@ class ImageFilterSet(NetBoxModelFilterSet):
         """Image filterset definition meta class"""
 
         model = Image
-        fields = ("id", "name", "version", "provider", "size", "ImageID")
+        fields = ("id", "name", "version", "provider", "size", "ImageID", "containers")
 
     # pylint: disable=W0613
     def search(self, queryset, name, value):
@@ -67,7 +67,7 @@ class VolumeFilterSet(NetBoxModelFilterSet):
         """Volume filterset definition meta class"""
 
         model = Volume
-        fields = ("id", "name", "driver")
+        fields = ("id", "name", "driver", "mounts")
 
     # pylint: disable=W0613
     def search(self, queryset, name, value):
@@ -91,7 +91,7 @@ class NetworkFilterSet(NetBoxModelFilterSet):
         """Network filterset definition meta class"""
 
         model = Network
-        fields = ("id", "name", "driver", "NetworkID")
+        fields = ("id", "name", "driver", "NetworkID", "network_settings")
 
     # pylint: disable=W0613
     def search(self, queryset, name, value):
@@ -109,6 +109,11 @@ class ContainerFilterSet(NetBoxModelFilterSet):
         field_name="host_id",
         queryset=Host.objects.all(),
         label="Host (ID)",
+    )
+    image_id = ModelMultipleChoiceFilter(
+        field_name="image_id",
+        queryset=Image.objects.all(),
+        label="Image (ID)",
     )
 
     class Meta:
@@ -190,6 +195,11 @@ class MountFilterSet(BaseFilterSet):
         queryset=Container.objects.all(),
         label="Container (ID)",
     )
+    volume_id = ModelMultipleChoiceFilter(
+        field_name="volume_id",
+        queryset=Volume.objects.all(),
+        label="Volume (ID)",
+    )
 
     class Meta:
         """Mount filterset definition meta class"""
@@ -205,6 +215,11 @@ class NetworkSettingFilterSet(BaseFilterSet):
         field_name="container_id",
         queryset=Container.objects.all(),
         label="Container (ID)",
+    )
+    network_id = ModelMultipleChoiceFilter(
+        field_name="network_id",
+        queryset=Network.objects.all(),
+        label="Network (ID)",
     )
 
     class Meta:
