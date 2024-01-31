@@ -1,6 +1,7 @@
 {% extends 'generic/object.html' %}
 
 {% load plugins %}
+{% load host %}
 
 {% block content %}
 <div class="row mb-3">
@@ -15,7 +16,7 @@
           </tr>
           <tr>
             <th scope="row">Endpoint</th>
-            <td>{{ object.endpoint }}</td>
+            <td>{{ object.endpoint|remove_password }}</td>
           </tr>
           <tr>
             <th scope="row">State</th>
