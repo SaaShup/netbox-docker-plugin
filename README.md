@@ -6,6 +6,25 @@ Manage Docker with Netbox & style. Made to work with [netbox-docker-agent](https
 
 ![UI Container view with dependencies](/docs/assets/screenshot.png)
 
+## How does it work?
+
+```mermaid
+sequenceDiagram
+    Netbox->>Agent: Change (Webhook)
+    Agent->>Docker API: Request (HTTP)
+    Docker API->>Agent: Response (HTTP)
+    Agent->>Netbox: Feedback (Callback)
+```
+
+Once the plugin and webhooks are installed, you can:
+
+1. Create hosts that point to
+   [agents](https://github.com/SaaShup/netbox-docker-agent) you had installed
+2. Retrieve informations from Docker API with the help of the agent
+3. Create containers on host with an image, expose ports, add env variables and
+   labels, mount volumes, set networks.
+4. Manage the container status, start, stop, restart.
+
 ## Installation
 
 You can follow [the official plugins installation
