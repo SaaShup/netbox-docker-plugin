@@ -6,6 +6,53 @@ Manage Docker with Netbox & style. Made to work with [netbox-docker-agent](https
 
 ![UI Container view with dependencies](/docs/assets/screenshot.png)
 
+## Installation
+
+You can follow [the official plugins installation
+instructions](https://docs.netbox.dev/en/stable/plugins/#installing-plugins).
+
+If needed, source your Netbox's virtual environment and install the plugin like
+a package. We assume [you have already installed
+Netbox](https://docs.netbox.dev/en/stable/installation/) and its source code are
+in `/opt/netbox`:
+
+```bash
+cd /opt/netbox
+python3 -m venv venv # if virtual env was not created before
+source /opt/netbox/venv/bin/activate
+pip install netbox-docker-plugin
+```
+
+Enable the plugin in the `/opt/netbox/netbox/netbox/configuration.py` file:
+
+```python
+PLUGINS = [
+    'netbox_docker_plugin',
+]
+```
+
+Then, run migrations:
+
+```bash
+cd /opt/netbox
+python3 netbox/manage.py migrate
+```
+
+> [!IMPORTANT]
+> In order to the communication between your Netbox instance and [the Agent](https://github.com/SaaShup/netbox-docker-agent)
+> works, the plugin will check if webhooks to agents are
+> presents on each migration phase.
+> If not, then the plugin will automatically install webhooks configuration in
+> your Netbox instance.
+
+### Alternative
+
+Another way to install Netbox is to use the [Official netbox-docker
+project](https://github.com/netbox-community/netbox-docker).
+
+With this alternate way, you can [customize your Netbox image](https://github.com/netbox-community/netbox-docker/wiki/Using-Netbox-Plugins) and migrations will be
+automatically execute each time you restart the container.
+
 ## Contribute
 
 ### Install our development environment
@@ -36,7 +83,7 @@ Go inside your project directory, clone this repository and the Netbox repositor
 
 ```bash
 cd $PROJECT
-git@github.com:SaaShup/netbox-docker-plugin.git
+git clone git@github.com:SaaShup/netbox-docker-plugin.git
 git clone git@github.com:netbox-community/netbox.git
 ```
 
