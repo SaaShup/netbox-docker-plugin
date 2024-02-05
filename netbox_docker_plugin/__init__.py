@@ -1,7 +1,8 @@
 """Netbox Plugin Configuration"""
 
 from extras.plugins import PluginConfig
-
+from django.db.models.signals import post_migrate
+from .utilities import create_webhook
 
 class NetBoxDockerConfig(PluginConfig):
     """Plugin Config Class"""
@@ -11,6 +12,11 @@ class NetBoxDockerConfig(PluginConfig):
     description = "Manage Docker"
     version = "1.0.0-rc8"
     base_url = "docker"
+
+    def ready(self):
+        post_migrate.connect(create_webhook)
+
+        super().ready()
 
 
 # pylint: disable=C0103
