@@ -21,7 +21,16 @@ class HostApiTestCase(
     """Host API Test Case Class"""
 
     model = Host
-    brief_fields = ["display", "endpoint", "id", "name", "state", "url"]
+    brief_fields = [
+        "agent_version",
+        "display",
+        "docker_api_version",
+        "endpoint",
+        "id",
+        "name",
+        "state",
+        "url",
+    ]
     create_data = [
         {
             "endpoint": "http://localhost:8083",

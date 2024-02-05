@@ -50,6 +50,8 @@ class HostTable(NetBoxTable):
             "name",
             "endpoint",
             "state",
+            "agent_version",
+            "docker_api_version",
             "image_count",
             "volume_count",
             "network_count",

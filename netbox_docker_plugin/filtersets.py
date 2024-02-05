@@ -19,7 +19,14 @@ class HostFilterSet(NetBoxModelFilterSet):
         """Host filterset definition meta class"""
 
         model = Host
-        fields = ("id", "name", "endpoint", "state")
+        fields = (
+            "id",
+            "name",
+            "endpoint",
+            "state",
+            "agent_version",
+            "docker_api_version",
+        )
 
     # pylint: disable=W0613
     def search(self, queryset, name, value):

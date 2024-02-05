@@ -22,6 +22,14 @@
             <th scope="row">State</th>
             <td>{{ object.get_state_display }}</td>
           </tr>
+          <tr>
+            <th scope="row">Agent Version</th>
+            <td>{{ object.agent_version|placeholder }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Docker API Version</th>
+            <td>{{ object.docker_api_version|placeholder }}</td>
+          </tr>
         </table>
       </div>
     </div>

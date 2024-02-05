@@ -1,4 +1,5 @@
 """API Serializer definitions"""
+
 # pylint: disable=E1101
 
 from rest_framework import serializers
@@ -22,7 +23,16 @@ class NestedHostSerializer(WritableNestedSerializer):
         """Nested Host Serializer Meta class"""
 
         model = Host
-        fields = ("id", "url", "display", "endpoint", "name", "state")
+        fields = (
+            "id",
+            "url",
+            "display",
+            "endpoint",
+            "name",
+            "state",
+            "agent_version",
+            "docker_api_version",
+        )
 
 
 class NestedImageSerializer(WritableNestedSerializer):
@@ -128,15 +138,13 @@ class NestedMountSerializer(WritableNestedSerializer):
 class NestedNetworkSettingSerializer(WritableNestedSerializer):
     """Nested NetworkSetting Serializer class"""
 
-    network=NestedNetworkSerializer()
+    network = NestedNetworkSerializer()
 
     class Meta:
         """Nested NetworkSetting Serializer Meta class"""
 
         model = NetworkSetting
-        fields = (
-            "id", "network"
-        )
+        fields = ("id", "network")
 
 
 class ImageSerializer(NetBoxModelSerializer):
@@ -447,6 +455,8 @@ class HostSerializer(NetBoxModelSerializer):
             "state",
             "token",
             "netbox_base_url",
+            "agent_version",
+            "docker_api_version",
             "custom_fields",
             "created",
             "last_updated",
