@@ -10,7 +10,7 @@ class NetBoxDockerConfig(PluginConfig):
     name = "netbox_docker_plugin"
     verbose_name = " NetBox Docker Plugin"
     description = "Manage Docker"
-    version = "1.0.0-rc8"
+    version = "1.0.0"
     base_url = "docker"
 
     def ready(self):
