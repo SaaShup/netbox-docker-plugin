@@ -36,6 +36,12 @@ class HostFilterForm(NetBoxModelFilterSetForm):
         label="Endpoint", max_length=256, min_length=1, required=False
     )
     state = forms.ChoiceField(label="State", choices=HostStateChoices, required=False)
+    agent_version = forms.CharField(
+        label="Agent Version", max_length=32, min_length=1, required=False
+    )
+    docker_api_version = forms.CharField(
+        label="Docker API Version", max_length=32, min_length=1, required=False
+    )
     tag = TagFilterField(model)
 
 

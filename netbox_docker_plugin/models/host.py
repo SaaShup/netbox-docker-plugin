@@ -52,6 +52,16 @@ class Host(NetBoxModel):
         null=True,
         blank=True,
     )
+    agent_version = models.CharField(
+        max_length=32,
+        null=True,
+        blank=True,
+    )
+    docker_api_version = models.CharField(
+        max_length=32,
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         """Host Model Meta Class"""
