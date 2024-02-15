@@ -60,6 +60,10 @@
             <td>{{ object.ContainerID|placeholder }}</td>
           </tr>
           <tr>
+            <th scope="row">Hostname</th>
+            <td>{{ object.hostname|placeholder }}</td>
+          </tr>
+          <tr>
             <th scope="row">State</th>
             <td>{{ object.get_state_display }}</td>
           </tr>

@@ -39,6 +39,7 @@ class ContainerForm(NetBoxModelForm):
             "host",
             "image",
             "name",
+            "hostname",
             "state",
             "tags",
         )
@@ -46,6 +47,7 @@ class ContainerForm(NetBoxModelForm):
             "name": "Name",
             "host": "Host",
             "image": "Image",
+            "hostname": "Hostname",
             "state": "State",
         }
 
@@ -57,6 +59,9 @@ class ContainerFilterForm(NetBoxModelFilterSetForm):
     name = forms.CharField(label="Name", max_length=256, min_length=1, required=False)
     ContainerID = forms.CharField(
         label="Name", max_length=128, min_length=1, required=False
+    )
+    hostname = forms.CharField(
+        label="Hostname", max_length=256, min_length=1, required=False
     )
     host_id = DynamicModelMultipleChoiceField(
         queryset=Host.objects.all(),
@@ -89,13 +94,20 @@ class ContainerImportForm(NetBoxModelImportForm):
         """Container importation form definition Meta class"""
 
         model = Container
-        fields = ("name", "host", "image", "state")
+        fields = (
+            "name",
+            "host",
+            "image",
+            "state",
+            "hostname",
+        )
         labels = {
             "name": "Unique container name",
             "host": "Host identifier",
             "image": "Image identifier",
             "state": "Container State. Can be `created`, `restarting`, "
             + "`running`, `paused`, `exited`or `dead`.",
+            "hostname": "Container hostname"
         }
 
 
@@ -107,9 +119,12 @@ class ContainerBulkEditForm(NetBoxModelBulkEditForm):
         choices=ContainerStateChoices,
         required=True,
     )
+    hostname = forms.CharField(
+        label="Hostname", max_length=256, min_length=1, required=False
+    )
 
     model = Container
-    fieldsets = (("General", ("state",)),)
+    fieldsets = (("General", ("state", "hostname")),)
 
 
 class ContainerOperationForm(NetBoxModelForm):

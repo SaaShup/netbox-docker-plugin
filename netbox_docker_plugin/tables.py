@@ -207,6 +207,7 @@ class ContainerTable(NetBoxTable):
             "state",
             "status",
             "ContainerID",
+            "hostname",
             "port_count",
             "mount_count",
             "networksetting_count",

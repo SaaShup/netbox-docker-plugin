@@ -119,6 +119,7 @@ class NestedContainerSerializer(WritableNestedSerializer):
             "state",
             "status",
             "operation",
+            "hostname",
         )
 
 
@@ -331,6 +332,7 @@ class ContainerSerializer(NetBoxModelSerializer):
             "operation",
             "status",
             "ContainerID",
+            "hostname",
             "ports",
             "env",
             "labels",
