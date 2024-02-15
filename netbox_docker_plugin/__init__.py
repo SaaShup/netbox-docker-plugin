@@ -10,8 +10,10 @@ class NetBoxDockerConfig(PluginConfig):
     name = "netbox_docker_plugin"
     verbose_name = " NetBox Docker Plugin"
     description = "Manage Docker"
-    version = "1.1.0"
+    version = "1.2.0"
     base_url = "docker"
+    author= "Vincent Simonin"
+    author_email= "vincent@saashup.com"
 
     def ready(self):
         post_migrate.connect(create_webhook)

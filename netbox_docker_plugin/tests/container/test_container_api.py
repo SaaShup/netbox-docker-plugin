@@ -20,7 +20,16 @@ class ContainerApiTestCase(
     """Container Test Case Class"""
 
     model = Container
-    brief_fields = ["ContainerID", "id", "name", "operation", "state", "status", "url"]
+    brief_fields = [
+        "ContainerID",
+        "hostname",
+        "id",
+        "name",
+        "operation",
+        "state",
+        "status",
+        "url",
+    ]
     validation_excluded_fields = [
         "ports",
         "env",
@@ -118,9 +127,7 @@ class ContainerApiTestCase(
                 "image": image2.pk,
                 "name": "container10",
                 "ports": [],
-                "env": [
-                    {"var_name": "ENV", "value": ""}
-                ],
+                "env": [{"var_name": "ENV", "value": ""}],
                 "labels": [],
             },
         ]

@@ -1,4 +1,5 @@
 """Container Models definitions"""
+
 # pylint: disable=E1101
 
 from django.core.exceptions import ValidationError
@@ -101,6 +102,15 @@ class Container(NetBoxModel):
         max_length=32,
         choices=ContainerOperationChoices,
         default=ContainerOperationChoices.DEFAULT_VALUE,
+    )
+    hostname = models.CharField(
+        max_length=256,
+        validators=[
+            MinLengthValidator(limit_value=1),
+            MaxLengthValidator(limit_value=256),
+        ],
+        blank=True,
+        null=True,
     )
 
     class Meta:

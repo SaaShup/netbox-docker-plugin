@@ -39,15 +39,15 @@ class ContainerViewsTestCase(
         }
 
         cls.csv_data = (
-            "name,host,image",
-            f"container6,{host1.pk},{image1.pk}",
-            f"container7,{host2.pk},{image2.pk}",
+            "name,host,image,hostname",
+            f"container6,{host1.pk},{image1.pk},",
+            f"container7,{host2.pk},{image2.pk},container7",
         )
 
         cls.bulk_edit_data = {"state": "running"}
 
         cls.csv_update_data = (
-            "id,name,host,image,state",
-            f"{container1.pk},container1,{host1.pk},{image1.pk},paused",
-            f"{container2.pk},container2,{host1.pk},{image1.pk},running",
+            "id,name,host,image,state,hostname",
+            f"{container1.pk},container1,{host1.pk},{image1.pk},paused,",
+            f"{container2.pk},container2,{host1.pk},{image1.pk},running,container2",
         )
