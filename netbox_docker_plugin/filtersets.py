@@ -8,6 +8,7 @@ from .models.image import Image
 from .models.volume import Volume
 from .models.network import Network
 from .models.container import Container, Env, Label, Port, Mount, NetworkSetting
+from .models.registry import Registry
 
 
 class HostFilterSet(NetBoxModelFilterSet):
@@ -36,6 +37,25 @@ class HostFilterSet(NetBoxModelFilterSet):
         return queryset.filter(Q(name__icontains=value))
 
 
+class RegistryFilterSet(NetBoxModelFilterSet):
+    """Registry filterset definition class"""
+
+    name = filters.CharFilter(lookup_expr="icontains")
+
+    class Meta:
+        """Registry filterset definition meta class"""
+
+        model = Registry
+        fields = ("name",)
+
+    # pylint: disable=W0613
+    def search(self, queryset, name, value):
+        """override"""
+        if not value.strip():
+            return queryset
+        return queryset.filter(Q(name__icontains=value))
+
+
 class ImageFilterSet(NetBoxModelFilterSet):
     """Image filterset definition class"""
 
@@ -45,12 +65,17 @@ class ImageFilterSet(NetBoxModelFilterSet):
         queryset=Host.objects.all(),
         label="Host (ID)",
     )
+    registry_id = ModelMultipleChoiceFilter(
+        field_name="registry_id",
+        queryset=Registry.objects.all(),
+        label="Registry (ID)",
+    )
 
     class Meta:
         """Image filterset definition meta class"""
 
         model = Image
-        fields = ("id", "name", "version", "provider", "size", "ImageID", "containers")
+        fields = ("id", "name", "version", "size", "ImageID", "containers")
 
     # pylint: disable=W0613
     def search(self, queryset, name, value):

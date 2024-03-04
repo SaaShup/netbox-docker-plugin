@@ -7,6 +7,7 @@ from .models.image import Image
 from .models.volume import Volume
 from .models.network import Network
 from .models.container import Container, Env, Label, Port, Mount, NetworkSetting
+from .models.registry import Registry
 from .templatetags.host import remove_password
 
 
@@ -69,10 +70,43 @@ class HostTable(NetBoxTable):
         )
 
 
+class RegistryTable(NetBoxTable):
+    """Registry Table definition class"""
+
+    name = tables.Column(linkify=True)
+    image_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:image_list",
+        url_params={"registry_id": "pk"},
+        verbose_name="Images count",
+    )
+    tags = columns.TagColumn()
+
+    class Meta(NetBoxTable.Meta):
+        """Registry Table definition Meta class"""
+
+        model = Registry
+        fields = (
+            "pk",
+            "id",
+            "name",
+            "serveraddress",
+            "username",
+            "email",
+            "image_count",
+            "tags",
+        )
+        default_columns = (
+            "name",
+            "serveraddress",
+            "image_count",
+        )
+
+
 class ImageTable(NetBoxTable):
     """Image Table definition class"""
 
     host = tables.Column(linkify=True)
+    registry = tables.Column(linkify=True)
     name = tables.Column(linkify=True)
     container_count = columns.LinkedCountColumn(
         viewname="plugins:netbox_docker_plugin:container_list",
@@ -95,7 +129,7 @@ class ImageTable(NetBoxTable):
             "host",
             "name",
             "version",
-            "provider",
+            "registry",
             "size",
             "ImageID",
             "container_count",
@@ -104,7 +138,7 @@ class ImageTable(NetBoxTable):
         default_columns = (
             "name",
             "version",
-            "provider",
+            "registry",
             "size",
             "host",
             "container_count",

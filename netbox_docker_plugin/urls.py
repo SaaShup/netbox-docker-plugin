@@ -7,6 +7,7 @@ from .models.image import Image
 from .models.volume import Volume
 from .models.network import Network
 from .models.container import Container
+from .models.registry import Registry
 from .views import (
     host as host_views,
     image as image_views,
@@ -18,6 +19,7 @@ from .views import (
     port as port_views,
     mount as mount_views,
     network_setting as network_setting_views,
+    registry as registry_views,
 )
 
 urlpatterns = (
@@ -324,5 +326,46 @@ urlpatterns = (
         "network-settings/<int:pk>/delete/",
         network_setting_views.NetworkSettingDeleteView.as_view(),
         name="networksetting_delete",
+    ),
+    # Registry
+    path(
+        "registries/",
+        registry_views.RegistryListView.as_view(),
+        name="registry_list",
+    ),
+    path(
+        "registries/add/",
+        registry_views.RegistryEditView.as_view(),
+        name="registry_add",
+    ),
+    path(
+        "registries/delete/",
+        registry_views.RegistryBulkDeleteView.as_view(),
+        name="registry_bulk_delete",
+    ),
+    path(
+        "registries/<int:pk>/", registry_views.RegistryView.as_view(), name="registry"
+    ),
+    path(
+        "registries/<int:pk>/edit/",
+        registry_views.RegistryEditView.as_view(),
+        name="registry_edit",
+    ),
+    path(
+        "registries/<int:pk>/delete/",
+        registry_views.RegistryDeleteView.as_view(),
+        name="registry_delete",
+    ),
+    path(
+        "registries/<int:pk>/changelog/",
+        ObjectChangeLogView.as_view(),
+        name="registry_changelog",
+        kwargs={"model": Registry},
+    ),
+    path(
+        "registries/<int:pk>/journal/",
+        ObjectJournalView.as_view(),
+        name="registry_journal",
+        kwargs={"model": Registry},
     ),
 )
