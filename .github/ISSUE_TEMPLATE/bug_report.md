@@ -7,9 +7,9 @@ assignees: ''
 
 ---
 
-| Netbox version | Agent version |  Docker API Version |
-| --- | --- | --- |
-|  |  |  |
+| Netbox version | Plugin Version | Agent version |  Docker API Version |
+| --- | --- | --- | --- |
+|  |  |  |  |
 
 ## Actual Behavior
 
