@@ -18,8 +18,8 @@
             <td>{{ object.name }}:{{ object.version }}</td>
           </tr>
           <tr>
-            <th scope="row">Provider</th>
-            <td>{{ object.get_provider_display }}</td>
+            <th scope="row">Registry</th>
+            <td><a href="{{ object.registry.get_absolute_url }}">{{ object.registry }}</a></td>
           </tr>
           <tr>
             <th scope="row">Size</th>

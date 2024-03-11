@@ -8,28 +8,21 @@ from django.core.validators import (
     MinValueValidator,
     MaxValueValidator,
 )
-from utilities.choices import ChoiceSet
 from netbox.models import NetBoxModel
 from .host import Host
-
-
-class ImageProviderChoices(ChoiceSet):
-    """ImageProvider choices definition class"""
-
-    key = "Image.provider"
-
-    DEFAULT_VALUE = "dockerhub"
-
-    CHOICES = [
-        ("dockerhub", "Docker Hub", "dark"),
-        ("github", "GitHub", "blue"),
-    ]
+from .registry import Registry
 
 
 class Image(NetBoxModel):
     """Image definition class"""
 
     host = models.ForeignKey(Host, on_delete=models.CASCADE, related_name="images")
+    registry = models.ForeignKey(
+        Registry,
+        default=Registry.get_default_registry,  # type: ignore
+        on_delete=models.CASCADE,
+        related_name="images",
+    )
     name = models.CharField(
         max_length=255,
         validators=[
@@ -44,12 +37,6 @@ class Image(NetBoxModel):
             MinLengthValidator(limit_value=1),
             MaxLengthValidator(limit_value=32),
         ],
-    )
-    provider = models.CharField(
-        max_length=32,
-        choices=ImageProviderChoices,
-        default=ImageProviderChoices.DEFAULT_VALUE,
-        blank=False,
     )
     size = models.IntegerField(
         default=0,
@@ -74,8 +61,8 @@ class Image(NetBoxModel):
         ordering = ("name", "version")
         constraints = (
             models.UniqueConstraint(
-                fields=["host", "name", "version"],
-                name="%(app_label)s_%(class)s_unique_version_name_host",
+                fields=["host", "registry", "name", "version"],
+                name="%(app_label)s_%(class)s_unique_version_name_registry_host",
             ),
             models.UniqueConstraint(
                 fields=["host", "ImageID"],

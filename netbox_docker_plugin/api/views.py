@@ -10,12 +10,14 @@ from .serializers import (
     VolumeSerializer,
     NetworkSerializer,
     ContainerSerializer,
+    RegistrySerializer,
 )
 from ..models.host import Host
 from ..models.image import Image
 from ..models.volume import Volume
 from ..models.network import Network
 from ..models.container import Container
+from ..models.registry import Registry
 
 
 class HostViewSet(NetBoxModelViewSet):
@@ -81,4 +83,13 @@ class ContainerViewSet(NetBoxModelViewSet):
     )
     filterset_class = filtersets.ContainerFilterSet
     serializer_class = ContainerSerializer
+    http_method_names = ["get", "post", "patch", "delete", "options"]
+
+
+class RegistryViewSet(NetBoxModelViewSet):
+    """Registry view set class"""
+
+    queryset = Registry.objects.prefetch_related("images", "tags")
+    filterset_class = filtersets.RegistryFilterSet
+    serializer_class = RegistrySerializer
     http_method_names = ["get", "post", "patch", "delete", "options"]

@@ -8,8 +8,9 @@ from netbox.forms import (
     NetBoxModelFilterSetForm,
     NetBoxModelBulkEditForm,
 )
-from ..models.image import Image, ImageProviderChoices
+from ..models.image import Image
 from ..models.host import Host
+from ..models.registry import Registry
 
 
 class ImageForm(NetBoxModelForm):
@@ -21,16 +22,16 @@ class ImageForm(NetBoxModelForm):
         model = Image
         fields = (
             "host",
+            "registry",
             "name",
             "version",
-            "provider",
             "tags",
         )
         labels = {
             "name": "Name",
             "host": "Host",
+            "registry": "Registry",
             "version": "Version",
-            "provider": "Provider",
         }
 
 
@@ -42,37 +43,39 @@ class ImageFilterForm(NetBoxModelFilterSetForm):
     version = forms.CharField(
         label="Version", max_length=256, min_length=1, required=False
     )
-    provider = forms.ChoiceField(
-        label="Provider",
-        choices=ImageProviderChoices,
+    registry_id = DynamicModelMultipleChoiceField(
+        queryset=Registry.objects.all(),
         required=False,
+        label="Registry",
     )
     host_id = DynamicModelMultipleChoiceField(
         queryset=Host.objects.all(),
         required=False,
         label="Host",
     )
-    ImageID = forms.CharField(label="ImageID", max_length=128, min_length=1, required=False)
+    ImageID = forms.CharField(
+        label="ImageID", max_length=128, min_length=1, required=False
+    )
     tag = TagFilterField(model)
 
 
 class ImageImportForm(NetBoxModelImportForm):
     """Image importation form definition class"""
 
-    version = forms.CharField(required=False, empty_value="latest")
-    provider = forms.CharField(required=False, empty_value="dockerhub")
-    size = forms.CharField(required=False, empty_value="0")
+    version = forms.CharField(
+        required=False, empty_value="latest", help_text="Image version"
+    )
+    size = forms.CharField(required=False, empty_value="0", help_text="In MBytes")
 
     class Meta:
         """Image importation form definition Meta class"""
 
         model = Image
-        fields = ("name", "version", "provider", "host")
+        fields = ("name", "version", "registry", "host")
         labels = {
             "name": "Unique Image name",
-            "version": "Image version",
-            "provider": 'Image provider. Can be "dockerhub" and "github"',
-            "host": "Host identifier"
+            "host": "Host identifier",
+            "registry": "Image registry. Default value `dockerhub`.",
         }
 
 
@@ -82,7 +85,6 @@ class ImageBulkEditForm(NetBoxModelBulkEditForm):
     version = forms.CharField(
         required=False,
     )
-    provider = forms.ChoiceField(choices=ImageProviderChoices, required=False)
 
     model = Image
-    fieldsets = (("General", ("version", "provider")),)
+    fieldsets = (("General", ("version",)),)

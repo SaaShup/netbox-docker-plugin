@@ -22,6 +22,15 @@ host_buttons = [
     ),
 ]
 
+registry_button = [
+    PluginMenuButton(
+        link="plugins:netbox_docker_plugin:registry_add",
+        title="Add",
+        icon_class="mdi mdi-plus-thick",
+        color=ButtonColorChoices.GREEN,
+    ),
+]
+
 image_buttons = [
     PluginMenuButton(
         link="plugins:netbox_docker_plugin:image_add",
@@ -88,6 +97,12 @@ host_item = [
         link_text="Hosts",
         buttons=host_buttons,
         permissions=["netbox_docker_plugin.view_host"],
+    ),
+    PluginMenuItem(
+        link="plugins:netbox_docker_plugin:registry_list",
+        link_text="Registries",
+        buttons=registry_button,
+        permissions=["netbox_docker_plugin.view_registry"],
     ),
     PluginMenuItem(
         link="plugins:netbox_docker_plugin:image_list",

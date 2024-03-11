@@ -20,4 +20,5 @@ class InitTestCase(APITestCase):
         self.assertTrue("volumes" in content)
         self.assertTrue("networks" in content)
         self.assertTrue("containers" in content)
+        self.assertTrue("registries" in content)
         self.assertEqual(response.status_code, 200)

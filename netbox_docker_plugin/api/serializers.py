@@ -10,6 +10,7 @@ from ..models.image import Image
 from ..models.volume import Volume
 from ..models.network import Network
 from ..models.container import Container, Port, Env, Label, Mount, NetworkSetting
+from ..models.registry import Registry
 
 
 class NestedHostSerializer(WritableNestedSerializer):
@@ -52,7 +53,6 @@ class NestedImageSerializer(WritableNestedSerializer):
             "display",
             "name",
             "version",
-            "provider",
             "size",
             "ImageID",
         )
@@ -148,6 +148,29 @@ class NestedNetworkSettingSerializer(WritableNestedSerializer):
         fields = ("id", "network")
 
 
+class NestedRegistrySerializer(WritableNestedSerializer):
+    """Nested Registry Serializer class"""
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name="plugins-api:netbox_docker_plugin-api:registry-detail"
+    )
+
+    class Meta:
+        """Nested Registry Serializer Meta class"""
+
+        model = Registry
+        fields = (
+            "id",
+            "name",
+            "url",
+            "display",
+            "serveraddress",
+            "username",
+            "password",
+            "email",
+        )
+
+
 class ImageSerializer(NetBoxModelSerializer):
     """Image Serializer class"""
 
@@ -156,6 +179,7 @@ class ImageSerializer(NetBoxModelSerializer):
     )
     host = NestedHostSerializer()
     containers = NestedContainerSerializer(many=True, read_only=True)
+    registry = NestedRegistrySerializer(read_only=True)
 
     class Meta:
         """Image Serializer Meta class"""
@@ -168,7 +192,7 @@ class ImageSerializer(NetBoxModelSerializer):
             "host",
             "name",
             "version",
-            "provider",
+            "registry",
             "size",
             "ImageID",
             "custom_fields",
@@ -430,6 +454,31 @@ class ContainerSerializer(NetBoxModelSerializer):
                 obj.save()
 
         return container
+
+
+class RegistrySerializer(NetBoxModelSerializer):
+    """Registry Serializer class"""
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name="plugins-api:netbox_docker_plugin-api:registry-detail"
+    )
+    images = NestedImageSerializer(many=True, read_only=True)
+
+    class Meta:
+        """Registry Serializer Meta class"""
+
+        model = Registry
+        fields = (
+            "id",
+            "name",
+            "url",
+            "display",
+            "serveraddress",
+            "username",
+            "password",
+            "email",
+            "images",
+        )
 
 
 class HostSerializer(NetBoxModelSerializer):
