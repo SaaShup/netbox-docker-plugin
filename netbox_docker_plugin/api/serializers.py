@@ -179,7 +179,7 @@ class ImageSerializer(NetBoxModelSerializer):
     )
     host = NestedHostSerializer()
     containers = NestedContainerSerializer(many=True, read_only=True)
-    registry = NestedRegistrySerializer(read_only=True)
+    registry = NestedRegistrySerializer()
 
     class Meta:
         """Image Serializer Meta class"""
