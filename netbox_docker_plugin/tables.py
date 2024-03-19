@@ -319,8 +319,8 @@ class MountTable(NetBoxTable):
         """Mount Table definition Meta class"""
 
         model = Mount
-        fields = ("container", "source", "volume", "container")
-        default_columns = ("container", "source", "volume")
+        fields = ("container", "source", "volume", "host_path", "container")
+        default_columns = ("container", "source", "volume", "host_path")
 
 
 class NetworkSettingTable(NetBoxTable):
