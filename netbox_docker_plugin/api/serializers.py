@@ -313,6 +313,7 @@ class MountSerializer(serializers.ModelSerializer):
         fields = (
             "source",
             "volume",
+            "host_path",
         )
 
 
