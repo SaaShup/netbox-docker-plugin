@@ -17,10 +17,20 @@ class MountForm(BootstrapMixin, forms.ModelForm):
     """Mount form definition class"""
 
     container = DynamicModelChoiceField(
-        label="Container", queryset=Container.objects.all(), required=True
+        label="Container",
+        queryset=Container.objects.all(),
+        required=True,
     )
     volume = DynamicModelChoiceField(
-        label="Volume", queryset=Volume.objects.all(), required=True
+        label="Volume",
+        queryset=Volume.objects.all(),
+        required=False,
+    )
+    host_path = forms.CharField(
+        label="Host path",
+        min_length=1,
+        max_length=1024,
+        required=False,
     )
 
     class Meta:
@@ -31,11 +41,13 @@ class MountForm(BootstrapMixin, forms.ModelForm):
             "container",
             "source",
             "volume",
+            "host_path",
         )
         labels = {
             "container": "Container",
             "source": "Source directory",
             "volume": "Volume",
+            "host_path": "Host path",
         }
 
 
