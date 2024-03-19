@@ -273,7 +273,22 @@ class Mount(models.Model):
     container = models.ForeignKey(
         Container, on_delete=models.CASCADE, related_name="mounts"
     )
-    volume = models.ForeignKey(Volume, on_delete=models.RESTRICT, related_name="mounts")
+    volume = models.ForeignKey(
+        Volume,
+        on_delete=models.RESTRICT,
+        related_name="mounts",
+        null=True,
+        default=None,
+    )
+    host_path = models.CharField(
+        max_length=1024,
+        null=True,
+        validators=[
+            MinLengthValidator(limit_value=1),
+            MaxLengthValidator(limit_value=1024),
+        ],
+        default=None,
+    )
     source = models.CharField(
         max_length=1024,
         validators=[
@@ -285,25 +300,39 @@ class Mount(models.Model):
     class Meta:
         """Mount Model Meta Class"""
 
-        ordering = ("container", "source", "volume")
+        ordering = ("container", "source")
         constraints = (
             models.UniqueConstraint(
-                fields=["container", "source", "volume"],
-                name="%(app_label)s_%(class)s_unique_volume",
+                fields=["container", "source"],
+                name="%(app_label)s_%(class)s_unique",
             ),
         )
 
     def __str__(self):
-        return f"{self.source}:{self.volume.name}"
+        if self.volume is not None:
+            return f"{self.source}:{self.volume.name}"
+
+        else:
+            return f"{self.source}:{self.host_path}"
 
     def clean(self):
         super().clean()
 
-        if self.container.host != self.volume.host:
+        if self.volume is not None and self.container.host != self.volume.host:
             raise ValidationError(
                 {
                     "volume": f"Volume {self.volume} does not belong to host {self.container.host}."
                 }
+            )
+
+        if self.volume and self.host_path:
+            raise ValidationError(
+                "The volume and host path cannot be both set at the same time."
+            )
+
+        if not self.volume and not self.host_path:
+            raise ValidationError(
+                "At least one of the volume or host path must be set."
             )
 
 
