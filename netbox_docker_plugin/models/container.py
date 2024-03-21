@@ -287,8 +287,7 @@ class Mount(models.Model):
     )
     host_path = models.CharField(
         max_length=1024,
-        null=True,
-        default=None,
+        blank=True,
     )
     source = models.CharField(
         max_length=1024,
@@ -308,19 +307,12 @@ class Mount(models.Model):
                 name="%(app_label)s_%(class)s_unique",
             ),
             models.CheckConstraint(
-                check=~models.Q(
-                    volume__isnull=False,
-                    host_path__isnull=False,
-                    host_path__length__gt=0,
-                ),
+                check=~models.Q(volume__isnull=False, host_path__length__gt=0),
                 name="%(app_label)s_%(class)s_volume_or_host_path_set",
                 violation_error_message="Only one of the volume or host path must be set.",
             ),
             models.CheckConstraint(
-                check=~(
-                    models.Q(volume__isnull=True, host_path__isnull=True)
-                    | models.Q(volume__isnull=True, host_path__length=0)
-                ),
+                check=~models.Q(volume__isnull=True, host_path__length=0),
                 name="%(app_label)s_%(class)s_volume_or_host_path_unset",
                 violation_error_message="At least one of the volume or host path must be set.",
             ),
