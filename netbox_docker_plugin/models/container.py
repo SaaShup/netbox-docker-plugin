@@ -330,8 +330,7 @@ class Mount(models.Model):
         if self.volume is not None:
             return f"{self.source}:{self.volume.name}"
 
-        else:
-            return f"{self.source}:{self.host_path}"
+        return f"{self.source}:{self.host_path}"
 
     def clean(self):
         super().clean()
