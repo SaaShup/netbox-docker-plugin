@@ -305,20 +305,22 @@ class MountSerializer(serializers.ModelSerializer):
     """Container Mount Serializer class"""
 
     volume = NestedVolumeSerializer(required=False)
-    host_path = serializers.CharField(required=False)
 
     def validate(self, attrs):
-        if "volume" in attrs and "host_path" in attrs:
+        volume = attrs.get("volume")
+        host_path = attrs.get("host_path")
+
+        if volume and host_path:
             raise serializers.ValidationError(
                 "Only one of volume or host_path should be provided"
             )
 
-        if "volume" not in attrs and "host_path" not in attrs:
+        if not volume and not host_path:
             raise serializers.ValidationError(
                 "One of volume or host_path should be provided"
             )
 
-        if "host_path" in attrs and not attrs["host_path"].startswith("/"):
+        if host_path and host_path.startswith("/"):
             raise serializers.ValidationError("Host path must be an absolute path")
 
         return attrs
@@ -332,6 +334,12 @@ class MountSerializer(serializers.ModelSerializer):
             "volume",
             "host_path",
         )
+        extra_kwargs = {
+            "host_path": {
+                "required": False,
+                "allow_blank": True,
+            },
+        }
 
 
 class NetworkSettingSerializer(serializers.ModelSerializer):
