@@ -4,7 +4,8 @@
 
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models.functions import Lower
+from django.db.models.functions import Lower, Length
+
 from django.urls import reverse
 from django.core.validators import (
     MinLengthValidator,
@@ -19,6 +20,10 @@ from .image import Image
 from .host import Host
 from .network import Network
 from .volume import Volume
+
+
+
+models.CharField.register_lookup(Length)
 
 
 class ContainerStateChoices(ChoiceSet):
@@ -283,10 +288,6 @@ class Mount(models.Model):
     host_path = models.CharField(
         max_length=1024,
         null=True,
-        validators=[
-            MinLengthValidator(limit_value=1),
-            MaxLengthValidator(limit_value=1024),
-        ],
         default=None,
     )
     source = models.CharField(
@@ -306,6 +307,23 @@ class Mount(models.Model):
                 fields=["container", "source"],
                 name="%(app_label)s_%(class)s_unique",
             ),
+            models.CheckConstraint(
+                check=~models.Q(
+                    volume__isnull=False,
+                    host_path__isnull=False,
+                    host_path__length__gt=0,
+                ),
+                name="%(app_label)s_%(class)s_volume_or_host_path_set",
+                violation_error_message="Only one of the volume or host path must be set.",
+            ),
+            models.CheckConstraint(
+                check=~(
+                    models.Q(volume__isnull=True, host_path__isnull=True)
+                    | models.Q(volume__isnull=True, host_path__length=0)
+                ),
+                name="%(app_label)s_%(class)s_volume_or_host_path_unset",
+                violation_error_message="At least one of the volume or host path must be set.",
+            ),
         )
 
     def __str__(self):
@@ -323,16 +341,6 @@ class Mount(models.Model):
                 {
                     "volume": f"Volume {self.volume} does not belong to host {self.container.host}."
                 }
-            )
-
-        if self.volume and self.host_path:
-            raise ValidationError(
-                "The volume and host path cannot be both set at the same time."
-            )
-
-        if not self.volume and not self.host_path:
-            raise ValidationError(
-                "At least one of the volume or host path must be set."
             )
 
 
