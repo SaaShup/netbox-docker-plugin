@@ -304,7 +304,8 @@ class LabelSerializer(serializers.ModelSerializer):
 class MountSerializer(serializers.ModelSerializer):
     """Container Mount Serializer class"""
 
-    volume = NestedVolumeSerializer()
+    volume = NestedVolumeSerializer(required=False)
+    host_path = serializers.CharField(required=False)
 
     def validate(self, attrs):
         if "volume" in attrs and "host_path" in attrs:
@@ -331,10 +332,6 @@ class MountSerializer(serializers.ModelSerializer):
             "volume",
             "host_path",
         )
-        extra_kwargs = {
-            "volume": {"required": False},
-            "host_path": {"required": False},
-        }
 
 
 class NetworkSettingSerializer(serializers.ModelSerializer):
