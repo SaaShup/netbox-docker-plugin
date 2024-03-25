@@ -35,6 +35,7 @@ class ContainerApiTestCase(
         "env",
         "labels",
         "mounts",
+        "binds",
         "network_settings",
     ]
 
