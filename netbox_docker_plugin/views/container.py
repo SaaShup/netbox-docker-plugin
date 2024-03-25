@@ -4,14 +4,29 @@ from utilities.utils import count_related
 from netbox.views import generic
 from .. import tables, filtersets
 from ..forms import container
-from ..models.container import Container, Mount, Port, NetworkSetting, Env, Label
+from ..models.container import (
+    Container,
+    Mount,
+    Bind,
+    Port,
+    NetworkSetting,
+    Env,
+    Label,
+)
 
 
 class ContainerView(generic.ObjectView):
     """Container view definition"""
 
     queryset = Container.objects.prefetch_related(
-        "host", "image", "env", "labels", "mounts", "ports", "network_settings"
+        "host",
+        "image",
+        "env",
+        "labels",
+        "mounts",
+        "binds",
+        "ports",
+        "network_settings",
     )
 
 
