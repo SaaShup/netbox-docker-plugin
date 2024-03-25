@@ -78,6 +78,9 @@ class ContainerApiTestCase(
                     {"source": "/data", "volume": volume1.pk},
                     {"source": "/etc", "volume": volume2.pk},
                 ],
+                "binds": [
+                    {"host_path": "/opt/ct5/data", "container_path": "/data"},
+                ],
                 "network_settings": [
                     {"network": network1.pk},
                 ],
