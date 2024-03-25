@@ -380,4 +380,3 @@ class NetworkSetting(models.Model):
                     + f"{self.container.host}."
                 }
             )
-
