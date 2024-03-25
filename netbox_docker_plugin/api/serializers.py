@@ -9,7 +9,15 @@ from ..models.host import Host
 from ..models.image import Image
 from ..models.volume import Volume
 from ..models.network import Network
-from ..models.container import Container, Port, Env, Label, Mount, NetworkSetting
+from ..models.container import (
+    Container,
+    Port,
+    Env,
+    Label,
+    Mount,
+    Bind,
+    NetworkSetting,
+)
 from ..models.registry import Registry
 
 
@@ -316,6 +324,19 @@ class MountSerializer(serializers.ModelSerializer):
         )
 
 
+class BindSerializer(serializers.ModelSerializer):
+    """Container Bind Serializer class"""
+
+    class Meta:
+        """Container Bind Serializer Meta class"""
+
+        model = Bind
+        fields = (
+            "host_path",
+            "container_path",
+        )
+
+
 class NetworkSettingSerializer(serializers.ModelSerializer):
     """Container NetworkSetting Serializer class"""
 
@@ -340,6 +361,7 @@ class ContainerSerializer(NetBoxModelSerializer):
     env = EnvSerializer(many=True, required=False)
     labels = LabelSerializer(many=True, required=False)
     mounts = MountSerializer(many=True, required=False)
+    binds = BindSerializer(many=True, required=False)
     network_settings = NetworkSettingSerializer(many=True, required=False)
 
     class Meta:
@@ -361,6 +383,7 @@ class ContainerSerializer(NetBoxModelSerializer):
             "env",
             "labels",
             "mounts",
+            "binds",
             "network_settings",
             "custom_fields",
             "created",
@@ -374,6 +397,7 @@ class ContainerSerializer(NetBoxModelSerializer):
         attrs.pop("env", None)
         attrs.pop("labels", None)
         attrs.pop("mounts", None)
+        attrs.pop("binds", None)
         attrs.pop("network_settings", None)
 
         super().validate(attrs)
@@ -385,6 +409,7 @@ class ContainerSerializer(NetBoxModelSerializer):
         env_data = validated_data.pop("env", None)
         labels_data = validated_data.pop("labels", None)
         mounts_data = validated_data.pop("mounts", None)
+        binds_data = validated_data.pop("binds", None)
         network_settings_data = validated_data.pop("network_settings", None)
 
         container = super().create(validated_data)
@@ -407,6 +432,12 @@ class ContainerSerializer(NetBoxModelSerializer):
                 obj.full_clean()
                 obj.save()
 
+        if binds_data is not None:
+            for bind in binds_data:
+                obj = Bind(container=container, **bind)
+                obj.full_clean()
+                obj.save()
+
         if network_settings_data is not None:
             for network_setting in network_settings_data:
                 obj = NetworkSetting(container=container, **network_setting)
@@ -420,6 +451,7 @@ class ContainerSerializer(NetBoxModelSerializer):
         env_data = validated_data.pop("env", None)
         labels_data = validated_data.pop("labels", None)
         mounts_data = validated_data.pop("mounts", None)
+        binds_data = validated_data.pop("binds", None)
         network_settings_data = validated_data.pop("network_settings", None)
 
         container = super().update(instance, validated_data)
@@ -443,6 +475,13 @@ class ContainerSerializer(NetBoxModelSerializer):
         if mounts_data is not None:
             for mount in mounts_data:
                 obj = Mount(container=container, **mount)
+                obj.full_clean()
+                obj.save()
+
+        Bind.objects.filter(container=container).delete()
+        if binds_data is not None:
+            for bind in binds_data:
+                obj = Bind(container=container, **bind)
                 obj.full_clean()
                 obj.save()
 
