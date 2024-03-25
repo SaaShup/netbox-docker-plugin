@@ -7,7 +7,15 @@ from .models.host import Host
 from .models.image import Image
 from .models.volume import Volume
 from .models.network import Network
-from .models.container import Container, Env, Label, Port, Mount, NetworkSetting
+from .models.container import (
+    Container,
+    Env,
+    Label,
+    Port,
+    Mount,
+    Bind,
+    NetworkSetting,
+)
 from .models.registry import Registry
 
 
@@ -237,6 +245,22 @@ class MountFilterSet(BaseFilterSet):
         """Mount filterset definition meta class"""
 
         model = Mount
+        fields = ("id",)
+
+
+class BindFilterSet(BaseFilterSet):
+    """Bind filterset definition class"""
+
+    container_id = ModelMultipleChoiceFilter(
+        field_name="container_id",
+        queryset=Container.objects.all(),
+        label="Container (ID)",
+    )
+
+    class Meta:
+        """Bind filterset definition meta class"""
+
+        model = Bind
         fields = ("id",)
 
 
