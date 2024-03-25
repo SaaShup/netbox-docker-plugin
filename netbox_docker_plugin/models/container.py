@@ -307,6 +307,44 @@ class Mount(models.Model):
             )
 
 
+class Bind(models.Model):
+    """Bind definition class"""
+
+    objects = RestrictedQuerySet.as_manager()
+
+    container = models.ForeignKey(
+        Container, on_delete=models.CASCADE, related_name="binds"
+    )
+    host_path = models.CharField(
+        max_length=1024,
+        validators=[
+            MinLengthValidator(limit_value=1),
+            MaxLengthValidator(limit_value=1024),
+        ],
+    )
+    container_path = models.CharField(
+        max_length=1024,
+        validators=[
+            MinLengthValidator(limit_value=1),
+            MaxLengthValidator(limit_value=1024),
+        ],
+    )
+
+    class Meta:
+        """Mount Model Meta Class"""
+
+        ordering = ("container", "container_path", "host_path")
+        constraints = (
+            models.UniqueConstraint(
+                fields=["container", "container_path", "host_path"],
+                name="%(app_label)s_%(class)s_unique_bind",
+            ),
+        )
+
+    def __str__(self):
+        return f"{self.host_path}:{self.container_path}"
+
+
 class NetworkSetting(models.Model):
     """NetworkSetting definition class"""
 
@@ -342,3 +380,4 @@ class NetworkSetting(models.Model):
                     + f"{self.container.host}."
                 }
             )
+
