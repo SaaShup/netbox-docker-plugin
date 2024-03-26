@@ -18,6 +18,7 @@ from .views import (
     label as label_views,
     port as port_views,
     mount as mount_views,
+    bind as bind_views,
     network_setting as network_setting_views,
     registry as registry_views,
 )
@@ -305,6 +306,27 @@ urlpatterns = (
         "mounts/<int:pk>/delete/",
         mount_views.MountDeleteView.as_view(),
         name="mount_delete",
+    ),
+    # Bind
+    path(
+        "binds/",
+        bind_views.BindListView.as_view(),
+        name="bind_list",
+    ),
+    path(
+        "binds/add/",
+        bind_views.BindEditView.as_view(),
+        name="bind_add",
+    ),
+    path(
+        "binds/<int:pk>/edit/",
+        bind_views.BindEditView.as_view(),
+        name="bind_edit",
+    ),
+    path(
+        "binds/<int:pk>/delete/",
+        bind_views.BindDeleteView.as_view(),
+        name="bind_delete",
     ),
     # NetworkSetting
     path(

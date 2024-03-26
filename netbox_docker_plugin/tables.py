@@ -6,7 +6,15 @@ from .models.host import Host
 from .models.image import Image
 from .models.volume import Volume
 from .models.network import Network
-from .models.container import Container, Env, Label, Port, Mount, NetworkSetting
+from .models.container import (
+    Container,
+    Env,
+    Label,
+    Port,
+    Mount,
+    Bind,
+    NetworkSetting,
+)
 from .models.registry import Registry
 from .templatetags.host import remove_password
 
@@ -211,6 +219,11 @@ class ContainerTable(NetBoxTable):
         url_params={"container_id": "pk"},
         verbose_name="Mounts count",
     )
+    bind_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:bind_list",
+        url_params={"container_id": "pk"},
+        verbose_name="Binds count",
+    )
     networksetting_count = columns.LinkedCountColumn(
         viewname="plugins:netbox_docker_plugin:networksetting_list",
         url_params={"container_id": "pk"},
@@ -244,6 +257,7 @@ class ContainerTable(NetBoxTable):
             "hostname",
             "port_count",
             "mount_count",
+            "bind_count",
             "networksetting_count",
             "env_count",
             "label_count",
@@ -256,6 +270,7 @@ class ContainerTable(NetBoxTable):
             "state",
             "port_count",
             "mount_count",
+            "bind_count",
             "networksetting_count",
             "env_count",
             "label_count",
@@ -321,6 +336,21 @@ class MountTable(NetBoxTable):
         model = Mount
         fields = ("container", "source", "volume", "container")
         default_columns = ("container", "source", "volume")
+
+
+class BindTable(NetBoxTable):
+    """Bind Table definition class"""
+
+    container = tables.Column(linkify=True)
+
+    actions = columns.ActionsColumn(actions=("edit", "delete"))
+
+    class Meta(NetBoxTable.Meta):
+        """Bind Table definition Meta class"""
+
+        model = Bind
+        fields = ("container", "host_path", "container_path")
+        default_columns = ("container", "host_path", "container_path")
 
 
 class NetworkSettingTable(NetBoxTable):

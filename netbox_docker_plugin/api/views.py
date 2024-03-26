@@ -79,7 +79,15 @@ class ContainerViewSet(NetBoxModelViewSet):
     """Container view set class"""
 
     queryset = Container.objects.prefetch_related(
-        "network_settings", "mounts", "env", "image", "host", "ports", "labels", "tags"
+        "network_settings",
+        "mounts",
+        "binds",
+        "env",
+        "image",
+        "host",
+        "ports",
+        "labels",
+        "tags",
     )
     filterset_class = filtersets.ContainerFilterSet
     serializer_class = ContainerSerializer

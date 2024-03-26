@@ -1,4 +1,4 @@
 [MASTER]
-disable=R0903,R0901
+disable=R0903,R0901,R0914
 min-similarity-lines=10
 exclude-protected=_meta,_asdict,_fields,_replace,_source,_make,os._exit
