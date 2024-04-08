@@ -1,7 +1,11 @@
 """Image Forms definitions"""
 
 from django import forms
-from utilities.forms.fields import TagFilterField, DynamicModelMultipleChoiceField
+from utilities.forms.fields import (
+    TagFilterField,
+    DynamicModelMultipleChoiceField,
+    DynamicModelChoiceField,
+)
 from netbox.forms import (
     NetBoxModelForm,
     NetBoxModelImportForm,
@@ -15,6 +19,16 @@ from ..models.registry import Registry
 
 class ImageForm(NetBoxModelForm):
     """Image form definition class"""
+
+    host = DynamicModelChoiceField(
+        label="Host", queryset=Host.objects.all(), required=True
+    )
+    registry = DynamicModelChoiceField(
+        label="Registry",
+        queryset=Registry.objects.all(),
+        required=True,
+        query_params={"host_id": "$host"},
+    )
 
     class Meta:
         """Image form definition Meta class"""

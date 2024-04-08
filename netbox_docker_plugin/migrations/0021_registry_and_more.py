@@ -6,7 +6,6 @@ import utilities.json
 import django.core.validators
 from django.db import migrations, models
 import django.db.models.deletion
-import netbox_docker_plugin.models.registry
 
 
 class Migration(migrations.Migration):
@@ -60,7 +59,6 @@ class Migration(migrations.Migration):
             model_name="image",
             name="registry",
             field=models.ForeignKey(
-                default=netbox_docker_plugin.models.registry.Registry.get_default_registry,
                 on_delete=django.db.models.deletion.CASCADE,
                 related_name="images",
                 to="netbox_docker_plugin.registry",

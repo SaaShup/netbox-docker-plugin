@@ -10,13 +10,14 @@ from ..models.image import Image
 from ..models.volume import Volume
 from ..models.network import Network
 from ..models.container import Container
+from ..models.registry import Registry
 
 
 class HostView(generic.ObjectView):
     """Host view definition"""
 
     queryset = Host.objects.prefetch_related(
-        "images", "volumes", "networks", "containers"
+        "images", "volumes", "networks", "containers", "registries"
     )
 
     def get_extra_context(self, request, instance):
@@ -37,6 +38,10 @@ class HostView(generic.ObjectView):
                 Container.objects.filter(host=instance),
                 "host_id",
             ),
+            (
+                Registry.objects.filter(host=instance),
+                "host_id",
+            ),
         )
 
         return {
@@ -52,6 +57,7 @@ class HostListView(generic.ObjectListView):
         volume_count=count_related(Volume, "host"),
         network_count=count_related(Network, "host"),
         container_count=count_related(Container, "host"),
+        registry_count=count_related(Registry, "host"),
     )
     table = tables.HostTable
     filterset = filtersets.HostFilterSet

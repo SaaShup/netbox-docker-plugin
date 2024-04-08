@@ -19,7 +19,6 @@ class Image(NetBoxModel):
     host = models.ForeignKey(Host, on_delete=models.CASCADE, related_name="images")
     registry = models.ForeignKey(
         Registry,
-        default=Registry.get_default_registry,  # type: ignore
         on_delete=models.CASCADE,
         related_name="images",
     )

@@ -7,6 +7,7 @@ from netbox_docker_plugin.models.host import Host
 from netbox_docker_plugin.models.image import Image
 from netbox_docker_plugin.models.volume import Volume
 from netbox_docker_plugin.models.network import Network
+from netbox_docker_plugin.models.registry import Registry
 from netbox_docker_plugin.models.container import Mount, NetworkSetting
 
 
@@ -113,11 +114,22 @@ class ContainerValidationTestCase(TestCase):
             endpoint="http://localhost:8081", name="host2"
         )
 
+        cls.objects["registry1"] = Registry.objects.create(
+            host=cls.objects["host1"],
+            name="registry1",
+            serveraddress="http://localhost:8080",
+        )
+        cls.objects["registry2"] = Registry.objects.create(
+            host=cls.objects["host2"],
+            name="registry2",
+            serveraddress="http://localhost:8082",
+        )
+
         cls.objects["image1"] = Image.objects.create(
-            host=cls.objects["host1"], name="image1"
+            host=cls.objects["host1"], name="image1", registry=cls.objects["registry1"]
         )
         cls.objects["image2"] = Image.objects.create(
-            host=cls.objects["host2"], name="image2"
+            host=cls.objects["host2"], name="image2", registry=cls.objects["registry2"]
         )
 
         cls.objects["volume1"] = Volume.objects.create(
