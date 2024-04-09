@@ -5,6 +5,7 @@ from netbox_docker_plugin.tests.base import BaseModelViewTestCase
 from netbox_docker_plugin.models.host import Host
 from netbox_docker_plugin.models.container import Container
 from netbox_docker_plugin.models.image import Image
+from netbox_docker_plugin.models.registry import Registry
 
 
 class ContainerViewsTestCase(
@@ -19,8 +20,15 @@ class ContainerViewsTestCase(
         host1 = Host.objects.create(endpoint="http://localhost:8080", name="host1")
         host2 = Host.objects.create(endpoint="http://localhost:8081", name="host2")
 
-        image1 = Image.objects.create(host=host1, name="image1")
-        image2 = Image.objects.create(host=host2, name="image2")
+        registry1 = Registry.objects.create(
+            host=host1, name="registry1", serveraddress="http://localhost:8080"
+        )
+        registry2 = Registry.objects.create(
+            host=host2, name="registry2", serveraddress="http://localhost:8082"
+        )
+
+        image1 = Image.objects.create(host=host1, name="image1", registry=registry1)
+        image2 = Image.objects.create(host=host2, name="image2", registry=registry2)
 
         container1 = Container.objects.create(
             host=host1, image=image1, name="container1"

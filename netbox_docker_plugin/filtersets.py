@@ -49,6 +49,11 @@ class RegistryFilterSet(NetBoxModelFilterSet):
     """Registry filterset definition class"""
 
     name = filters.CharFilter(lookup_expr="icontains")
+    host_id = ModelMultipleChoiceFilter(
+        field_name="host_id",
+        queryset=Host.objects.all(),
+        label="Host (ID)",
+    )
 
     class Meta:
         """Registry filterset definition meta class"""

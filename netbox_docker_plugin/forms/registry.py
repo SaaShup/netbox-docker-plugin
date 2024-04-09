@@ -1,12 +1,13 @@
 """Registry Forms definitions"""
 
 from django import forms
-from utilities.forms.fields import TagFilterField
+from utilities.forms.fields import TagFilterField, DynamicModelMultipleChoiceField
 from netbox.forms import (
     NetBoxModelForm,
     NetBoxModelFilterSetForm,
 )
 from ..models.registry import Registry
+from ..models.host import Host
 
 
 class RegistryForm(NetBoxModelForm):
@@ -24,6 +25,7 @@ class RegistryForm(NetBoxModelForm):
 
         model = Registry
         fields = (
+            "host",
             "name",
             "serveraddress",
             "username",
@@ -39,5 +41,10 @@ class RegistryFilterForm(NetBoxModelFilterSetForm):
     """Registry filter form definition class"""
 
     model = Registry
+    host_id = DynamicModelMultipleChoiceField(
+        queryset=Host.objects.all(),
+        required=False,
+        label="Host",
+    )
     name = forms.CharField(label="Name", required=False)
     tag = TagFilterField(model)
