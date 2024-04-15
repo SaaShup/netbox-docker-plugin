@@ -2,6 +2,7 @@
 
 from django import forms
 from utilities.forms.fields import TagFilterField, DynamicModelMultipleChoiceField
+from utilities.choices import ChoiceSet
 from netbox.forms import (
     NetBoxModelForm,
     NetBoxModelImportForm,
@@ -12,8 +13,27 @@ from ..models.network import Network, NetworkDriverChoices, NetworkStateChoices
 from ..models.host import Host
 
 
+class FormNetworkDriverChoices(ChoiceSet):
+    """Network driver choices definition class"""
+
+    key = "Network.driver"
+
+    DEFAULT_VALUE = "bridge"
+
+    CHOICES = [
+        ("bridge", "Bridge", "blue"),
+        ("host", "Host", "red"),
+    ]
+
+
 class NetworkForm(NetBoxModelForm):
     """Network form definition class"""
+
+    driver = forms.ChoiceField(
+        label="Driver",
+        choices=FormNetworkDriverChoices,
+        required=False,
+    )
 
     class Meta:
         """Network form definition Meta class"""
