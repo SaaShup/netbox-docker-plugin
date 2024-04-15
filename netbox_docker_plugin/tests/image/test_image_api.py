@@ -58,6 +58,10 @@ class ImageApiTestCase(
             {
                 "host": host2.pk,
                 "name": "image6",
+                "version": "testtesttesttesttesttesttesttesttesttesttesttesttest"
+                + "testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttes"
+                + "ttesttesttesttesttesttesttesttesttesttesttesttesttesttesttestte"
+                + "sttesttesttesttesttesttesttesttesttesttesttesttesttesttesttestt",
                 "registry": registry.pk,
             },
         ]

@@ -31,10 +31,10 @@ class Image(NetBoxModel):
     )
     version = models.CharField(
         default="latest",
-        max_length=32,
+        max_length=256,
         validators=[
             MinLengthValidator(limit_value=1),
-            MaxLengthValidator(limit_value=32),
+            MaxLengthValidator(limit_value=256),
         ],
     )
     size = models.IntegerField(
