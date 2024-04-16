@@ -19,6 +19,7 @@ class ImageApiTestCase(
 
     model = Image
     brief_fields = [
+        "Digest",
         "ImageID",
         "display",
         "id",
