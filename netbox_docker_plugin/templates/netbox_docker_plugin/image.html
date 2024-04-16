@@ -29,6 +29,16 @@
             <th scope="row">ImageID</th>
             <td>{{ object.ImageID|placeholder }}</td>
           </tr>
+          <tr>
+            <th scope="row">Digest</th>
+            <td>
+              {% if object.Digest is None %}
+                {{ object.Digest|placeholder }}
+              {% else %}
+                {{ object.Digest|truncatechars:32 }}
+              {% endif %}
+            </td>
+          </tr>
         </table>
       </div>
     </div>

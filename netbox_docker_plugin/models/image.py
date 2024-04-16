@@ -53,6 +53,15 @@ class Image(NetBoxModel):
         blank=True,
         null=True,
     )
+    Digest = models.CharField(
+        max_length=512,
+        validators=[
+            MinLengthValidator(limit_value=1),
+            MaxLengthValidator(limit_value=512),
+        ],
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         """Image Model Meta Class"""

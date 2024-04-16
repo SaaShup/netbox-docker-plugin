@@ -63,6 +63,7 @@ class NestedImageSerializer(WritableNestedSerializer):
             "version",
             "size",
             "ImageID",
+            "Digest",
         )
 
 
@@ -203,6 +204,7 @@ class ImageSerializer(NetBoxModelSerializer):
             "registry",
             "size",
             "ImageID",
+            "Digest",
             "custom_fields",
             "created",
             "last_updated",
