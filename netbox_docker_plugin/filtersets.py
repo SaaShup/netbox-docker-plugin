@@ -165,7 +165,7 @@ class ContainerFilterSet(NetBoxModelFilterSet):
         """Container filterset definition meta class"""
 
         model = Container
-        fields = ("id", "name", "state", "hostname")
+        fields = ("id", "name", "state", "hostname", "restart_policy")
 
     # pylint: disable=W0613
     def search(self, queryset, name, value):

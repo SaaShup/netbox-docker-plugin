@@ -27,6 +27,7 @@ class ContainerApiTestCase(
         "id",
         "name",
         "operation",
+        "restart_policy",
         "state",
         "status",
         "url",
