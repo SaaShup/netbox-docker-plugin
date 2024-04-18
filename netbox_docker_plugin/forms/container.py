@@ -14,7 +14,11 @@ from netbox.forms import (
 )
 from ..models.volume import Volume
 from ..models.host import Host
-from ..models.container import Container, ContainerStateChoices
+from ..models.container import (
+    Container,
+    ContainerStateChoices,
+    ContainerRestartPolicyChoices,
+)
 from ..models.image import Image
 
 
@@ -41,6 +45,7 @@ class ContainerForm(NetBoxModelForm):
             "name",
             "hostname",
             "state",
+            "restart_policy",
             "tags",
         )
         labels = {
@@ -49,6 +54,7 @@ class ContainerForm(NetBoxModelForm):
             "image": "Image",
             "hostname": "Hostname",
             "state": "State",
+            "restart_policy": "Restart Policy",
         }
 
 
@@ -76,6 +82,9 @@ class ContainerFilterForm(NetBoxModelFilterSetForm):
     state = forms.ChoiceField(
         label="State", choices=ContainerStateChoices, required=False
     )
+    restart_policy = forms.ChoiceField(
+        label="Restart Policy", choices=ContainerRestartPolicyChoices, required=False
+    )
     tag = TagFilterField(model)
 
 
@@ -87,7 +96,14 @@ class ContainerImportForm(NetBoxModelImportForm):
         choices=ContainerStateChoices,
         required=False,
         help_text="Container State. Can be `created`, `restarting`, "
-        + "`running`, `paused`, `exited`or `dead`.",
+        + "`running`, `paused`, `exited` or `dead`.",
+    )
+    restart_policy = forms.ChoiceField(
+        label="Restart Policy",
+        choices=ContainerRestartPolicyChoices,
+        required=False,
+        help_text="Container restart policy. Can be `no`, `on-failure`, "
+        + "`always`, `unless-stopped`.",
     )
 
     class Meta:
@@ -105,9 +121,6 @@ class ContainerImportForm(NetBoxModelImportForm):
             "name": "Unique container name",
             "host": "Host identifier",
             "image": "Image identifier",
-            "state": "Container State. Can be `created`, `restarting`, "
-            + "`running`, `paused`, `exited`or `dead`.",
-            "hostname": "Container hostname"
         }
 
 
@@ -119,12 +132,17 @@ class ContainerBulkEditForm(NetBoxModelBulkEditForm):
         choices=ContainerStateChoices,
         required=True,
     )
+    restart_policy = forms.ChoiceField(
+        label="Restart Policy",
+        choices=ContainerRestartPolicyChoices,
+        required=True,
+    )
     hostname = forms.CharField(
         label="Hostname", max_length=256, min_length=1, required=False
     )
 
     model = Container
-    fieldsets = (("General", ("state", "hostname")),)
+    fieldsets = (("General", ("state", "restart_policy", "hostname")),)
 
 
 class ContainerOperationForm(NetBoxModelForm):

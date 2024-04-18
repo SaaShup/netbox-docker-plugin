@@ -31,7 +31,7 @@ class ContainerViewsTestCase(
         image2 = Image.objects.create(host=host2, name="image2", registry=registry2)
 
         container1 = Container.objects.create(
-            host=host1, image=image1, name="container1"
+            host=host1, image=image1, name="container1", restart_policy="always"
         )
         container2 = Container.objects.create(
             host=host1, image=image1, name="container2"
@@ -44,6 +44,7 @@ class ContainerViewsTestCase(
             "host": host1.pk,
             "image": image1.pk,
             "state": "created",
+            "restart_policy": "unless-stopped",
         }
 
         cls.csv_data = (
@@ -52,10 +53,13 @@ class ContainerViewsTestCase(
             f"container7,{host2.pk},{image2.pk},container7",
         )
 
-        cls.bulk_edit_data = {"state": "running"}
+        cls.bulk_edit_data = {
+            "state": "running",
+            "restart_policy": "always",
+        }
 
         cls.csv_update_data = (
-            "id,name,host,image,state,hostname",
-            f"{container1.pk},container1,{host1.pk},{image1.pk},paused,",
-            f"{container2.pk},container2,{host1.pk},{image1.pk},running,container2",
+            "id,name,host,image,state,hostname,restart_policy",
+            f"{container1.pk},container1,{host1.pk},{image1.pk},paused,,on-failure",
+            f"{container2.pk},container2,{host1.pk},{image1.pk},running,container2,unless-stopped",
         )

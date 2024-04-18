@@ -56,6 +56,21 @@ class ContainerOperationChoices(ChoiceSet):
     ]
 
 
+class ContainerRestartPolicyChoices(ChoiceSet):
+    """Container restart policy choices definition class"""
+
+    key = "Container.restart_policy"
+
+    DEFAULT_VALUE = "no"
+
+    CHOICES = [
+        ("no", "no", "dark"),
+        ("on-failure", "on-failure", "blue"),
+        ("always", "always", "blue"),
+        ("unless-stopped", "unless-stopped", "blue"),
+    ]
+
+
 class PortTypeChoices(ChoiceSet):
     """Port type choices definition class"""
 
@@ -111,6 +126,11 @@ class Container(NetBoxModel):
         ],
         blank=True,
         null=True,
+    )
+    restart_policy = models.CharField(
+        max_length=32,
+        choices=ContainerRestartPolicyChoices,
+        default=ContainerRestartPolicyChoices.DEFAULT_VALUE,
     )
 
     class Meta:
