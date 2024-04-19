@@ -3,6 +3,7 @@
 # pylint: disable=E1101
 
 from rest_framework import serializers
+from utilities.utils import dict_to_filter_params
 from users.api.nested_serializers import NestedTokenSerializer
 from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
 from ..models.host import Host
@@ -85,6 +86,20 @@ class NestedVolumeSerializer(WritableNestedSerializer):
             "name",
             "driver",
         )
+
+    def to_internal_value(self, data):
+        if data is None:
+            return None
+
+        if isinstance(data, dict):
+            params = dict_to_filter_params(data)
+            if Volume.objects.filter(**params).count() == 0:
+                host = Host.objects.get(pk=params["host"])
+                volume = Volume(host= host, name= params["name"])
+                volume.save()
+                return volume
+
+        return super().to_internal_value(data)
 
 
 class NestedNetworkSerializer(WritableNestedSerializer):
