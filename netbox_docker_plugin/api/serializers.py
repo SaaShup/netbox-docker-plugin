@@ -138,6 +138,7 @@ class NestedContainerSerializer(WritableNestedSerializer):
         fields = (
             "id",
             "url",
+            "display",
             "name",
             "ContainerID",
             "state",
@@ -389,6 +390,7 @@ class ContainerSerializer(NetBoxModelSerializer):
         fields = (
             "id",
             "url",
+            "display",
             "host",
             "image",
             "name",
