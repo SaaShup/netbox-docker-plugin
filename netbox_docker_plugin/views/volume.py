@@ -50,4 +50,5 @@ class VolumeBulkDeleteView(generic.BulkDeleteView):
 class VolumeDeleteView(generic.ObjectDeleteView):
     """Volume delete view definition"""
 
+    default_return_url = "plugins:netbox_docker_plugin:volume_list"
     queryset = Volume.objects.all()

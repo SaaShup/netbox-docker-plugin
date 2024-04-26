@@ -50,6 +50,7 @@ class NetworkBulkImportView(generic.BulkImportView):
 class NetworkDeleteView(generic.ObjectDeleteView):
     """Network delete view definition"""
 
+    default_return_url = "plugins:netbox_docker_plugin:network_list"
     queryset = Network.objects.all()
 
 
