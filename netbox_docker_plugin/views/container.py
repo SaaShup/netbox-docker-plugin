@@ -81,6 +81,7 @@ class ContainerBulkDeleteView(generic.BulkDeleteView):
 class ContainerDeleteView(generic.ObjectDeleteView):
     """Container delete view definition"""
 
+    default_return_url = "plugins:netbox_docker_plugin:container_list"
     queryset = Container.objects.all()
 
 

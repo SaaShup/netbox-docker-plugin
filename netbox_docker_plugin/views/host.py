@@ -109,6 +109,7 @@ class HostBulkImportView(generic.BulkImportView):
 class HostDeleteView(generic.ObjectDeleteView):
     """Host delete view definition"""
 
+    default_return_url = "plugins:netbox_docker_plugin:host_list"
     queryset = Host.objects.all()
 
 

@@ -51,6 +51,7 @@ class ImageBulkImportView(generic.BulkImportView):
 class ImageDeleteView(generic.ObjectDeleteView):
     """Image delete view definition"""
 
+    default_return_url = "plugins:netbox_docker_plugin:image_list"
     queryset = Image.objects.all()
 
 
