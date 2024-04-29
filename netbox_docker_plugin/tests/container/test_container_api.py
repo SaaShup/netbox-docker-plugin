@@ -23,6 +23,7 @@ class ContainerApiTestCase(
     model = Container
     brief_fields = [
         "ContainerID",
+        "display",
         "hostname",
         "id",
         "name",
