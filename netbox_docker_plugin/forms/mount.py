@@ -31,11 +31,13 @@ class MountForm(BootstrapMixin, forms.ModelForm):
             "container",
             "source",
             "volume",
+            "read_only",
         )
         labels = {
             "container": "Container",
             "source": "Source directory",
             "volume": "Volume",
+            "read_only": "Mount as read-only within the container",
         }
 
 

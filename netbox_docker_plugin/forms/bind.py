@@ -27,11 +27,13 @@ class BindForm(BootstrapMixin, forms.ModelForm):
             "container",
             "host_path",
             "container_path",
+            "read_only",
         )
         labels = {
             "container": "Container",
             "host_path": "Path to mount on host",
             "container_path": "Mountpoint in container",
+            "read_only": "Mount as read-only within the container",
         }
 
 

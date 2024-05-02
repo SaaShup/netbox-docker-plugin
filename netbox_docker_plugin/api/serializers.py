@@ -159,6 +159,7 @@ class NestedMountSerializer(WritableNestedSerializer):
         fields = (
             "id",
             "source",
+            "read_only",
         )
 
 
@@ -340,6 +341,7 @@ class MountSerializer(serializers.ModelSerializer):
         fields = (
             "source",
             "volume",
+            "read_only",
         )
 
 
@@ -353,6 +355,7 @@ class BindSerializer(serializers.ModelSerializer):
         fields = (
             "host_path",
             "container_path",
+            "read_only",
         )
 
 

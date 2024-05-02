@@ -301,6 +301,9 @@ class Mount(models.Model):
             MaxLengthValidator(limit_value=1024),
         ],
     )
+    read_only = models.BooleanField(
+        default=False,
+    )
 
     class Meta:
         """Mount Model Meta Class"""
@@ -348,6 +351,9 @@ class Bind(models.Model):
             MinLengthValidator(limit_value=1),
             MaxLengthValidator(limit_value=1024),
         ],
+    )
+    read_only = models.BooleanField(
+        default=False,
     )
 
     class Meta:
