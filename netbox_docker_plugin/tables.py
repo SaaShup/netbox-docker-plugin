@@ -335,8 +335,18 @@ class MountTable(NetBoxTable):
         """Mount Table definition Meta class"""
 
         model = Mount
-        fields = ("container", "source", "volume", "container")
-        default_columns = ("container", "source", "volume")
+        fields = (
+            "container",
+            "source",
+            "volume",
+            "read_only",
+        )
+        default_columns = (
+            "container",
+            "source",
+            "volume",
+            "read_only",
+        )
 
 
 class BindTable(NetBoxTable):
@@ -350,8 +360,18 @@ class BindTable(NetBoxTable):
         """Bind Table definition Meta class"""
 
         model = Bind
-        fields = ("container", "host_path", "container_path")
-        default_columns = ("container", "host_path", "container_path")
+        fields = (
+            "container",
+            "host_path",
+            "container_path",
+            "read_only",
+        )
+        default_columns = (
+            "container",
+            "host_path",
+            "container_path",
+            "read_only",
+        )
 
 
 class NetworkSettingTable(NetBoxTable):
