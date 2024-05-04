@@ -133,6 +133,31 @@ class Container(NetBoxModel):
         default=ContainerRestartPolicyChoices.DEFAULT_VALUE,
     )
 
+    @property
+    def can_start(self) -> bool:
+        """ Check if the container can be started """
+        return self.state in ["created", "paused", "exited", "dead"]
+
+    @property
+    def can_stop(self) -> bool:
+        """ Check if the container can be stopped """
+        return self.state in ["running", "restarting"]
+
+    @property
+    def can_restart(self) -> bool:
+        """ Check if the container can be restarted """
+        return self.state in ["running", "restarting"]
+
+    @property
+    def can_recreate(self) -> bool:
+        """ Check if the container can be recreated """
+        return self.state != "none"
+
+    @property
+    def can_delete(self) -> bool:
+        """ Check if the container can be deleted """
+        return self.state not in ["running", "restarting", "none"]
+
     class Meta:
         """Image Model Meta Class"""
 
