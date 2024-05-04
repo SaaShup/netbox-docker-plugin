@@ -22,7 +22,7 @@ class ContainerViewsTestCase(BaseModelViewTestCase, ModelViewTestCase):
 
     def test_operation_start_object_without_permission(self):
         """Test operation start object without permission"""
-        instance = self._get_queryset().first()
+        instance = self._get_queryset().exclude(state="running").first()
 
         # Try GET without permission
         with disable_warnings("django.request"):
@@ -42,7 +42,7 @@ class ContainerViewsTestCase(BaseModelViewTestCase, ModelViewTestCase):
     @override_settings(EXEMPT_VIEW_PERMISSIONS=["*"])
     def test_operation_start_object_with_permission(self):
         """Test operation start object with permission""" """  """
-        instance = self._get_queryset().first()
+        instance = self._get_queryset().exclude(state="running").first()
 
         # Assign model-level permission
         obj_perm = ObjectPermission(name="Test permission", actions=["change"])
@@ -78,7 +78,7 @@ class ContainerViewsTestCase(BaseModelViewTestCase, ModelViewTestCase):
 
     def test_operation_stop_object_without_permission(self):
         """Test operation stop object without permission"""
-        instance = self._get_queryset().first()
+        instance = self._get_queryset().filter(state="running").first()
 
         # Try GET without permission
         with disable_warnings("django.request"):
@@ -98,7 +98,7 @@ class ContainerViewsTestCase(BaseModelViewTestCase, ModelViewTestCase):
     @override_settings(EXEMPT_VIEW_PERMISSIONS=["*"])
     def test_operation_stop_object_with_permission(self):
         """Test operation stop object with permission""" """  """
-        instance = self._get_queryset().first()
+        instance = self._get_queryset().filter(state="running").first()
 
         # Assign model-level permission
         obj_perm = ObjectPermission(name="Test permission", actions=["change"])
@@ -134,7 +134,7 @@ class ContainerViewsTestCase(BaseModelViewTestCase, ModelViewTestCase):
 
     def test_operation_restart_object_without_permission(self):
         """Test operation restart object without permission"""
-        instance = self._get_queryset().first()
+        instance = self._get_queryset().filter(state="running").first()
 
         # Try GET without permission
         with disable_warnings("django.request"):
@@ -154,7 +154,7 @@ class ContainerViewsTestCase(BaseModelViewTestCase, ModelViewTestCase):
     @override_settings(EXEMPT_VIEW_PERMISSIONS=["*"])
     def test_operation_restart_object_with_permission(self):
         """Test operation restart object with permission""" """  """
-        instance = self._get_queryset().first()
+        instance = self._get_queryset().filter(state="running").first()
 
         # Assign model-level permission
         obj_perm = ObjectPermission(name="Test permission", actions=["change"])
@@ -262,4 +262,9 @@ class ContainerViewsTestCase(BaseModelViewTestCase, ModelViewTestCase):
         Container.objects.create(host=host1, image=image1, name="container1")
         Container.objects.create(host=host1, image=image1, name="container2")
         Container.objects.create(host=host2, image=image2, name="container3")
-        Container.objects.create(host=host2, image=image2, name="container4")
+        Container.objects.create(
+            host=host2,
+            image=image2,
+            name="container4",
+            state="running",
+        )
