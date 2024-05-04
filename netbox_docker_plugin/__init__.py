@@ -16,6 +16,8 @@ class NetBoxDockerConfig(PluginConfig):
     author_email= "vincent@saashup.com"
 
     def ready(self):
+        from . import signals # pylint: disable=unused-import, import-outside-toplevel
+
         post_migrate.connect(create_webhook)
 
         super().ready()
