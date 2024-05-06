@@ -85,6 +85,7 @@ class ContainerActionTestCase(TestCase):
                     host=self.objects["host"],
                     image=self.objects["image"],
                     name=f"container-{state}",
+                    operation="none",
                     state=state,
                 )
 
@@ -107,6 +108,7 @@ class ContainerActionTestCase(TestCase):
                         host=self.objects["host"],
                         image=self.objects["image"],
                         name=f"container-{state}",
+                        operation="none",
                         state=state,
                     )
 
@@ -121,6 +123,7 @@ class ContainerActionTestCase(TestCase):
                     host=self.objects["host"],
                     image=self.objects["image"],
                     name=f"container-{state}",
+                    operation="none",
                     state=state,
                 )
 
@@ -145,6 +148,7 @@ class ContainerActionTestCase(TestCase):
                         host=self.objects["host"],
                         image=self.objects["image"],
                         name=f"container-{state}",
+                        operation="none",
                         state=state,
                     )
 
@@ -164,6 +168,7 @@ class ContainerActionTestCase(TestCase):
                         host=self.objects["host"],
                         image=self.objects["image"],
                         name=f"container-{state}",
+                        operation="none",
                         state=state,
                     )
 
@@ -179,6 +184,7 @@ class ContainerActionTestCase(TestCase):
                 host=self.objects["host"],
                 image=self.objects["image"],
                 name=f"container-{state}",
+                operation="none",
                 state=state,
             )
 
@@ -203,6 +209,7 @@ class ContainerActionTestCase(TestCase):
                         host=self.objects["host"],
                         image=self.objects["image"],
                         name=f"container-{state}",
+                        operation="none",
                         state=state,
                     )
 
@@ -218,6 +225,7 @@ class ContainerActionTestCase(TestCase):
                 host=self.objects["host"],
                 image=self.objects["image"],
                 name=f"container-{state}",
+                operation="none",
                 state=state,
             )
 
@@ -238,6 +246,7 @@ class ContainerActionTestCase(TestCase):
                     host=self.objects["host"],
                     image=self.objects["image"],
                     name=f"container-{state}",
+                    operation="none",
                     state=state,
                 )
 
@@ -264,6 +273,7 @@ class ContainerActionTestCase(TestCase):
                         host=self.objects["host"],
                         image=self.objects["image"],
                         name=f"container-{state}",
+                        operation="none",
                         state=state,
                     )
 

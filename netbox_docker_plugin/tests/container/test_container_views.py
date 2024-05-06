@@ -31,19 +31,40 @@ class ContainerViewsTestCase(
         image2 = Image.objects.create(host=host2, name="image2", registry=registry2)
 
         container1 = Container.objects.create(
-            host=host1, image=image1, name="container1", restart_policy="always"
+            host=host1,
+            image=image1,
+            name="container1",
+            restart_policy="always",
+            operation="none",
+            state="created",
         )
         container2 = Container.objects.create(
-            host=host1, image=image1, name="container2"
+            host=host1,
+            image=image1,
+            name="container2",
+            operation="none",
+            state="created",
         )
-        Container.objects.create(host=host2, image=image2, name="container3")
-        Container.objects.create(host=host2, image=image2, name="container4")
+        Container.objects.create(
+            host=host2,
+            image=image2,
+            name="container3",
+            operation="none",
+            state="created",
+        )
+        Container.objects.create(
+            host=host2,
+            image=image2,
+            name="container4",
+            operation="none",
+            state="created",
+        )
 
         cls.form_data = {
             "name": "container5",
             "host": host1.pk,
             "image": image1.pk,
-            "state": "created",
+            "state": "none",
             "restart_policy": "unless-stopped",
         }
 

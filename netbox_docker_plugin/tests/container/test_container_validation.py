@@ -23,6 +23,8 @@ class ContainerValidationTestCase(TestCase):
             host=self.objects["host1"],
             image=self.objects["image1"],
             name="container1",
+            operation="none",
+            state="created",
         )
 
         self.assertTrue(isinstance(container.id, int))
@@ -31,6 +33,8 @@ class ContainerValidationTestCase(TestCase):
             host=self.objects["host2"],
             image=self.objects["image2"],
             name="container2",
+            operation="none",
+            state="created",
         )
 
         self.assertTrue(isinstance(container.id, int))
@@ -43,6 +47,8 @@ class ContainerValidationTestCase(TestCase):
                 host=self.objects["host1"],
                 image=self.objects["image2"],
                 name="container2",
+                operation="none",
+                state="created",
             )
             container.clean()
 
@@ -63,6 +69,8 @@ class ContainerValidationTestCase(TestCase):
                 host=self.objects["host1"],
                 image=self.objects["image1"],
                 name="container3",
+                operation="none",
+                state="created",
             )
 
             mount = Mount(
@@ -88,6 +96,8 @@ class ContainerValidationTestCase(TestCase):
                 host=self.objects["host1"],
                 image=self.objects["image1"],
                 name="container3",
+                operation="none",
+                state="created",
             )
 
             network_setting = NetworkSetting(
