@@ -26,7 +26,7 @@ class ContainerStateChoices(ChoiceSet):
 
     key = "Container.state"
 
-    DEFAULT_VALUE = "created"
+    DEFAULT_VALUE = "none"
 
     CHOICES = [
         ("created", "Created", "dark"),
