@@ -14,6 +14,68 @@ class ContainerActionTestCase(TestCase):
 
     objects = {}
 
+    def test_noop(self):
+        """ Test that operation 'none' is always allowed """
+
+        for state in ["created", "restarting", "running", "paused", "exited", "dead", "none"]:
+            with transaction.atomic():
+                obj = Container.objects.create(
+                    host=self.objects["host"],
+                    image=self.objects["image"],
+                    name=f"container-{state}",
+                    operation="none",
+                    state=state,
+                )
+
+                obj.operation = "none"
+                obj.save()
+
+            self.assertEqual(
+                Container.objects.get(name=f"container-{state}").operation,
+                "none",
+            )
+
+    def test_create_container(self):
+        """ Test that a container can be created if state is 'none' """
+
+        state = "none"
+        with transaction.atomic():
+            obj = Container.objects.create(
+                host=self.objects["host"],
+                image=self.objects["image"],
+                name=f"container-{state}",
+                operation="none",
+                state=state,
+            )
+
+            obj.operation = "create"
+            obj.save()
+
+        self.assertEqual(
+            Container.objects.get(name=f"container-{state}").operation,
+            "create",
+        )
+
+    def test_create_non_none_container(self):
+        """ Test that a container cannot be created if state is not 'none' """
+
+        for state in ["created", "restarting", "running", "paused", "exited", "dead"]:
+            with transaction.atomic():
+                with self.assertRaises(
+                    AbortRequest,
+                    msg=f"AbortRequest not raised for {state}",
+                ):
+                    obj = Container.objects.create(
+                        host=self.objects["host"],
+                        image=self.objects["image"],
+                        name=f"container-{state}",
+                        operation="none",
+                        state=state,
+                    )
+
+                    obj.operation = "create"
+                    obj.save()
+
     def test_delete_non_running_container(self):
         """ Test that a non-running container can be deleted """
 
