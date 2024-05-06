@@ -80,7 +80,10 @@ class ContainerFilterForm(NetBoxModelFilterSetForm):
         label="Image",
     )
     state = forms.ChoiceField(
-        label="State", choices=ContainerStateChoices, required=False
+        label="State",
+        choices=ContainerStateChoices,
+        initial=ContainerStateChoices.DEFAULT_VALUE,
+        required=False,
     )
     restart_policy = forms.ChoiceField(
         label="Restart Policy", choices=ContainerRestartPolicyChoices, required=False
@@ -94,6 +97,7 @@ class ContainerImportForm(NetBoxModelImportForm):
     state = forms.ChoiceField(
         label="State",
         choices=ContainerStateChoices,
+        initial=ContainerStateChoices.DEFAULT_VALUE,
         required=False,
         help_text="Container State. Can be `created`, `restarting`, "
         + "`running`, `paused`, `exited` or `dead`.",
@@ -130,6 +134,7 @@ class ContainerBulkEditForm(NetBoxModelBulkEditForm):
     state = forms.ChoiceField(
         label="State",
         choices=ContainerStateChoices,
+        initial=ContainerStateChoices.DEFAULT_VALUE,
         required=True,
     )
     restart_policy = forms.ChoiceField(
