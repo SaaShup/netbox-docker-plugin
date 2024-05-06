@@ -22,6 +22,7 @@ def restrict_container_actions(instance, **_kwargs):
     """ Check if the container's state is correct for the given action """
 
     if any([
+        instance.operation == "create" and not instance.can_create,
         instance.operation == "start" and not instance.can_start,
         instance.operation == "restart" and not instance.can_restart,
         instance.operation == "stop" and not instance.can_stop,
