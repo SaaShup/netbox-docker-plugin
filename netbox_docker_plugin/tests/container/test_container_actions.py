@@ -53,7 +53,7 @@ class ContainerActionTestCase(TestCase):
     def test_start_non_running_container(self):
         """ Test that a non-running container can be started """
 
-        for state in ["created", "paused", "exited", "dead"]:
+        for state in ["created", "exited", "dead"]:
             with transaction.atomic():
                 obj = Container.objects.create(
                     host=self.objects["host"],
@@ -73,7 +73,7 @@ class ContainerActionTestCase(TestCase):
     def test_start_running_container(self):
         """ Test that a running container cannot be started """
 
-        for state in ["running", "restarting", "none"]:
+        for state in ["running", "restarting", "paused", "none"]:
             with transaction.atomic():
                 with self.assertRaises(
                     AbortRequest,
@@ -92,7 +92,7 @@ class ContainerActionTestCase(TestCase):
     def test_restart_non_running_container(self):
         """ Test that a non-running container cannot be restarted """
 
-        for state in ["created", "paused", "exited", "dead", "none"]:
+        for state in ["created", "restarting", "paused", "exited", "dead", "none"]:
             with transaction.atomic():
                 with self.assertRaises(
                     AbortRequest,
@@ -111,27 +111,27 @@ class ContainerActionTestCase(TestCase):
     def test_restart_running_container(self):
         """ Test that a running container can be restarted """
 
-        for state in ["running", "restarting"]:
-            with transaction.atomic():
-                obj = Container.objects.create(
-                    host=self.objects["host"],
-                    image=self.objects["image"],
-                    name=f"container-{state}",
-                    state=state,
-                )
-
-                obj.operation = "restart"
-                obj.save()
-
-            self.assertEqual(
-                Container.objects.get(name=f"container-{state}").operation,
-                "restart",
+        state = "running"
+        with transaction.atomic():
+            obj = Container.objects.create(
+                host=self.objects["host"],
+                image=self.objects["image"],
+                name=f"container-{state}",
+                state=state,
             )
+
+            obj.operation = "restart"
+            obj.save()
+
+        self.assertEqual(
+            Container.objects.get(name=f"container-{state}").operation,
+            "restart",
+        )
 
     def test_stop_non_running_container(self):
         """ Test that a non-running container cannot be stopped """
 
-        for state in ["created", "paused", "exited", "dead", "none"]:
+        for state in ["created", "restarting", "paused", "exited", "dead", "none"]:
             with transaction.atomic():
                 with self.assertRaises(
                     AbortRequest,
@@ -150,27 +150,27 @@ class ContainerActionTestCase(TestCase):
     def test_stop_running_container(self):
         """ Test that a running container can be stopped """
 
-        for state in ["running", "restarting"]:
-            with transaction.atomic():
-                obj = Container.objects.create(
-                    host=self.objects["host"],
-                    image=self.objects["image"],
-                    name=f"container-{state}",
-                    state=state,
-                )
-
-                obj.operation = "stop"
-                obj.save()
-
-            self.assertEqual(
-                Container.objects.get(name=f"container-{state}").operation,
-                "stop",
+        state = "running"
+        with transaction.atomic():
+            obj = Container.objects.create(
+                host=self.objects["host"],
+                image=self.objects["image"],
+                name=f"container-{state}",
+                state=state,
             )
+
+            obj.operation = "stop"
+            obj.save()
+
+        self.assertEqual(
+            Container.objects.get(name=f"container-{state}").operation,
+            "stop",
+        )
 
     def test_recreate_container(self):
         """ Test that a container can always be recreated """
 
-        for state in ["created", "paused", "exited", "dead", "running", "restarting"]:
+        for state in ["created", "exited", "dead", "running"]:
             with transaction.atomic():
                 obj = Container.objects.create(
                     host=self.objects["host"],
@@ -188,22 +188,25 @@ class ContainerActionTestCase(TestCase):
             )
 
     def test_recreate_none_container(self):
-        """ Test that a container in state 'none' cannot be recreated """
+        """
+        Test that a container cannot be recreated while in a conflicting state
+        """
 
-        with transaction.atomic():
-            with self.assertRaises(
-                AbortRequest,
-                msg="AbortRequest not raised for 'none'",
-            ):
-                obj = Container.objects.create(
-                    host=self.objects["host"],
-                    image=self.objects["image"],
-                    name="container-none",
-                    state="none",
-                )
+        for state in ["restarting", "paused", "none"]:
+            with transaction.atomic():
+                with self.assertRaises(
+                    AbortRequest,
+                    msg="AbortRequest not raised for 'none'",
+                ):
+                    obj = Container.objects.create(
+                        host=self.objects["host"],
+                        image=self.objects["image"],
+                        name=f"container-{state}",
+                        state=state,
+                    )
 
-                obj.operation = "recreate"
-                obj.save()
+                    obj.operation = "recreate"
+                    obj.save()
 
     @classmethod
     def setUpTestData(cls):
