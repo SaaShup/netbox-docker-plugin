@@ -10,10 +10,10 @@ class NetBoxDockerConfig(PluginConfig):
     name = "netbox_docker_plugin"
     verbose_name = " NetBox Docker Plugin"
     description = "Manage Docker"
-    version = "1.7.0"
+    version = "1.8.0"
     base_url = "docker"
-    author= "Vincent Simonin"
-    author_email= "vincent@saashup.com"
+    author= "Vincent Simonin <vincent@saashup.com>, David Delassus <david.jose.delassus@gmail.com>"
+    author_email= "vincent@saashup.com, david.jose.delassus@gmail.com"
 
     def ready(self):
         from . import signals # pylint: disable=unused-import, import-outside-toplevel
