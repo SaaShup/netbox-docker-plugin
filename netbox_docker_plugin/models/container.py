@@ -134,6 +134,11 @@ class Container(NetBoxModel):
     )
 
     @property
+    def can_create(self) -> bool:
+        """ Check if the container can be created """
+        return self.state == "none"
+
+    @property
     def can_start(self) -> bool:
         """ Check if the container can be started """
         return self.state in ["created", "exited", "dead"]
