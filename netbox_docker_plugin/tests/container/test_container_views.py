@@ -75,6 +75,7 @@ class ContainerViewsTestCase(
         )
 
         cls.bulk_edit_data = {
+            "hostname": "h",
             "restart_policy": "always",
         }
 
