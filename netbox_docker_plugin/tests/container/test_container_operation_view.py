@@ -1,3 +1,4 @@
+# pylint: disable=R0801
 """Container operation Views Test Case"""
 
 from django.urls import reverse

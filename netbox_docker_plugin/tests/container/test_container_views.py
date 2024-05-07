@@ -1,3 +1,4 @@
+# pylint: disable=R0801
 """Container Views Test Case"""
 
 from utilities.testing import ViewTestCases

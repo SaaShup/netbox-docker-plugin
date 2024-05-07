@@ -1,3 +1,4 @@
+# pylint: disable=R0801
 """Container Test Case"""
 
 from utilities.testing import APIViewTestCases
