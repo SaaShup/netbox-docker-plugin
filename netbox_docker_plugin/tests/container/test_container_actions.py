@@ -4,7 +4,7 @@ from django.db import transaction
 from django.test import TestCase
 from utilities.exceptions import AbortRequest
 from netbox_docker_plugin.models.container import Container
-from netbox_docker_plugin.models.host import Host
+from netbox_docker_plugin.models.host import Host, HostStateChoices
 from netbox_docker_plugin.models.image import Image
 from netbox_docker_plugin.models.registry import Registry
 
@@ -32,8 +32,8 @@ class ContainerActionTestCase(TestCase):
                     with transaction.atomic():
                         name = f"container-{operation}-{state}"
                         obj = Container.objects.create(
-                            host=self.objects["host"],
-                            image=self.objects["image"],
+                            host=self.objects["host1"],
+                            image=self.objects["image2"],
                             name=name,
                             operation="none",
                             state=state,
@@ -68,8 +68,8 @@ class ContainerActionTestCase(TestCase):
                         ):
                             name = f"container-{operation}-{state}"
                             obj = Container.objects.create(
-                                host=self.objects["host"],
-                                image=self.objects["image"],
+                                host=self.objects["host1"],
+                                image=self.objects["image2"],
                                 name=name,
                                 operation="none",
                                 state=state,
@@ -86,8 +86,8 @@ class ContainerActionTestCase(TestCase):
                 with transaction.atomic():
                     name = f"container-delete-{state}"
                     obj = Container.objects.create(
-                        host=self.objects["host"],
-                        image=self.objects["image"],
+                        host=self.objects["host1"],
+                        image=self.objects["image2"],
                         name=name,
                         operation="none",
                         state=state,
@@ -109,8 +109,8 @@ class ContainerActionTestCase(TestCase):
                     ):
                         name = f"container-delete-{state}"
                         obj = Container.objects.create(
-                            host=self.objects["host"],
-                            image=self.objects["image"],
+                            host=self.objects["host1"],
+                            image=self.objects["image2"],
                             name=name,
                             operation="none",
                             state=state,
@@ -118,19 +118,54 @@ class ContainerActionTestCase(TestCase):
 
                         obj.delete()
 
+    def test_delete_container_on_deleted_host(self):
+        """ Test that a container on a deleted host can be deleted """
+
+        for state in ["created", "running", "restarted", "paused", "exited", "dead", "none"]:
+            with self.subTest(operation="delete", state=state):
+                with transaction.atomic():
+                    name = f"container-delete-{state}"
+                    obj = Container.objects.create(
+                        host=self.objects["host2"],
+                        image=self.objects["image2"],
+                        name=name,
+                        operation="none",
+                        state=state,
+                    )
+
+                    obj.delete()
+
+                self.assertFalse(Container.objects.filter(name=name).exists())
+
     @classmethod
     def setUpTestData(cls):
-        cls.objects["host"] = Host.objects.create(
+        cls.objects["host1"] = Host.objects.create(
             endpoint="http://localhost:8080",
-            name="host",
+            name="host1",
         )
-        cls.objects["registry"] = Registry.objects.create(
-            host=cls.objects["host"],
-            name="registry",
+        cls.objects["registry1"] = Registry.objects.create(
+            host=cls.objects["host1"],
+            name="registry1",
             serveraddress="http://localhost:8080",
         )
-        cls.objects["image"] = Image.objects.create(
-            host=cls.objects["host"],
-            registry=cls.objects["registry"],
-            name="image",
+        cls.objects["image2"] = Image.objects.create(
+            host=cls.objects["host1"],
+            registry=cls.objects["registry1"],
+            name="image2",
+        )
+
+        cls.objects["host2"] = Host.objects.create(
+            endpoint="http://localhost:8080",
+            name="host2",
+            state=HostStateChoices.STATE_DELETED,
+        )
+        cls.objects["registry2"] = Registry.objects.create(
+            host=cls.objects["host2"],
+            name="registry2",
+            serveraddress="http://localhost:8080",
+        )
+        cls.objects["image2"] = Image.objects.create(
+            host=cls.objects["host2"],
+            registry=cls.objects["registry2"],
+            name="image2",
         )
