@@ -65,7 +65,6 @@ class ContainerViewsTestCase(
             "name": "container5",
             "host": host1.pk,
             "image": image1.pk,
-            "state": "none",
             "restart_policy": "unless-stopped",
         }
 
@@ -76,12 +75,11 @@ class ContainerViewsTestCase(
         )
 
         cls.bulk_edit_data = {
-            "state": "running",
             "restart_policy": "always",
         }
 
         cls.csv_update_data = (
-            "id,name,host,image,state,hostname,restart_policy",
-            f"{container1.pk},container1,{host1.pk},{image1.pk},paused,,on-failure",
-            f"{container2.pk},container2,{host1.pk},{image1.pk},running,container2,unless-stopped",
+            "id,name,host,image,hostname,restart_policy",
+            f"{container1.pk},container1,{host1.pk},{image1.pk},,on-failure",
+            f"{container2.pk},container2,{host1.pk},{image1.pk},container2,unless-stopped",
         )
