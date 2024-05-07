@@ -14,11 +14,7 @@ from netbox.forms import (
 )
 from ..models.volume import Volume
 from ..models.host import Host
-from ..models.container import (
-    Container,
-    ContainerStateChoices,
-    ContainerRestartPolicyChoices,
-)
+from ..models.container import Container, ContainerRestartPolicyChoices
 from ..models.image import Image
 
 
@@ -44,7 +40,6 @@ class ContainerForm(NetBoxModelForm):
             "image",
             "name",
             "hostname",
-            "state",
             "restart_policy",
             "tags",
         )
@@ -53,7 +48,6 @@ class ContainerForm(NetBoxModelForm):
             "host": "Host",
             "image": "Image",
             "hostname": "Hostname",
-            "state": "State",
             "restart_policy": "Restart Policy",
         }
 
@@ -79,12 +73,6 @@ class ContainerFilterForm(NetBoxModelFilterSetForm):
         required=False,
         label="Image",
     )
-    state = forms.ChoiceField(
-        label="State",
-        choices=ContainerStateChoices,
-        initial=ContainerStateChoices.DEFAULT_VALUE,
-        required=False,
-    )
     restart_policy = forms.ChoiceField(
         label="Restart Policy", choices=ContainerRestartPolicyChoices, required=False
     )
@@ -94,14 +82,6 @@ class ContainerFilterForm(NetBoxModelFilterSetForm):
 class ContainerImportForm(NetBoxModelImportForm):
     """Container importation form definition class"""
 
-    state = forms.ChoiceField(
-        label="State",
-        choices=ContainerStateChoices,
-        initial=ContainerStateChoices.DEFAULT_VALUE,
-        required=False,
-        help_text="Container State. Can be `created`, `restarting`, "
-        + "`running`, `paused`, `exited` or `dead`.",
-    )
     restart_policy = forms.ChoiceField(
         label="Restart Policy",
         choices=ContainerRestartPolicyChoices,
@@ -118,7 +98,6 @@ class ContainerImportForm(NetBoxModelImportForm):
             "name",
             "host",
             "image",
-            "state",
             "hostname",
         )
         labels = {
@@ -131,12 +110,6 @@ class ContainerImportForm(NetBoxModelImportForm):
 class ContainerBulkEditForm(NetBoxModelBulkEditForm):
     """Container bulk edit form definition class"""
 
-    state = forms.ChoiceField(
-        label="State",
-        choices=ContainerStateChoices,
-        initial=ContainerStateChoices.DEFAULT_VALUE,
-        required=True,
-    )
     restart_policy = forms.ChoiceField(
         label="Restart Policy",
         choices=ContainerRestartPolicyChoices,
@@ -147,7 +120,7 @@ class ContainerBulkEditForm(NetBoxModelBulkEditForm):
     )
 
     model = Container
-    fieldsets = (("General", ("state", "restart_policy", "hostname")),)
+    fieldsets = (("General", ("restart_policy", "hostname")),)
 
 
 class ContainerOperationForm(NetBoxModelForm):
