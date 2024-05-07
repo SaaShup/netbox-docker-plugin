@@ -16,7 +16,7 @@ from utilities.choices import ChoiceSet
 from utilities.querysets import RestrictedQuerySet
 from netbox.models import NetBoxModel
 from .image import Image
-from .host import Host
+from .host import Host, HostStateChoices
 from .network import Network
 from .volume import Volume
 
@@ -161,7 +161,10 @@ class Container(NetBoxModel):
     @property
     def can_delete(self) -> bool:
         """ Check if the container can be deleted """
-        return self.state in ["created", "paused", "exited", "dead"]
+        return (
+            self.host.state == HostStateChoices.STATE_DELETED
+            or self.state in ["created", "paused", "exited", "dead"]
+        )
 
     class Meta:
         """Image Model Meta Class"""
