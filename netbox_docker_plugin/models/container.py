@@ -16,7 +16,7 @@ from utilities.choices import ChoiceSet
 from utilities.querysets import RestrictedQuerySet
 from netbox.models import NetBoxModel
 from .image import Image
-from .host import Host
+from .host import Host, HostStateChoices
 from .network import Network
 from .volume import Volume
 
@@ -26,7 +26,7 @@ class ContainerStateChoices(ChoiceSet):
 
     key = "Container.state"
 
-    DEFAULT_VALUE = "created"
+    DEFAULT_VALUE = "none"
 
     CHOICES = [
         ("created", "Created", "dark"),
@@ -132,6 +132,39 @@ class Container(NetBoxModel):
         choices=ContainerRestartPolicyChoices,
         default=ContainerRestartPolicyChoices.DEFAULT_VALUE,
     )
+
+    @property
+    def can_create(self) -> bool:
+        """ Check if the container can be created """
+        return self.state == "none"
+
+    @property
+    def can_start(self) -> bool:
+        """ Check if the container can be started """
+        return self.state in ["created", "exited", "dead"]
+
+    @property
+    def can_stop(self) -> bool:
+        """ Check if the container can be stopped """
+        return self.state in ["running"]
+
+    @property
+    def can_restart(self) -> bool:
+        """ Check if the container can be restarted """
+        return self.state in ["running"]
+
+    @property
+    def can_recreate(self) -> bool:
+        """ Check if the container can be recreated """
+        return self.state in ["created", "running", "exited", "dead"]
+
+    @property
+    def can_delete(self) -> bool:
+        """ Check if the container can be deleted """
+        return (
+            self.host.state == HostStateChoices.STATE_DELETED
+            or self.state in ["created", "paused", "exited", "dead"]
+        )
 
     class Meta:
         """Image Model Meta Class"""

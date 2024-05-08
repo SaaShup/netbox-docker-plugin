@@ -1,3 +1,4 @@
+# pylint: disable=R0801
 """Container Test Case"""
 
 from utilities.testing import APIViewTestCases
@@ -64,9 +65,27 @@ class ContainerApiTestCase(
         volume2 = Volume.objects.create(host=host1, name="volume2")
         volume3 = Volume.objects.create(host=host2, name="volume3")
 
-        Container.objects.create(host=host1, image=image1, name="container1")
-        Container.objects.create(host=host1, image=image1, name="container2")
-        Container.objects.create(host=host2, image=image2, name="container3")
+        Container.objects.create(
+            host=host1,
+            image=image1,
+            name="container1",
+            operation="none",
+            state="created",
+        )
+        Container.objects.create(
+            host=host1,
+            image=image1,
+            name="container2",
+            operation="none",
+            state="created",
+        )
+        Container.objects.create(
+            host=host2,
+            image=image2,
+            name="container3",
+            operation="none",
+            state="created",
+        )
 
         cls.create_data = [
             {
