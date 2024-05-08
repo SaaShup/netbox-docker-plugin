@@ -480,37 +480,37 @@ class ContainerSerializer(NetBoxModelSerializer):
 
         container = super().update(instance, validated_data)
 
-        Port.objects.filter(container=container).delete()
         if ports_data is not None:
+            Port.objects.filter(container=container).delete()
             for port in ports_data:
                 Port.objects.create(container=container, **port)
 
-        Env.objects.filter(container=container).delete()
         if env_data is not None:
+            Env.objects.filter(container=container).delete()
             for env in env_data:
                 Env.objects.create(container=container, **env)
 
-        Label.objects.filter(container=container).delete()
         if labels_data is not None:
+            Label.objects.filter(container=container).delete()
             for label in labels_data:
                 Label.objects.create(container=container, **label)
 
-        Mount.objects.filter(container=container).delete()
         if mounts_data is not None:
+            Mount.objects.filter(container=container).delete()
             for mount in mounts_data:
                 obj = Mount(container=container, **mount)
                 obj.full_clean()
                 obj.save()
 
-        Bind.objects.filter(container=container).delete()
         if binds_data is not None:
+            Bind.objects.filter(container=container).delete()
             for bind in binds_data:
                 obj = Bind(container=container, **bind)
                 obj.full_clean()
                 obj.save()
 
-        NetworkSetting.objects.filter(container=container).delete()
         if network_settings_data is not None:
+            NetworkSetting.objects.filter(container=container).delete()
             for network_setting in network_settings_data:
                 obj = NetworkSetting(container=container, **network_setting)
                 obj.full_clean()
