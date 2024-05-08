@@ -1,8 +1,12 @@
 # pylint: disable=R0801
 """Container Test Case"""
 
+from django.urls import reverse
+from django.contrib.contenttypes.models import ContentType
+from rest_framework import status
+from users.models import ObjectPermission
 from utilities.testing import APIViewTestCases
-from netbox_docker_plugin.models.container import Container
+from netbox_docker_plugin.models.container import Container, Bind, Env
 from netbox_docker_plugin.models.host import Host
 from netbox_docker_plugin.models.network import Network
 from netbox_docker_plugin.models.image import Image
@@ -164,3 +168,72 @@ class ContainerApiTestCase(
                 "labels": [],
             },
         ]
+
+    def test_that_patch_overwrites_data_only_when_explicitly_set(self):
+        """ Test that patch overwrites data only when explicitly set """
+
+        # Assign model-level permission
+        obj_perm = ObjectPermission(
+            name="Test permission", actions=["add", "change", "view"]
+        )
+        obj_perm.save()
+        # pylint: disable=E1101
+        obj_perm.users.add(self.user)
+        # pylint: disable=E1101
+        obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
+        obj_perm.object_types.add(ContentType.objects.get_for_model(Container))
+        obj_perm.object_types.add(ContentType.objects.get_for_model(Bind))
+        obj_perm.object_types.add(ContentType.objects.get_for_model(Env))
+
+        host3 = Host.objects.create(
+            endpoint="http://localhost:8080",
+            name="host3",
+        )
+        registry3 = Registry.objects.create(
+            host=host3,
+            name="registry3",
+            serveraddress="http://localhost:8080",
+        )
+        image3 = Image.objects.create(
+            host=host3,
+            name="image3",
+            registry=registry3,
+        )
+        container11 = Container.objects.create(
+            host=host3,
+            image=image3,
+            name="container11",
+            operation="none",
+            state="created",
+        )
+        Bind.objects.create(
+            container=container11,
+            host_path="/opt/ct11/data",
+            container_path="/data",
+        )
+        Env.objects.create(
+            container=container11,
+            var_name="FOO",
+            value="bar",
+        )
+
+        response = self.client.patch(
+            reverse(f"plugins-api:{self._get_view_namespace()}:container-list"),
+            [
+                {
+                    "id": container11.pk,
+                    "host": host3.pk,
+                    "image": image3.pk,
+                    "name": "container11",
+                    "binds": [],  # explicitly remove binds
+                    # but don't specify envs to not overwrite them
+                },
+            ],
+            format="json",
+            **self.header,
+        )
+
+        self.assertHttpStatus(response, status.HTTP_200_OK)
+
+        self.assertEqual(Bind.objects.filter(container=container11).count(), 0)
+        self.assertEqual(Env.objects.filter(container=container11).count(), 1)
