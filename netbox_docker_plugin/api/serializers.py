@@ -2,6 +2,7 @@
 
 # pylint: disable=E1101
 
+from django.db import transaction
 from rest_framework import serializers
 from utilities.utils import dict_to_filter_params
 from users.api.nested_serializers import NestedTokenSerializer
@@ -436,39 +437,40 @@ class ContainerSerializer(NetBoxModelSerializer):
         binds_data = validated_data.pop("binds", None)
         network_settings_data = validated_data.pop("network_settings", None)
 
-        container = super().create(validated_data)
+        with transaction.atomic():
+            container = super().create(validated_data)
 
-        if ports_data is not None:
-            for port in ports_data:
-                Port.objects.create(container=container, **port)
+            if ports_data is not None:
+                for port in ports_data:
+                    Port.objects.create(container=container, **port)
 
-        if env_data is not None:
-            for env in env_data:
-                Env.objects.create(container=container, **env)
+            if env_data is not None:
+                for env in env_data:
+                    Env.objects.create(container=container, **env)
 
-        if labels_data is not None:
-            for label in labels_data:
-                Label.objects.create(container=container, **label)
+            if labels_data is not None:
+                for label in labels_data:
+                    Label.objects.create(container=container, **label)
 
-        if mounts_data is not None:
-            for mount in mounts_data:
-                obj = Mount(container=container, **mount)
-                obj.full_clean()
-                obj.save()
+            if mounts_data is not None:
+                for mount in mounts_data:
+                    obj = Mount(container=container, **mount)
+                    obj.full_clean()
+                    obj.save()
 
-        if binds_data is not None:
-            for bind in binds_data:
-                obj = Bind(container=container, **bind)
-                obj.full_clean()
-                obj.save()
+            if binds_data is not None:
+                for bind in binds_data:
+                    obj = Bind(container=container, **bind)
+                    obj.full_clean()
+                    obj.save()
 
-        if network_settings_data is not None:
-            for network_setting in network_settings_data:
-                obj = NetworkSetting(container=container, **network_setting)
-                obj.full_clean()
-                obj.save()
+            if network_settings_data is not None:
+                for network_setting in network_settings_data:
+                    obj = NetworkSetting(container=container, **network_setting)
+                    obj.full_clean()
+                    obj.save()
 
-        return container
+            return container
 
     def update(self, instance, validated_data):
         ports_data = validated_data.pop("ports", None)
@@ -478,45 +480,46 @@ class ContainerSerializer(NetBoxModelSerializer):
         binds_data = validated_data.pop("binds", None)
         network_settings_data = validated_data.pop("network_settings", None)
 
-        container = super().update(instance, validated_data)
+        with transaction.atomic():
+            container = super().update(instance, validated_data)
 
-        if ports_data is not None:
-            Port.objects.filter(container=container).delete()
-            for port in ports_data:
-                Port.objects.create(container=container, **port)
+            if ports_data is not None:
+                Port.objects.filter(container=container).delete()
+                for port in ports_data:
+                    Port.objects.create(container=container, **port)
 
-        if env_data is not None:
-            Env.objects.filter(container=container).delete()
-            for env in env_data:
-                Env.objects.create(container=container, **env)
+            if env_data is not None:
+                Env.objects.filter(container=container).delete()
+                for env in env_data:
+                    Env.objects.create(container=container, **env)
 
-        if labels_data is not None:
-            Label.objects.filter(container=container).delete()
-            for label in labels_data:
-                Label.objects.create(container=container, **label)
+            if labels_data is not None:
+                Label.objects.filter(container=container).delete()
+                for label in labels_data:
+                    Label.objects.create(container=container, **label)
 
-        if mounts_data is not None:
-            Mount.objects.filter(container=container).delete()
-            for mount in mounts_data:
-                obj = Mount(container=container, **mount)
-                obj.full_clean()
-                obj.save()
+            if mounts_data is not None:
+                Mount.objects.filter(container=container).delete()
+                for mount in mounts_data:
+                    obj = Mount(container=container, **mount)
+                    obj.full_clean()
+                    obj.save()
 
-        if binds_data is not None:
-            Bind.objects.filter(container=container).delete()
-            for bind in binds_data:
-                obj = Bind(container=container, **bind)
-                obj.full_clean()
-                obj.save()
+            if binds_data is not None:
+                Bind.objects.filter(container=container).delete()
+                for bind in binds_data:
+                    obj = Bind(container=container, **bind)
+                    obj.full_clean()
+                    obj.save()
 
-        if network_settings_data is not None:
-            NetworkSetting.objects.filter(container=container).delete()
-            for network_setting in network_settings_data:
-                obj = NetworkSetting(container=container, **network_setting)
-                obj.full_clean()
-                obj.save()
+            if network_settings_data is not None:
+                NetworkSetting.objects.filter(container=container).delete()
+                for network_setting in network_settings_data:
+                    obj = NetworkSetting(container=container, **network_setting)
+                    obj.full_clean()
+                    obj.save()
 
-        return container
+            return container
 
 
 class RegistrySerializer(NetBoxModelSerializer):
