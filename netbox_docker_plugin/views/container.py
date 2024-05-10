@@ -30,7 +30,6 @@ class ContainerView(generic.ObjectView):
         "ports",
         "network_settings",
     )
-    template_name = "netbox_docker_plugin/container-detail.html"
 
 
 @register_model_view(Container, name="logs", path="logs")
