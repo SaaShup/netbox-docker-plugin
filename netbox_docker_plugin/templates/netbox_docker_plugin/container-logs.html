@@ -1,0 +1,31 @@
+{% extends "netbox_docker_plugin/container-layout.html" %}
+
+{% load plugins %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col col-md-12">
+    <div class="card">
+      <h5 class="card-header">LOGS</h5>
+      <div class="card-body">
+        <pre
+          class="border border-dark bg-dark text-light p-1"
+          style="height: 300px; overflow-y: auto;"
+        >
+          <code
+            id="container-logs"
+            hx-get="/api/plugins/docker/containers/{{ object.pk }}/logs/"
+            hx-trigger="load every 5s"
+          ></code>
+        </pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="application/javascript">
+  document.querySelector("#container-logs").addEventListener("htmx:afterSwap", function() {
+    this.parentElement.scrollTop = this.parentElement.scrollHeight
+  })
+</script>
+{% endblock %}

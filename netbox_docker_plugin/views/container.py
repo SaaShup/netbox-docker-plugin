@@ -1,6 +1,7 @@
 """Container views definitions"""
 
 from utilities.utils import count_related
+from utilities.views import ViewTab, register_model_view
 from netbox.views import generic
 from .. import tables, filtersets
 from ..forms import container
@@ -15,6 +16,7 @@ from ..models.container import (
 )
 
 
+@register_model_view(Container)
 class ContainerView(generic.ObjectView):
     """Container view definition"""
 
@@ -28,6 +30,16 @@ class ContainerView(generic.ObjectView):
         "ports",
         "network_settings",
     )
+    template_name = "netbox_docker_plugin/container-detail.html"
+
+
+@register_model_view(Container, name="logs", path="logs")
+class ContainerLogsView(generic.ObjectView):
+    """ Logs tab in Container view """
+
+    queryset = Container.objects.all()
+    tab = ViewTab(label="Logs")
+    template_name = "netbox_docker_plugin/container-logs.html"
 
 
 class ContainerEditView(generic.ObjectEditView):

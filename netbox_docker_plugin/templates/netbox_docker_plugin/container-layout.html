@@ -1,0 +1,61 @@
+{% extends 'generic/object.html' %}
+
+{% load plugins %}
+
+{% block extra_controls %}
+<form action="{% url 'plugins:netbox_docker_plugin:container_operation' pk=object.id operation='start' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="operation" value="start">
+  <button
+    type="submit"
+    class="btn btn-sm btn-success"
+    {% if not object.can_start %}
+    disabled
+    {% endif %}
+  >
+    <i class="mdi mdi-play"></i> Start
+  </button>
+</form>
+
+<form action="{% url 'plugins:netbox_docker_plugin:container_operation' pk=object.id operation='stop' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="operation" value="stop">
+  <button
+    type="submit"
+    class="btn btn-sm btn-danger"
+    {% if not object.can_stop %}
+    disabled
+    {% endif %}
+  >
+    <i class="mdi mdi-stop"></i> Stop
+  </button>
+</form>
+
+<form action="{% url 'plugins:netbox_docker_plugin:container_operation' pk=object.id operation='restart' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="operation" value="restart">
+  <button
+    type="submit"
+    class="btn btn-sm btn-light"
+    {% if not object.can_restart %}
+    disabled
+    {% endif %}
+  >
+    <i class="mdi mdi-restart"></i> Restart
+  </button>
+</form>
+
+<form action="{% url 'plugins:netbox_docker_plugin:container_operation' pk=object.id operation='recreate' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="operation" value="recreate">
+  <button
+    type="submit"
+    class="btn btn-sm btn-dark"
+    {% if not object.can_recreate %}
+    disabled
+    {% endif %}
+  >
+    <i class="mdi mdi-autorenew"></i> Recreate
+  </button>
+</form>
+{% endblock %}
