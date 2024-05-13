@@ -144,7 +144,7 @@ class ContainerViewSet(NetBoxModelViewSet):
         url = f"{agent_url}/api/engine/containers/{container_id}/logs"
 
         try:
-            resp = requests.put(url, timeout=10)
+            resp = requests.get(url, timeout=10)
             resp.raise_for_status()
 
         except requests.HTTPError:
