@@ -9,23 +9,24 @@
       <h5 class="card-header">LOGS</h5>
       <div class="card-body">
         <pre
-          class="border border-dark bg-dark text-light p-1"
-          style="height: 300px; overflow-y: auto;"
+          id="container-logs"
+          class="p-2 text-white border-dark"
+          style="height: 300px; overflow-y: auto; background-color: black;"
+          hx-get="/api/plugins/docker/containers/{{ object.pk }}/logs/"
+          hx-trigger="load, every 5s"
         >
-          <code
-            id="container-logs"
-            hx-get="/api/plugins/docker/containers/{{ object.pk }}/logs/"
-            hx-trigger="load every 5s"
-          ></code>
         </pre>
       </div>
     </div>
   </div>
 </div>
-
+{% endblock %}
+{% block head %}
 <script type="application/javascript">
+htmx.onLoad(function(elt) {
   document.querySelector("#container-logs").addEventListener("htmx:afterSwap", function() {
-    this.parentElement.scrollTop = this.parentElement.scrollHeight
+    this.scrollTop = this.scrollHeight
   })
+})
 </script>
 {% endblock %}
