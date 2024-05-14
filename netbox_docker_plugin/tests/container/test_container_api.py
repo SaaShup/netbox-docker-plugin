@@ -260,7 +260,9 @@ class ContainerApiTestCase(
             actions=["view"],
         )
         obj_perm.save()
+        # pylint: disable=E1101
         obj_perm.users.add(self.user)
+        # pylint: disable=E1101
         obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
 
         with requests_mock.Mocker() as m:
