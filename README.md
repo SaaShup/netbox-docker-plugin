@@ -118,7 +118,6 @@ Install netbox-docker-plugin dependencies:
 ```bash
 cd $PROJECT/netbox-docker-plugin
 pip install -e .
-pip install -r requirements.tests.txt
 ```
 
 Configure Netbox and install Netbox dependencies:
@@ -154,12 +153,20 @@ Visit http://localhost:8000/
 
 ### Run tests
 
-After installing your development environment, you can run the plugin's test
-suite (you don't need to start the Netbox instance):
+After installing your development environment, you can run the tests plugin
+(you don't need to start the Netbox instance):
 
 ```bash
 cd $PROJECT/netbox
+python3 -m pip install requests_mock
 python3 netbox/manage.py test netbox_docker_plugin.tests --keepdb -v 2
+```
+
+With code coverage, install [coverage.py](https://coverage.readthedocs.io/en/7.3.2/) and use it:
+
+```bash
+cd $PROJECT/netbox
+python3 -m pip install coverage
 ```
 
 Then run the test with coverage.py and print the report:

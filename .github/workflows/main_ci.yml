@@ -49,7 +49,7 @@ jobs:
         working-directory: netbox-docker-plugin
         run: |
           pip install .
-          pip install -r requirements.tests.txt
+          pip install requests_mock
       - name: Install netbox Dependencies
         working-directory: netbox
         run: |
