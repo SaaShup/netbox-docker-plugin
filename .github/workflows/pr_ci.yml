@@ -52,6 +52,7 @@ jobs:
         working-directory: netbox-docker-plugin
         run: |
           pip install .
+          pip install -r requirements.tests.txt
       - name: Install netbox Dependencies
         working-directory: netbox
         run: |
@@ -65,7 +66,6 @@ jobs:
       - name: Run tests with coverage and edit coverage report
         working-directory: netbox
         run: |
-          python3 -m pip install -r requirements.tests.txt
           coverage run --include='*/netbox_docker_plugin/*' netbox/manage.py test netbox_docker_plugin.tests -v 2
           coverage report -m
           coverage xml -o coverage.xml
