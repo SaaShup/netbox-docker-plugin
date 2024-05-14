@@ -6,14 +6,25 @@
 <div class="row mb-3">
   <div class="col col-md-12">
     <div class="card">
-      <h5 class="card-header">LOGS</h5>
+      <div class="card-header">
+        <div class="d-sm-flex p-2 flex-row align-items-center">
+          <h5 class="flex-grow-1">LOGS</h5>
+          <button
+            id="container-logs-button"
+            type="button"
+            class="btn btn-lg btn-outline-primary"
+          >
+            Stop Following
+          </button>
+        </div>
       <div class="card-body">
         <pre
-          id="container-logs"
+          id="container-logs-panel"
+          data-follow="true"
           class="p-2 text-white border-dark"
           style="height: 300px; overflow-y: auto; background-color: black;"
           hx-get="/api/plugins/docker/containers/{{ object.pk }}/logs/"
-          hx-trigger="load, every 5s"
+          hx-trigger="load, every 30s"
         >
         </pre>
       </div>
@@ -21,11 +32,29 @@
   </div>
 </div>
 {% endblock %}
+
 {% block head %}
 <script type="application/javascript">
 htmx.onLoad(function(elt) {
-  document.querySelector("#container-logs").addEventListener("htmx:afterSwap", function() {
-    this.scrollTop = this.scrollHeight
+  const logPanel = document.getElementById("container-logs-panel")
+  const followButton = document.getElementById("container-logs-button")
+
+  const isFollowEnabled = () => JSON.parse(logPanel.dataset.follow) === true
+  const toggleFollow = () => {
+    logPanel.dataset.follow = !isFollowEnabled()
+    followButton.classList.toggle("btn-outline-primary")
+    followButton.classList.toggle("btn-primary")
+    followButton.textContent = isFollowEnabled() ? "Stop Following" : "Follow"
+  }
+
+  logPanel.addEventListener("htmx:afterSwap", function() {
+    if (isFollowEnabled()) {
+      this.scrollTop = this.scrollHeight
+    }
+  })
+
+  followButton.addEventListener("click", function() {
+    toggleFollow()
   })
 })
 </script>
