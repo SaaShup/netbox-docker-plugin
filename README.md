@@ -153,10 +153,12 @@ Visit http://localhost:8000/
 
 ### Run tests
 
-After installing you development environment, you can run the tests plugin (you don't need to start the Netbox instance):
+After installing your development environment, you can run the tests plugin
+(you don't need to start the Netbox instance):
 
 ```bash
 cd $PROJECT/netbox
+python3 -m pip install requests_mock
 python3 netbox/manage.py test netbox_docker_plugin.tests --keepdb -v 2
 ```
 
@@ -167,7 +169,7 @@ cd $PROJECT/netbox
 python3 -m pip install coverage
 ```
 
-The run the test with coverage.py and print the report:
+Then run the test with coverage.py and print the report:
 
 ```bash
 cd $PROJECT/netbox

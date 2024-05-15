@@ -14,6 +14,8 @@ from netbox_docker_plugin.models.volume import Volume
 from netbox_docker_plugin.models.registry import Registry
 from netbox_docker_plugin.tests.base import BaseAPITestCase
 
+import requests_mock
+
 
 class ContainerApiTestCase(
     BaseAPITestCase,
@@ -75,6 +77,7 @@ class ContainerApiTestCase(
             name="container1",
             operation="none",
             state="created",
+            ContainerID="1234",
         )
         Container.objects.create(
             host=host1,
@@ -237,3 +240,37 @@ class ContainerApiTestCase(
 
         self.assertEqual(Bind.objects.filter(container=container11).count(), 0)
         self.assertEqual(Env.objects.filter(container=container11).count(), 1)
+
+
+    def test_logs_endpoint(self):
+        """ Test logs endpoint """
+
+        container = Container.objects.get(name="container1")
+        container_id = container.ContainerID
+
+        endpoint = reverse(
+            viewname=f"plugins-api:{self._get_view_namespace()}:container-logs",
+            kwargs={"pk": container.pk},
+        )
+
+        # Add object-level permission
+        obj_perm = ObjectPermission(
+            name='Test permission',
+            constraints={"pk": container.pk},
+            actions=["view"],
+        )
+        obj_perm.save()
+        # pylint: disable=E1101
+        obj_perm.users.add(self.user)
+        # pylint: disable=E1101
+        obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
+
+        with requests_mock.Mocker() as m:
+            m.get(
+                f"http://localhost:8080/api/engine/containers/{container_id}/logs",
+                text="Hello World",
+            )
+
+            response = self.client.get(endpoint, **self.header)
+            self.assertHttpStatus(response, status.HTTP_200_OK)
+            self.assertEqual(response.data, "Hello World")

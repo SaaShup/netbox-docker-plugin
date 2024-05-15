@@ -1,9 +1,17 @@
 """API views definitions"""
 
 from collections.abc import Sequence
+from drf_spectacular.utils import extend_schema, OpenApiResponse, OpenApiExample
+from rest_framework import status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+import requests
+
 from users.models import Token
 from netbox.api.viewsets import NetBoxModelViewSet
+
 from .. import filtersets
+from .renderers import PlainTextRenderer
 from .serializers import (
     HostSerializer,
     ImageSerializer,
@@ -94,6 +102,63 @@ class ContainerViewSet(NetBoxModelViewSet):
     filterset_class = filtersets.ContainerFilterSet
     serializer_class = ContainerSerializer
     http_method_names = ["get", "post", "patch", "delete", "options"]
+
+
+    @extend_schema(
+        operation_id="plugins_docker_container_logs",
+        responses={
+            (200, "text/plain"): OpenApiResponse(
+                response=str,
+                examples=[
+                    OpenApiExample(
+                        "Container's logs",
+                        value="Hello World",
+                        media_type="text/plain",
+                    ),
+                ],
+            ),
+            (502, "text/plain"): OpenApiResponse(
+                response=str,
+                examples=[
+                    OpenApiExample(
+                        "Engine error",
+                        value="Error as returned by Agent",
+                        media_type="text/plain",
+                    ),
+                ],
+            ),
+        },
+    )
+    @action(
+        detail=True,
+        methods=["get"],
+        renderer_classes=[PlainTextRenderer],
+    )
+    def logs(self, _request, **_kwargs):
+        """ Fetch container's logs """
+
+        container: Container = self.get_object()
+        agent_url = container.host.endpoint
+        container_id = container.ContainerID
+
+        url = f"{agent_url}/api/engine/containers/{container_id}/logs"
+
+        try:
+            resp = requests.get(url, timeout=10)
+            resp.raise_for_status()
+
+        except requests.HTTPError:
+            return Response(
+                resp.text,
+                status=status.HTTP_502_BAD_GATEWAY,
+                content_type="text/plain",
+            )
+
+        return Response(
+            resp.text,
+            status=status.HTTP_200_OK,
+            content_type="text/plain",
+        )
 
 
 class RegistryViewSet(NetBoxModelViewSet):
