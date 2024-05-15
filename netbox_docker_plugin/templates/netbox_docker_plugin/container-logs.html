@@ -12,9 +12,9 @@
           <button
             id="container-logs-button"
             type="button"
-            class="btn btn-lg btn-outline-primary"
+            class="btn btn-primary"
           >
-            Stop Following
+            <i id="container-logs-cb" class="mdi mdi-checkbox-marked"></i> Follow logs
           </button>
         </div>
       <div class="card-body">
@@ -38,13 +38,15 @@
 htmx.onLoad(function(elt) {
   const logPanel = document.getElementById("container-logs-panel")
   const followButton = document.getElementById("container-logs-button")
+  const checkbox = document.getElementById("container-logs-cb")
 
   const isFollowEnabled = () => JSON.parse(logPanel.dataset.follow) === true
   const toggleFollow = () => {
     logPanel.dataset.follow = !isFollowEnabled()
-    followButton.classList.toggle("btn-outline-primary")
     followButton.classList.toggle("btn-primary")
-    followButton.textContent = isFollowEnabled() ? "Stop Following" : "Follow"
+    followButton.classList.toggle("btn-outline-primary")
+    checkbox.classList.toggle("mdi-checkbox-marked")
+    checkbox.classList.toggle("mdi-checkbox-blank-outline")
   }
 
   logPanel.addEventListener("htmx:afterSwap", function() {
