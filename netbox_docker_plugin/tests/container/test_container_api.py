@@ -1,6 +1,7 @@
 # pylint: disable=R0801
 """Container Test Case"""
 
+import requests_mock
 from django.urls import reverse
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import status
@@ -13,8 +14,6 @@ from netbox_docker_plugin.models.image import Image
 from netbox_docker_plugin.models.volume import Volume
 from netbox_docker_plugin.models.registry import Registry
 from netbox_docker_plugin.tests.base import BaseAPITestCase
-
-import requests_mock
 
 
 class ContainerApiTestCase(
@@ -173,7 +172,7 @@ class ContainerApiTestCase(
         ]
 
     def test_that_patch_overwrites_data_only_when_explicitly_set(self):
-        """ Test that patch overwrites data only when explicitly set """
+        """Test that patch overwrites data only when explicitly set"""
 
         # Assign model-level permission
         obj_perm = ObjectPermission(
@@ -241,9 +240,8 @@ class ContainerApiTestCase(
         self.assertEqual(Bind.objects.filter(container=container11).count(), 0)
         self.assertEqual(Env.objects.filter(container=container11).count(), 1)
 
-
     def test_logs_endpoint(self):
-        """ Test logs endpoint """
+        """Test logs endpoint"""
 
         container = Container.objects.get(name="container1")
         container_id = container.ContainerID
@@ -255,7 +253,7 @@ class ContainerApiTestCase(
 
         # Add object-level permission
         obj_perm = ObjectPermission(
-            name='Test permission',
+            name="Test permission",
             constraints={"pk": container.pk},
             actions=["view"],
         )
@@ -274,3 +272,46 @@ class ContainerApiTestCase(
             response = self.client.get(endpoint, **self.header)
             self.assertHttpStatus(response, status.HTTP_200_OK)
             self.assertEqual(response.data, "Hello World")
+
+    def test_that_container_host_cannot_be_changed(self):
+        """Test that container's host cannot be changed"""
+
+        host1 = Host.objects.create(name="host4")
+        host2 = Host.objects.create(name="host5")
+
+        registry1 = Registry.objects.create(
+            host=host1, name="registry4", serveraddress="http://localhost:8080"
+        )
+        registry2 = Registry.objects.create(
+            host=host2, name="registry5", serveraddress="http://localhost:8082"
+        )
+
+        image1 = Image.objects.create(host=host1, name="image", registry=registry1)
+        image2 = Image.objects.create(host=host2, name="image", registry=registry2)
+
+        container = Container.objects.create(host=host1, image=image1, name="container")
+
+        obj_perm = ObjectPermission(name="Test permission", actions=["change"])
+        obj_perm.save()
+        # pylint: disable=E1101
+        obj_perm.users.add(self.user)
+        # pylint: disable=E1101
+        obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
+
+        response = self.client.patch(
+            reverse(f"plugins-api:{self._get_view_namespace()}:container-list"),
+            [
+                {
+                    "id": container.pk,
+                    "host": host2.pk,
+                    "image": image2.pk,
+                },
+            ],
+            format="json",
+            **self.header,
+        )
+
+        self.assertHttpStatus(response, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.content, b'{"detail":"Cannot change the host\'s container"}'
+        )
