@@ -165,66 +165,65 @@ def create_webhook(app_config, **kwargs):
             )
 
             for webhook in webhooks:
-                results = Webhook.objects.filter(name=webhook["name"])
-                if len(results) == 0:
-                    obj = Webhook(
-                        name=webhook["name"],
-                        description="Added automatically by the Netbox Docker Plugin",
-                        http_method=webhook["http_method"],
-                        payload_url=webhook["payload_url"],
-                        ssl_verification=webhook["ssl_verification"],
-                    )
-                    obj.save()
-
-                    eventrule = EventRule(
-                        name=webhook["name"],
-                        description="Added automatically by the Netbox Docker Plugin",
-                        type_create=webhook["type_create"],
-                        type_update=webhook["type_update"],
-                        type_delete=webhook["type_delete"],
-                        type_job_start=webhook["type_job_start"],
-                        type_job_end=webhook["type_job_end"],
-                        action_object_id=obj.pk,
-                        action_object_type=wh_content_type
-                    )
-                    eventrule.save()
-
-                    obj_content_type = ContentType.objects.get(
-                        app_label="netbox_docker_plugin", model=webhook["content_types"]
-                    )
-
-                    # pylint: disable=E1101
-                    eventrule.content_types.set([obj_content_type.pk])
-                    eventrule.save()
-
-            return
-
-        for webhook in webhooks:
-            results = Webhook.objects.filter(
-                payload_url=webhook["payload_url"],
-                type_create=webhook["type_create"],
-                type_update=webhook["type_update"],
-                type_delete=webhook["type_delete"],
-            )
-
-            if len(results) == 0:
-                obj = Webhook(
+                Webhook.objects.update_or_create(
                     name=webhook["name"],
-                    type_create=webhook["type_create"],
-                    type_update=webhook["type_update"],
-                    type_delete=webhook["type_delete"],
-                    type_job_start=webhook["type_job_start"],
-                    type_job_end=webhook["type_job_end"],
-                    http_method=webhook["http_method"],
-                    payload_url=webhook["payload_url"],
-                    ssl_verification=webhook["ssl_verification"],
+                    defaults={
+                        "name": webhook["name"],
+                        "description": "Added automatically by the Netbox Docker Plugin",
+                        "http_method": webhook["http_method"],
+                        "payload_url": webhook["payload_url"],
+                        "ssl_verification": webhook["ssl_verification"],
+                    },
                 )
-                obj.save()
 
-                content_type = ContentType.objects.get(
+                eventrule, _ = EventRule.objects.update_or_create(
+                    name=webhook["name"],
+                    defaults={
+                        "name": webhook["name"],
+                        "description : "Added automatically by the Netbox Docker Plugin",
+                        "type_create : webhook["type_create"],
+                        "type_update : webhook["type_update"],
+                        "type_delete : webhook["type_delete"],
+                        "type_job_start : webhook["type_job_start"],
+                        "type_job_end : webhook["type_job_end"],
+                        "action_object_id : obj.pk,
+                        "action_object_type : wh_content_type
+                    },
+                )
+
+                obj_content_type = ContentType.objects.get(
                     app_label="netbox_docker_plugin", model=webhook["content_types"]
                 )
 
                 # pylint: disable=E1101
-                obj.content_types.set([content_type.pk])
-                obj.save()
+                eventrule.content_types.set([obj_content_type.pk])
+                eventrule.save()
+
+            return
+
+        for webhook in webhooks:
+            obj, _ = Webhook.objects.update_or_create(
+                payload_url=webhook["payload_url"],
+                type_create=webhook["type_create"],
+                type_update=webhook["type_update"],
+                type_delete=webhook["type_delete"],
+                defaults={
+                    "name": webhook["name"],
+                    "type_create": webhook["type_create"],
+                    "type_update": webhook["type_update"],
+                    "type_delete": webhook["type_delete"],
+                    "type_job_start": webhook["type_job_start"],
+                    "type_job_end": webhook["type_job_end"],
+                    "http_method": webhook["http_method"],
+                    "payload_url": webhook["payload_url"],
+                    "ssl_verification": webhook["ssl_verification"],
+                },
+            )
+
+            content_type = ContentType.objects.get(
+                app_label="netbox_docker_plugin", model=webhook["content_types"]
+            )
+
+            # pylint: disable=E1101
+            obj.content_types.set([content_type.pk])
+            obj.save()
