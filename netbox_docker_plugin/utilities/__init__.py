@@ -33,7 +33,7 @@ webhooks = [
         "content_types": "image",
         "enabled": True,
         "type_create": True,
-        "type_update": False,
+        "type_update": True,
         "type_delete": False,
         "type_job_start": False,
         "type_job_end": False,
