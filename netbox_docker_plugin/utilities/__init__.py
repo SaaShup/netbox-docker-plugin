@@ -165,7 +165,7 @@ def create_webhook(app_config, **kwargs):
             )
 
             for webhook in webhooks:
-                Webhook.objects.update_or_create(
+                obj, _ = Webhook.objects.update_or_create(
                     name=webhook["name"],
                     defaults={
                         "name": webhook["name"],
