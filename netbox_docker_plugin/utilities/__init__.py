@@ -180,14 +180,14 @@ def create_webhook(app_config, **kwargs):
                     name=webhook["name"],
                     defaults={
                         "name": webhook["name"],
-                        "description : "Added automatically by the Netbox Docker Plugin",
-                        "type_create : webhook["type_create"],
-                        "type_update : webhook["type_update"],
-                        "type_delete : webhook["type_delete"],
-                        "type_job_start : webhook["type_job_start"],
-                        "type_job_end : webhook["type_job_end"],
-                        "action_object_id : obj.pk,
-                        "action_object_type : wh_content_type
+                        "description": "Added automatically by the Netbox Docker Plugin",
+                        "type_create": webhook["type_create"],
+                        "type_update": webhook["type_update"],
+                        "type_delete": webhook["type_delete"],
+                        "type_job_start": webhook["type_job_start"],
+                        "type_job_end": webhook["type_job_end"],
+                        "action_object_id": obj.pk,
+                        "action_object_type": wh_content_type
                     },
                 )
 
