@@ -41,11 +41,18 @@ class ContainerLogsView(generic.ObjectView):
     template_name = "netbox_docker_plugin/container-logs.html"
 
 
-class ContainerEditView(generic.ObjectEditView):
+class ContainerNewView(generic.ObjectEditView):
     """Container edition view definition"""
 
     queryset = Container.objects.all()
     form = container.ContainerForm
+
+
+class ContainerEditView(generic.ObjectEditView):
+    """Container edition view definition"""
+
+    queryset = Container.objects.all()
+    form = container.ContainerEditForm
 
 
 class ContainerListView(generic.ObjectListView):

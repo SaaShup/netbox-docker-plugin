@@ -173,7 +173,7 @@ urlpatterns = (
     ),
     path(
         "containers/add/",
-        container_views.ContainerEditView.as_view(),
+        container_views.ContainerNewView.as_view(),
         name="container_add",
     ),
     path(
