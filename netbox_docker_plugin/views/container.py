@@ -34,11 +34,20 @@ class ContainerView(generic.ObjectView):
 
 @register_model_view(Container, name="logs", path="logs")
 class ContainerLogsView(generic.ObjectView):
-    """ Logs tab in Container view """
+    """Logs tab in Container view"""
 
     queryset = Container.objects.all()
     tab = ViewTab(label="Logs")
     template_name = "netbox_docker_plugin/container-logs.html"
+
+
+@register_model_view(Container, name="exec", path="exec")
+class ContainerExecView(generic.ObjectView):
+    """Exec tab in Container view"""
+
+    queryset = Container.objects.all()
+    tab = ViewTab(label="Exec")
+    template_name = "netbox_docker_plugin/container-exec.html"
 
 
 class ContainerNewView(generic.ObjectEditView):

@@ -202,6 +202,11 @@ urlpatterns = (
         name="container_logs",
     ),
     path(
+        "containers/<int:pk>/exec",
+        container_views.ContainerExecView.as_view(),
+        name="container_exec",
+    ),
+    path(
         "containers/<int:pk>/edit/",
         container_views.ContainerEditView.as_view(),
         name="container_edit",
