@@ -1,0 +1,76 @@
+{% extends "netbox_docker_plugin/container-layout.html" %}
+
+{% load plugins %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col col-md-12">
+    <div class="card">
+      <h5 class="card-header">EXEC</h5>
+      <div class="card-body">
+        <p class="input-group">
+          <label class="input-group-text" for="container-exec-command">Command</label>
+          <input type="text" class="form-control" id="container-exec-command" data-id="{{ object.pk }}">
+          <button class="btn btn-primary" id="container-exec-button"><i class="mdi mdi-play"></i> Exec</button>
+        </p>
+        <pre id="container-exec-output" data-follow="true" class="p-2 text-white border-dark"
+          style="height: 300px; overflow-y: auto; background-color: black; resize: vertical;">
+        </pre>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block head %}
+<script type="application/javascript">
+  document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("container-exec-command");
+    const button = document.getElementById("container-exec-button");
+    const pre = document.getElementById("container-exec-output");
+
+    input.addEventListener("keypress", (event) => {
+      if (event.key == "Enter") {
+        exec(input.dataset.id, input.value.split(" "), pre);
+      }
+    });
+
+    button.addEventListener("click", () => {
+      exec(input.dataset.id, input.value.split(" "), pre);
+    });
+
+    const exec = async (id, cmd, elemOutput) => {
+      document.querySelectorAll(".alert").forEach(e => e.remove());
+
+      while (elemOutput.firstChild) {
+        elemOutput.removeChild(elemOutput.lastChild);
+      }
+
+      if (cmd.length > 0 && cmd[0].length > 0) {
+        const response = await fetch(`/api/plugins/docker/containers/${id}/exec/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": "{{ csrf_token }}"
+          },
+          body: JSON.stringify({
+            cmd: cmd
+          })
+        });
+
+        if (response.ok) {
+          elemOutput.appendChild(document.createTextNode((await response.json()).stdout))
+
+          return;
+        }
+
+        const alert = document.createElement("div");
+        alert.classList.add("alert", "alert-danger");
+        alert.appendChild(document.createTextNode("Command exec failed!"));
+
+        elemOutput.before(alert);
+      }
+    }
+  });
+</script>
+{% endblock %}

@@ -6,26 +6,18 @@
 <div class="row mb-3">
   <div class="col col-md-12">
     <div class="card">
-      <div class="card-header">
-        <div class="d-sm-flex p-2 flex-row align-items-center">
-          <h5 class="flex-grow-1">LOGS</h5>
-          <button
-            id="container-logs-button"
-            type="button"
-            class="btn btn-primary"
-          >
+      <div class="card-header d-flex">
+        <h5 class="flex-grow-1">LOGS</h5>
+        <div>
+          <button id="container-logs-button" type="button" class="btn btn-primary btn-sm">
             <i id="container-logs-cb" class="mdi mdi-checkbox-marked"></i> Follow logs
           </button>
         </div>
+      </div>
       <div class="card-body">
-        <pre
-          id="container-logs-panel"
-          data-follow="true"
-          class="p-2 text-white border-dark"
-          style="height: 300px; overflow-y: auto; background-color: black;"
-          hx-get="/api/plugins/docker/containers/{{ object.pk }}/logs/"
-          hx-trigger="load, every 30s"
-        >
+        <pre id="container-logs-panel" data-follow="true" class="p-2 text-white border-dark"
+          style="height: 300px; overflow-y: auto; background-color: black; resize: vertical;"
+          hx-get="/api/plugins/docker/containers/{{ object.pk }}/logs/" hx-trigger="load, every 30s">
         </pre>
       </div>
     </div>
@@ -35,29 +27,29 @@
 
 {% block head %}
 <script type="application/javascript">
-htmx.onLoad(function(elt) {
-  const logPanel = document.getElementById("container-logs-panel")
-  const followButton = document.getElementById("container-logs-button")
-  const checkbox = document.getElementById("container-logs-cb")
+  htmx.onLoad(function (elt) {
+    const logPanel = document.getElementById("container-logs-panel")
+    const followButton = document.getElementById("container-logs-button")
+    const checkbox = document.getElementById("container-logs-cb")
 
-  const isFollowEnabled = () => JSON.parse(logPanel.dataset.follow) === true
-  const toggleFollow = () => {
-    logPanel.dataset.follow = !isFollowEnabled()
-    followButton.classList.toggle("btn-primary")
-    followButton.classList.toggle("btn-outline-primary")
-    checkbox.classList.toggle("mdi-checkbox-marked")
-    checkbox.classList.toggle("mdi-checkbox-blank-outline")
-  }
-
-  logPanel.addEventListener("htmx:afterSwap", function() {
-    if (isFollowEnabled()) {
-      this.scrollTop = this.scrollHeight
+    const isFollowEnabled = () => JSON.parse(logPanel.dataset.follow) === true
+    const toggleFollow = () => {
+      logPanel.dataset.follow = !isFollowEnabled()
+      followButton.classList.toggle("btn-primary")
+      followButton.classList.toggle("btn-outline-primary")
+      checkbox.classList.toggle("mdi-checkbox-marked")
+      checkbox.classList.toggle("mdi-checkbox-blank-outline")
     }
-  })
 
-  followButton.addEventListener("click", function() {
-    toggleFollow()
+    logPanel.addEventListener("htmx:afterSwap", function () {
+      if (isFollowEnabled()) {
+        this.scrollTop = this.scrollHeight
+      }
+    })
+
+    followButton.addEventListener("click", function () {
+      toggleFollow()
+    })
   })
-})
 </script>
 {% endblock %}

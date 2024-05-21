@@ -584,3 +584,14 @@ class HostSerializer(NetBoxModelSerializer):
             "containers",
             "registries",
         )
+
+class ContainerCommandSerializer(serializers.Serializer):
+    """Container command Serializer class"""
+
+    cmd=serializers.ListField(child=serializers.CharField())
+
+    def create(self, validated_data):
+        pass
+
+    def update(self, instance, validated_data):
+        pass
