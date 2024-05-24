@@ -1,7 +1,6 @@
 """Mount Form definition"""
 
 from django import forms
-from utilities.forms.mixins import BootstrapMixin
 from utilities.forms.fields import (
     DynamicModelMultipleChoiceField,
     DynamicModelChoiceField,
@@ -13,7 +12,7 @@ from ..models.container import Mount, Container
 from ..models.volume import Volume
 
 
-class MountForm(BootstrapMixin, forms.ModelForm):
+class MountForm(forms.ModelForm):
     """Mount form definition class"""
 
     container = DynamicModelChoiceField(

@@ -50,6 +50,7 @@ class Image(NetBoxModel):
             MinLengthValidator(limit_value=1),
             MaxLengthValidator(limit_value=128),
         ],
+        default=None,
         blank=True,
         null=True,
     )
@@ -59,6 +60,7 @@ class Image(NetBoxModel):
             MinLengthValidator(limit_value=1),
             MaxLengthValidator(limit_value=512),
         ],
+        default=None,
         blank=True,
         null=True,
     )

@@ -1,7 +1,6 @@
 """Mount Form definition"""
 
 from django import forms
-from utilities.forms.mixins import BootstrapMixin
 from utilities.forms.fields import (
     DynamicModelMultipleChoiceField,
     DynamicModelChoiceField,
@@ -12,7 +11,7 @@ from netbox.forms import (
 from ..models.container import Bind, Container
 
 
-class BindForm(BootstrapMixin, forms.ModelForm):
+class BindForm(forms.ModelForm):
     """Bind form definition class"""
 
     container = DynamicModelChoiceField(

@@ -1,6 +1,7 @@
 """Container Forms definitions"""
 
 from django import forms
+from utilities.forms.rendering import FieldSet
 from utilities.forms.fields import (
     TagFilterField,
     DynamicModelMultipleChoiceField,
@@ -50,6 +51,7 @@ class ContainerForm(NetBoxModelForm):
             "hostname": "Hostname",
             "restart_policy": "Restart Policy",
         }
+
 
 class ContainerEditForm(NetBoxModelForm):
     """Container form definition class"""
@@ -148,7 +150,7 @@ class ContainerBulkEditForm(NetBoxModelBulkEditForm):
     )
 
     model = Container
-    fieldsets = (("General", ("restart_policy", "hostname")),)
+    fieldsets = (FieldSet("restart_policy", "hostname", name="General"),)
 
 
 class ContainerOperationForm(NetBoxModelForm):

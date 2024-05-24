@@ -194,7 +194,7 @@ def create_webhook(app_config, **kwargs):
                     )
 
                     # pylint: disable=E1101
-                    eventrule.content_types.set([obj_content_type.pk])
+                    eventrule.object_types.set([obj_content_type.pk])
                     eventrule.save()
 
             return

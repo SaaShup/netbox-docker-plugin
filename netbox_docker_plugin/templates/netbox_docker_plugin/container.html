@@ -61,7 +61,7 @@
       ></div>
       {% if perms.netbox_docker_plugin.add_env %}
         <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:port_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+          <a href="{% url 'plugins:netbox_docker_plugin:port_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Port Mapping
           </a>
         </div>
@@ -75,7 +75,7 @@
       ></div>
       {% if perms.netbox_docker_plugin.add_env %}
         <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:mount_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+          <a href="{% url 'plugins:netbox_docker_plugin:mount_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> New Mount
           </a>
         </div>
@@ -89,7 +89,7 @@
       ></div>
       {% if perms.netbox_docker_plugin.add_env %}
         <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:bind_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+          <a href="{% url 'plugins:netbox_docker_plugin:bind_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> New Bind
           </a>
         </div>
@@ -103,7 +103,7 @@
       ></div>
       {% if perms.netbox_docker_plugin.add_network_setting %}
         <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:networksetting_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+          <a href="{% url 'plugins:netbox_docker_plugin:networksetting_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> New Network Setting
           </a>
         </div>
@@ -117,7 +117,7 @@
       ></div>
       {% if perms.netbox_docker_plugin.add_env %}
         <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:env_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+          <a href="{% url 'plugins:netbox_docker_plugin:env_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add an Env Variable
           </a>
         </div>
@@ -131,7 +131,7 @@
       ></div>
       {% if perms.netbox_docker_plugin.add_env %}
         <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:label_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+          <a href="{% url 'plugins:netbox_docker_plugin:label_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Label
           </a>
         </div>

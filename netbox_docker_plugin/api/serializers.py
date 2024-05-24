@@ -3,7 +3,7 @@
 # pylint: disable=E1101
 
 from rest_framework import serializers
-from utilities.utils import dict_to_filter_params
+from utilities.query import dict_to_filter_params
 from users.api.nested_serializers import NestedTokenSerializer
 from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
 from ..models.host import Host
@@ -95,7 +95,7 @@ class NestedVolumeSerializer(WritableNestedSerializer):
             params = dict_to_filter_params(data)
             if Volume.objects.filter(**params).count() == 0:
                 host = Host.objects.get(pk=params["host"])
-                volume = Volume(host= host, name= params["name"])
+                volume = Volume(host=host, name=params["name"])
                 volume.save()
                 return volume
 
@@ -229,6 +229,7 @@ class ImageSerializer(NetBoxModelSerializer):
             "containers",
             "tags",
         )
+        brief_fields = NestedImageSerializer.Meta.fields
 
 
 class VolumeSerializer(NetBoxModelSerializer):
@@ -257,6 +258,7 @@ class VolumeSerializer(NetBoxModelSerializer):
             "mounts",
             "tags",
         )
+        brief_fields = NestedVolumeSerializer.Meta.fields
 
 
 class NetworkSerializer(NetBoxModelSerializer):
@@ -287,6 +289,7 @@ class NetworkSerializer(NetBoxModelSerializer):
             "network_settings",
             "tags",
         )
+        brief_fields = NestedNetworkSerializer.Meta.fields
 
 
 class PortSerializer(serializers.ModelSerializer):
@@ -414,6 +417,7 @@ class ContainerSerializer(NetBoxModelSerializer):
             "last_updated",
             "tags",
         )
+        brief_fields = NestedContainerSerializer.Meta.fields
 
     def validate(self, data):
         attrs = data.copy()
@@ -544,6 +548,7 @@ class RegistrySerializer(NetBoxModelSerializer):
             "email",
             "images",
         )
+        brief_fields = NestedRegistrySerializer.Meta.fields
 
 
 class HostSerializer(NetBoxModelSerializer):
@@ -584,11 +589,13 @@ class HostSerializer(NetBoxModelSerializer):
             "containers",
             "registries",
         )
+        brief_fields = NestedHostSerializer.Meta.fields
+
 
 class ContainerCommandSerializer(serializers.Serializer):
     """Container command Serializer class"""
 
-    cmd=serializers.ListField(child=serializers.CharField())
+    cmd = serializers.ListField(child=serializers.CharField())
 
     def create(self, validated_data):
         pass

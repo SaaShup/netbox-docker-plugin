@@ -1,6 +1,6 @@
 """Host Views Test Case"""
 
-from django.contrib.contenttypes.models import ContentType
+from core.models import ObjectType
 from django.core.exceptions import ObjectDoesNotExist
 from extras.choices import ObjectChangeActionChoices
 from extras.models import ObjectChange
@@ -39,7 +39,7 @@ class HostViewsTestCase(BaseModelViewTestCase, ViewTestCases.PrimaryObjectViewTe
         # pylint: disable=E1101
         obj_perm.users.add(self.user)
         # pylint: disable=E1101
-        obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
+        obj_perm.object_types.add(ObjectType.objects.get_for_model(self.model))
 
         # Try GET with model-level permission
         self.assertHttpStatus(self.client.get(self._get_url("delete", instance)), 200)
@@ -54,7 +54,7 @@ class HostViewsTestCase(BaseModelViewTestCase, ViewTestCases.PrimaryObjectViewTe
             self._get_queryset().get(pk=instance.pk)
 
         objectchanges = ObjectChange.objects.filter(
-            changed_object_type=ContentType.objects.get_for_model(instance),
+            changed_object_type=ObjectType.objects.get_for_model(instance),
             changed_object_id=instance.pk,
         )
         self.assertEqual(len(objectchanges), 2)

@@ -52,7 +52,7 @@
       ></div>
       {% if perms.netbox_docker_plugin.add_container %}
         <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:registry_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+          <a href="{% url 'plugins:netbox_docker_plugin:registry_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Registry
           </a>
         </div>
@@ -69,7 +69,7 @@
       ></div>
       {% if perms.netbox_docker_plugin.add_container %}
         <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:container_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+          <a href="{% url 'plugins:netbox_docker_plugin:container_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Container
           </a>
         </div>
@@ -86,7 +86,7 @@
       ></div>
       {% if perms.netbox_docker_plugin.add_image %}
         <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:image_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+          <a href="{% url 'plugins:netbox_docker_plugin:image_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add an Image
           </a>
         </div>
@@ -103,7 +103,7 @@
       ></div>
       {% if perms.netbox_docker_plugin.add_volume %}
         <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:volume_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+          <a href="{% url 'plugins:netbox_docker_plugin:volume_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Volume
           </a>
         </div>
@@ -120,7 +120,7 @@
       ></div>
       {% if perms.netbox_docker_plugin.add_network %}
         <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:network_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary btn-sm">
+          <a href="{% url 'plugins:netbox_docker_plugin:network_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
             <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Network
           </a>
         </div>

@@ -3,8 +3,8 @@
 
 import requests_mock
 from django.urls import reverse
-from django.contrib.contenttypes.models import ContentType
 from django.core.serializers.json import DjangoJSONEncoder
+from core.models import ObjectType
 from rest_framework import status
 from users.models import ObjectPermission
 from netbox_docker_plugin.models.container import Container
@@ -49,7 +49,7 @@ class ContainerApiExecTestCase(BaseAPITestCase):
         # pylint: disable=E1101
         obj_perm.users.add(self.user)
         # pylint: disable=E1101
-        obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
+        obj_perm.object_types.add(ObjectType.objects.get_for_model(self.model))
 
         self.endpoint = reverse(
             viewname=f"plugins-api:{self._get_view_namespace()}:container-exec",
