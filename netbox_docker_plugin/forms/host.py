@@ -1,6 +1,7 @@
 """Host Forms definitions"""
 
 from django import forms
+from utilities.forms.rendering import FieldSet
 from utilities.forms.fields import TagFilterField
 from netbox.forms import (
     NetBoxModelForm,
@@ -70,4 +71,4 @@ class HostBulkEditForm(NetBoxModelBulkEditForm):
     )
 
     model = Host
-    fieldsets = (("General", ("endpoint",)),)
+    fieldsets = (FieldSet("endpoint", name="General"),)

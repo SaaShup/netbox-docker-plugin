@@ -1,24 +1,21 @@
 """Navigation Menu definitions"""
 
-from extras.plugins import (
+from netbox.plugins import (
     PluginMenu,
     PluginMenuItem,
     PluginMenuButton,
 )
-from utilities.choices import ButtonColorChoices
 
 host_buttons = [
     PluginMenuButton(
         link="plugins:netbox_docker_plugin:host_add",
         title="Add",
-        icon_class="mdi mdi-plus-thick",
-        color=ButtonColorChoices.GREEN,
+        icon_class="mdi mdi-plus-thick"
     ),
     PluginMenuButton(
         link="plugins:netbox_docker_plugin:host_import",
         title="Import",
-        icon_class="mdi mdi-upload",
-        color=ButtonColorChoices.CYAN,
+        icon_class="mdi mdi-upload"
     ),
 ]
 
@@ -26,8 +23,7 @@ registry_button = [
     PluginMenuButton(
         link="plugins:netbox_docker_plugin:registry_add",
         title="Add",
-        icon_class="mdi mdi-plus-thick",
-        color=ButtonColorChoices.GREEN,
+        icon_class="mdi mdi-plus-thick"
     ),
 ]
 
@@ -35,14 +31,12 @@ image_buttons = [
     PluginMenuButton(
         link="plugins:netbox_docker_plugin:image_add",
         title="Add",
-        icon_class="mdi mdi-plus-thick",
-        color=ButtonColorChoices.GREEN,
+        icon_class="mdi mdi-plus-thick"
     ),
     PluginMenuButton(
         link="plugins:netbox_docker_plugin:image_import",
         title="Import",
-        icon_class="mdi mdi-upload",
-        color=ButtonColorChoices.CYAN,
+        icon_class="mdi mdi-upload"
     ),
 ]
 
@@ -50,14 +44,12 @@ volume_buttons = [
     PluginMenuButton(
         link="plugins:netbox_docker_plugin:volume_add",
         title="Add",
-        icon_class="mdi mdi-plus-thick",
-        color=ButtonColorChoices.GREEN,
+        icon_class="mdi mdi-plus-thick"
     ),
     PluginMenuButton(
         link="plugins:netbox_docker_plugin:volume_import",
         title="Import",
-        icon_class="mdi mdi-upload",
-        color=ButtonColorChoices.CYAN,
+        icon_class="mdi mdi-upload"
     ),
 ]
 
@@ -65,14 +57,12 @@ network_buttons = [
     PluginMenuButton(
         link="plugins:netbox_docker_plugin:network_add",
         title="Add",
-        icon_class="mdi mdi-plus-thick",
-        color=ButtonColorChoices.GREEN,
+        icon_class="mdi mdi-plus-thick"
     ),
     PluginMenuButton(
         link="plugins:netbox_docker_plugin:network_import",
         title="Import",
-        icon_class="mdi mdi-upload",
-        color=ButtonColorChoices.CYAN,
+        icon_class="mdi mdi-upload"
     ),
 ]
 
@@ -80,14 +70,12 @@ container_buttons = [
     PluginMenuButton(
         link="plugins:netbox_docker_plugin:container_add",
         title="Add",
-        icon_class="mdi mdi-plus-thick",
-        color=ButtonColorChoices.GREEN,
+        icon_class="mdi mdi-plus-thick"
     ),
     PluginMenuButton(
         link="plugins:netbox_docker_plugin:container_import",
         title="Import",
-        icon_class="mdi mdi-upload",
-        color=ButtonColorChoices.CYAN,
+        icon_class="mdi mdi-upload"
     ),
 ]
 

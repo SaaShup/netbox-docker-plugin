@@ -8,7 +8,7 @@
   <input type="hidden" name="operation" value="start">
   <button
     type="submit"
-    class="btn btn-sm btn-success"
+    class="btn btn-success"
     {% if not object.can_start %}
     disabled
     {% endif %}
@@ -22,7 +22,7 @@
   <input type="hidden" name="operation" value="stop">
   <button
     type="submit"
-    class="btn btn-sm btn-danger"
+    class="btn btn-danger"
     {% if not object.can_stop %}
     disabled
     {% endif %}
@@ -36,7 +36,7 @@
   <input type="hidden" name="operation" value="restart">
   <button
     type="submit"
-    class="btn btn-sm btn-light"
+    class="btn btn-light"
     {% if not object.can_restart %}
     disabled
     {% endif %}
@@ -50,7 +50,7 @@
   <input type="hidden" name="operation" value="recreate">
   <button
     type="submit"
-    class="btn btn-sm btn-dark"
+    class="btn btn-primary"
     {% if not object.can_recreate %}
     disabled
     {% endif %}

@@ -5,7 +5,6 @@ from utilities.forms.fields import (
     DynamicModelMultipleChoiceField,
     DynamicModelChoiceField,
 )
-from utilities.forms.mixins import BootstrapMixin
 from netbox.forms import (
     NetBoxModelFilterSetForm,
 )
@@ -13,7 +12,7 @@ from ..models.container import NetworkSetting, Container
 from ..models.network import Network
 
 
-class NetworkSettingForm(BootstrapMixin, forms.ModelForm):
+class NetworkSettingForm(forms.ModelForm):
     """NetworkSetting form definition class"""
 
     container = DynamicModelChoiceField(

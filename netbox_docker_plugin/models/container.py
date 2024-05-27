@@ -110,6 +110,7 @@ class Container(NetBoxModel):
             MinLengthValidator(limit_value=1),
             MaxLengthValidator(limit_value=128),
         ],
+        default=None,
         blank=True,
         null=True,
     )
@@ -124,6 +125,7 @@ class Container(NetBoxModel):
             MinLengthValidator(limit_value=1),
             MaxLengthValidator(limit_value=256),
         ],
+        default=None,
         blank=True,
         null=True,
     )

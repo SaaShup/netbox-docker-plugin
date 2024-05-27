@@ -1,6 +1,6 @@
 """Host API Test Case"""
 
-from django.contrib.contenttypes.models import ContentType
+from core.models import ObjectType
 from extras.choices import ObjectChangeActionChoices
 from extras.models import ObjectChange
 from users.models import ObjectPermission
@@ -61,7 +61,7 @@ class HostApiTestCase(
         # pylint: disable=E1101
         obj_perm.users.add(self.user)
         # pylint: disable=E1101
-        obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
+        obj_perm.object_types.add(ObjectType.objects.get_for_model(self.model))
 
         initial_count = self._get_queryset().count()
         response = self.client.post(
@@ -80,7 +80,7 @@ class HostApiTestCase(
         # Verify ObjectChange creation
         if hasattr(self.model, "to_objectchange"):
             objectchanges = ObjectChange.objects.filter(
-                changed_object_type=ContentType.objects.get_for_model(instance),
+                changed_object_type=ObjectType.objects.get_for_model(instance),
                 changed_object_id=instance.pk,
             )
             self.assertEqual(len(objectchanges), 1)
@@ -104,14 +104,14 @@ class HostApiTestCase(
         # pylint: disable=E1101
         obj_perm.users.add(self.user)
         # pylint: disable=E1101
-        obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
+        obj_perm.object_types.add(ObjectType.objects.get_for_model(self.model))
 
         response = self.client.delete(url, **self.header)
         self.assertHttpStatus(response, status.HTTP_204_NO_CONTENT)
         self.assertFalse(self._get_queryset().filter(pk=instance.pk).exists())
 
         objectchanges = ObjectChange.objects.filter(
-            changed_object_type=ContentType.objects.get_for_model(instance),
+            changed_object_type=ObjectType.objects.get_for_model(instance),
             changed_object_id=instance.pk,
         )
         self.assertEqual(len(objectchanges), 2)

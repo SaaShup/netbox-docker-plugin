@@ -2,11 +2,10 @@
 
 from django import forms
 from utilities.forms.fields import DynamicModelChoiceField
-from utilities.forms.mixins import BootstrapMixin
 from ..models.container import Port, Container
 
 
-class PortForm(BootstrapMixin, forms.ModelForm):
+class PortForm(forms.ModelForm):
     """Port form definition class"""
 
     container = DynamicModelChoiceField(

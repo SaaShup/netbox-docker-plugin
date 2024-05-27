@@ -2,11 +2,10 @@
 
 from django import forms
 from utilities.forms.fields import DynamicModelChoiceField
-from utilities.forms.mixins import BootstrapMixin
 from ..models.container import Label, Container
 
 
-class LabelForm(BootstrapMixin, forms.ModelForm):
+class LabelForm(forms.ModelForm):
     """Label form definition class"""
 
     container = DynamicModelChoiceField(

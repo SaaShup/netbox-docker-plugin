@@ -1,7 +1,7 @@
 """Host views definitions"""
 
 from users.models import Token
-from utilities.utils import count_related
+from utilities.query import count_related
 from netbox.views import generic
 from .. import tables, filtersets
 from ..forms import host

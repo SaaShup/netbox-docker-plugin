@@ -3,7 +3,7 @@
 
 import requests_mock
 from django.urls import reverse
-from django.contrib.contenttypes.models import ContentType
+from core.models import ObjectType
 from rest_framework import status
 from users.models import ObjectPermission
 from utilities.testing import APIViewTestCases
@@ -182,10 +182,10 @@ class ContainerApiTestCase(
         # pylint: disable=E1101
         obj_perm.users.add(self.user)
         # pylint: disable=E1101
-        obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
-        obj_perm.object_types.add(ContentType.objects.get_for_model(Container))
-        obj_perm.object_types.add(ContentType.objects.get_for_model(Bind))
-        obj_perm.object_types.add(ContentType.objects.get_for_model(Env))
+        obj_perm.object_types.add(ObjectType.objects.get_for_model(self.model))
+        obj_perm.object_types.add(ObjectType.objects.get_for_model(Container))
+        obj_perm.object_types.add(ObjectType.objects.get_for_model(Bind))
+        obj_perm.object_types.add(ObjectType.objects.get_for_model(Env))
 
         host3 = Host.objects.create(
             endpoint="http://localhost:8080",
@@ -261,7 +261,7 @@ class ContainerApiTestCase(
         # pylint: disable=E1101
         obj_perm.users.add(self.user)
         # pylint: disable=E1101
-        obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
+        obj_perm.object_types.add(ObjectType.objects.get_for_model(self.model))
 
         with requests_mock.Mocker() as m:
             m.get(
@@ -296,7 +296,7 @@ class ContainerApiTestCase(
         # pylint: disable=E1101
         obj_perm.users.add(self.user)
         # pylint: disable=E1101
-        obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
+        obj_perm.object_types.add(ObjectType.objects.get_for_model(self.model))
 
         response = self.client.patch(
             reverse(f"plugins-api:{self._get_view_namespace()}:container-list"),

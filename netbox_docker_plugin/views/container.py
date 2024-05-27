@@ -1,6 +1,6 @@
 """Container views definitions"""
 
-from utilities.utils import count_related
+from utilities.query import count_related
 from utilities.views import ViewTab, register_model_view
 from netbox.views import generic
 from .. import tables, filtersets

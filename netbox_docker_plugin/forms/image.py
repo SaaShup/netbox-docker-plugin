@@ -1,6 +1,7 @@
 """Image Forms definitions"""
 
 from django import forms
+from utilities.forms.rendering import FieldSet
 from utilities.forms.fields import (
     TagFilterField,
     DynamicModelMultipleChoiceField,
@@ -101,4 +102,4 @@ class ImageBulkEditForm(NetBoxModelBulkEditForm):
     )
 
     model = Image
-    fieldsets = (("General", ("version",)),)
+    fieldsets = (FieldSet("version", name="General"),)

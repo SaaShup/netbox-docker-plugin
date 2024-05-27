@@ -1,7 +1,7 @@
 """Volume Test Case"""
 
 from django.urls import reverse
-from django.contrib.contenttypes.models import ContentType
+from core.models import ObjectType
 from rest_framework import status
 from users.models import ObjectPermission
 from utilities.testing import APIViewTestCases
@@ -61,10 +61,10 @@ class VolumeApiTestCase(
         # pylint: disable=E1101
         obj_perm.users.add(self.user)
         # pylint: disable=E1101
-        obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
-        obj_perm.object_types.add(ContentType.objects.get_for_model(Container))
-        obj_perm.object_types.add(ContentType.objects.get_for_model(Mount))
-        obj_perm.object_types.add(ContentType.objects.get_for_model(Image))
+        obj_perm.object_types.add(ObjectType.objects.get_for_model(self.model))
+        obj_perm.object_types.add(ObjectType.objects.get_for_model(Container))
+        obj_perm.object_types.add(ObjectType.objects.get_for_model(Mount))
+        obj_perm.object_types.add(ObjectType.objects.get_for_model(Image))
 
         host = Host.objects.create(endpoint="http://localhost:8088", name="host8")
 

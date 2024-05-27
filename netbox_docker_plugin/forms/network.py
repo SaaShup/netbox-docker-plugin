@@ -1,6 +1,7 @@
 """Network Forms definitions"""
 
 from django import forms
+from utilities.forms.rendering import FieldSet
 from utilities.forms.fields import TagFilterField, DynamicModelMultipleChoiceField
 from utilities.choices import ChoiceSet
 from netbox.forms import (
@@ -103,9 +104,4 @@ class NetworkBulkEditForm(NetBoxModelBulkEditForm):
     NetworkID = forms.CharField(required=False, label="NetworkID")
 
     model = Network
-    fieldsets = (
-        (
-            "General",
-            ("driver", "NetworkID"),
-        ),
-    )
+    fieldsets =(FieldSet("driver", "NetworkID", name="General"),)

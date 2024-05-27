@@ -2,11 +2,10 @@
 
 from django import forms
 from utilities.forms.fields import DynamicModelChoiceField
-from utilities.forms.mixins import BootstrapMixin
 from ..models.container import Env, Container
 
 
-class EnvForm(BootstrapMixin, forms.ModelForm):
+class EnvForm(forms.ModelForm):
     """Env form definition class"""
 
     container = DynamicModelChoiceField(
