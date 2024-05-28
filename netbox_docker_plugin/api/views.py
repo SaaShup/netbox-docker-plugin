@@ -1,15 +1,19 @@
 """API views definitions"""
 
 from collections.abc import Sequence
-from drf_spectacular.utils import extend_schema, OpenApiResponse, OpenApiExample
+import json
+import requests
 from rest_framework import status
+from rest_framework.renderers import JSONRenderer
 from rest_framework.decorators import action
 from rest_framework.response import Response
-import requests
-
+from drf_spectacular.utils import (
+    extend_schema,
+    OpenApiResponse,
+    OpenApiExample,
+)
 from users.models import Token
 from netbox.api.viewsets import NetBoxModelViewSet
-
 from .. import filtersets
 from .renderers import PlainTextRenderer
 from .serializers import (
@@ -19,6 +23,7 @@ from .serializers import (
     NetworkSerializer,
     ContainerSerializer,
     RegistrySerializer,
+    ContainerCommandSerializer,
 )
 from ..models.host import Host
 from ..models.image import Image
@@ -103,7 +108,6 @@ class ContainerViewSet(NetBoxModelViewSet):
     serializer_class = ContainerSerializer
     http_method_names = ["get", "post", "patch", "delete", "options"]
 
-
     @extend_schema(
         operation_id="plugins_docker_container_logs",
         responses={
@@ -135,7 +139,7 @@ class ContainerViewSet(NetBoxModelViewSet):
         renderer_classes=[PlainTextRenderer],
     )
     def logs(self, _request, **_kwargs):
-        """ Fetch container's logs """
+        """Fetch container's logs"""
 
         container: Container = self.get_object()
         agent_url = container.host.endpoint
@@ -159,6 +163,64 @@ class ContainerViewSet(NetBoxModelViewSet):
             status=status.HTTP_200_OK,
             content_type="text/plain",
         )
+
+    @extend_schema(
+        operation_id="plugins_docker_container_exec",
+        request=ContainerCommandSerializer,
+        responses={
+            (200, "text/plain"): OpenApiResponse(
+                response=str,
+                examples=[
+                    OpenApiExample(
+                        "Command output",
+                        value={"stdout": "..."},
+                        media_type="application/json",
+                    ),
+                ],
+            ),
+            (502, "text/plain"): OpenApiResponse(
+                response=str,
+                examples=[
+                    OpenApiExample(
+                        "Engine error",
+                        value="Error as returned by Agent",
+                        media_type="text/plain",
+                    ),
+                ],
+            ),
+        },
+    )
+    @action(detail=True, methods=["post"], renderer_classes=[JSONRenderer])
+    def exec(self, _request, **_kwargs):
+        """Exec a command on a Container"""
+
+        serializer = ContainerCommandSerializer(data=_request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        container: Container = self.get_object()
+        agent_url = container.host.endpoint
+        container_id = container.ContainerID
+
+        url = f"{agent_url}/api/engine/containers/{container_id}/exec"
+
+        try:
+            resp = requests.put(
+                url,
+                data=json.dumps(serializer.validated_data),
+                timeout=30,
+                headers={"Content-Type": "application/json"},
+            )
+            resp.raise_for_status()
+
+        except requests.HTTPError:
+            return Response(
+                resp.text,
+                status=status.HTTP_502_BAD_GATEWAY,
+                content_type="text/plain",
+            )
+
+        return Response(data=json.loads(resp.text))
 
 
 class RegistryViewSet(NetBoxModelViewSet):

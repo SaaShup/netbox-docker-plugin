@@ -173,7 +173,7 @@ urlpatterns = (
     ),
     path(
         "containers/add/",
-        container_views.ContainerEditView.as_view(),
+        container_views.ContainerNewView.as_view(),
         name="container_add",
     ),
     path(
@@ -200,6 +200,11 @@ urlpatterns = (
         "containers/<int:pk>/logs",
         container_views.ContainerLogsView.as_view(),
         name="container_logs",
+    ),
+    path(
+        "containers/<int:pk>/exec",
+        container_views.ContainerExecView.as_view(),
+        name="container_exec",
     ),
     path(
         "containers/<int:pk>/edit/",

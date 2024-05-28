@@ -51,6 +51,34 @@ class ContainerForm(NetBoxModelForm):
             "restart_policy": "Restart Policy",
         }
 
+class ContainerEditForm(NetBoxModelForm):
+    """Container form definition class"""
+
+    image = DynamicModelChoiceField(
+        label="Image",
+        queryset=Image.objects.all(),
+        required=True,
+        query_params={"host_id": "$host"},
+    )
+
+    class Meta:
+        """Container form definition Meta class"""
+
+        model = Container
+        fields = (
+            "image",
+            "name",
+            "hostname",
+            "restart_policy",
+            "tags",
+        )
+        labels = {
+            "name": "Name",
+            "image": "Image",
+            "hostname": "Hostname",
+            "restart_policy": "Restart Policy",
+        }
+
 
 class ContainerFilterForm(NetBoxModelFilterSetForm):
     """Container filter form definition class"""
