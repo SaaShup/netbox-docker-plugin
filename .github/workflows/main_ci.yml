@@ -3,7 +3,7 @@ name: main branch CI
 on:
   push:
     branches:
-      - "main"
+      - "main_3x"
 
 jobs:
   testing:
