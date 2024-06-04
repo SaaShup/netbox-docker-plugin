@@ -266,12 +266,12 @@ class ContainerApiTestCase(
         with requests_mock.Mocker() as m:
             m.get(
                 f"http://localhost:8080/api/engine/containers/{container_id}/logs",
-                text="Hello World",
+                text="Hello > World",
             )
 
             response = self.client.get(endpoint, **self.header)
             self.assertHttpStatus(response, status.HTTP_200_OK)
-            self.assertEqual(response.data, "Hello World")
+            self.assertEqual(response.data, "Hello &gt; World")
 
     def test_that_container_host_cannot_be_changed(self):
         """Test that container's host cannot be changed"""
