@@ -4,11 +4,16 @@ from django.utils.encoding import smart_str
 from rest_framework import renderers
 
 
-class PlainTextRenderer(renderers.BaseRenderer):
-    """ text/plain renderer """
+def make_content_type_renderer(content_type: str, api_format: str):
+    """ Create a response renderer for the specific content type """
 
-    media_type = "text/plain"
-    format = "txt"
+    class ContentTypeRenderer(renderers.BaseRenderer):
+        """ content type renderer """
 
-    def render(self, data, accepted_media_type=None, renderer_context=None):
-        return smart_str(data, encoding=self.charset)
+        media_type = content_type
+        format = api_format
+
+        def render(self, data, accepted_media_type=None, renderer_context=None):
+            return smart_str(data, encoding=self.charset)
+
+    return ContentTypeRenderer
