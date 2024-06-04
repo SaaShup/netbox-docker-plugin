@@ -5,6 +5,8 @@ from rest_framework import renderers
 
 
 def make_content_type_renderer(content_type: str, api_format: str):
+    """ Create a response renderer for the specific content type """
+
     class ContentTypeRenderer(renderers.BaseRenderer):
         """ content type renderer """
 

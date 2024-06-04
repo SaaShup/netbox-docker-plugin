@@ -1,9 +1,9 @@
 """API views definitions"""
 
 from collections.abc import Sequence
-from django.utils.html import escape
 import json
 import requests
+from django.utils.html import escape
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.decorators import action
