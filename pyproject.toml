@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "netbox-docker-plugin"
-version = "1.12.0"
+version = "1.12.1"
 authors = [
   { name="Vincent Simonin", email="vincent@saashup.com" },
   { name="David Delassus", email="david.jose.delassus@gmail.com" }
