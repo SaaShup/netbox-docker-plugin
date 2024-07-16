@@ -15,5 +15,5 @@ def make_content_type_renderer(content_type: str, api_format: str):
 
         def render(self, data, accepted_media_type=None, renderer_context=None):
             return smart_str(data, encoding=self.charset)
-    
+
     return ContentTypeRenderer
