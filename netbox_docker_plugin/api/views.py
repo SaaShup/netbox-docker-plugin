@@ -3,6 +3,7 @@
 from collections.abc import Sequence
 import json
 import requests
+from django.utils.html import escape
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.decorators import action
@@ -15,7 +16,7 @@ from drf_spectacular.utils import (
 from users.models import Token
 from netbox.api.viewsets import NetBoxModelViewSet
 from .. import filtersets
-from .renderers import PlainTextRenderer
+from .renderers import make_content_type_renderer
 from .serializers import (
     HostSerializer,
     ImageSerializer,
@@ -111,23 +112,23 @@ class ContainerViewSet(NetBoxModelViewSet):
     @extend_schema(
         operation_id="plugins_docker_container_logs",
         responses={
-            (200, "text/plain"): OpenApiResponse(
+            (200, "text/html"): OpenApiResponse(
                 response=str,
                 examples=[
                     OpenApiExample(
                         "Container's logs",
                         value="Hello World",
-                        media_type="text/plain",
+                        media_type="text/html",
                     ),
                 ],
             ),
-            (502, "text/plain"): OpenApiResponse(
+            (502, "text/html"): OpenApiResponse(
                 response=str,
                 examples=[
                     OpenApiExample(
                         "Engine error",
                         value="Error as returned by Agent",
-                        media_type="text/plain",
+                        media_type="text/html",
                     ),
                 ],
             ),
@@ -136,7 +137,7 @@ class ContainerViewSet(NetBoxModelViewSet):
     @action(
         detail=True,
         methods=["get"],
-        renderer_classes=[PlainTextRenderer],
+        renderer_classes=[make_content_type_renderer("text/html", "txt")],
     )
     def logs(self, _request, **_kwargs):
         """Fetch container's logs"""
@@ -153,22 +154,22 @@ class ContainerViewSet(NetBoxModelViewSet):
 
         except requests.HTTPError:
             return Response(
-                resp.text,
+                escape(resp.text),
                 status=status.HTTP_502_BAD_GATEWAY,
-                content_type="text/plain",
+                content_type="text/html",
             )
 
         return Response(
-            resp.text,
+            escape(resp.text),
             status=status.HTTP_200_OK,
-            content_type="text/plain",
+            content_type="text/html",
         )
 
     @extend_schema(
         operation_id="plugins_docker_container_exec",
         request=ContainerCommandSerializer,
         responses={
-            (200, "text/plain"): OpenApiResponse(
+            (200, "application/json"): OpenApiResponse(
                 response=str,
                 examples=[
                     OpenApiExample(
@@ -178,13 +179,13 @@ class ContainerViewSet(NetBoxModelViewSet):
                     ),
                 ],
             ),
-            (502, "text/plain"): OpenApiResponse(
+            (502, "text/html"): OpenApiResponse(
                 response=str,
                 examples=[
                     OpenApiExample(
                         "Engine error",
                         value="Error as returned by Agent",
-                        media_type="text/plain",
+                        media_type="text/html",
                     ),
                 ],
             ),
@@ -215,9 +216,9 @@ class ContainerViewSet(NetBoxModelViewSet):
 
         except requests.HTTPError:
             return Response(
-                resp.text,
+                escape(resp.text),
                 status=status.HTTP_502_BAD_GATEWAY,
-                content_type="text/plain",
+                content_type="text/html",
             )
 
         return Response(data=json.loads(resp.text))
