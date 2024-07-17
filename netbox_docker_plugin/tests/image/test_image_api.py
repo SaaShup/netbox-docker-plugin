@@ -86,7 +86,7 @@ class ImageApiTestCase(
         obj_perm = ObjectPermission(
             name="Test permission",
             constraints={"pk": image.pk},
-            actions=["view"],
+            actions=["add"],
         )
         obj_perm.save()
         # pylint: disable=E1101
