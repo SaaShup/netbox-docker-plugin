@@ -2,6 +2,18 @@
 
 {% load plugins %}
 
+{% block extra_controls %}
+<form action="{% url 'plugins:netbox_docker_plugin:image_force_pull' pk=object.id %}" method="post">
+  {% csrf_token %}
+  <button
+    type="submit"
+    class="btn btn-sm btn-success"
+  >
+    <i class="mdi mdi-reload"></i> Force Pull
+  </button>
+</form>
+{% endblock %}
+
 {% block content %}
 <div class="row mb-3">
   <div class="col col-md-6">
