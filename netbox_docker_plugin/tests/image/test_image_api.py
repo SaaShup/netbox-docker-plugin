@@ -102,4 +102,4 @@ class ImageApiTestCase(
 
             response = self.client.post(endpoint, **self.header)
             self.assertHttpStatus(response, status.HTTP_200_OK)
-            self.assertEqual(response.data, "{}")
+            self.assertEqual(response.data, {"success": True, "payload": {}})
