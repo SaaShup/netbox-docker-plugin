@@ -96,7 +96,7 @@ class ImageApiTestCase(
 
         with requests_mock.Mocker() as m:
             m.post(
-                f"http://localhost:8080/api/engine/images",
+                "http://localhost:8080/api/engine/images",
                 text="{}",
             )
 
