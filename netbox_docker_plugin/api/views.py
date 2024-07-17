@@ -72,6 +72,47 @@ class ImageViewSet(NetBoxModelViewSet):
     serializer_class = ImageSerializer
     http_method_names = ["get", "post", "patch", "delete", "options"]
 
+    @extend_schema(
+        operation_id="plugins_docker_image_force_pull",
+        responses={
+            (200, "application/json"): OpenApiResponse(response=str),
+            (502, "application/json"): OpenApiResponse(response=str),
+        },
+    )
+    @action(
+        detail=True,
+        methods=["post"],
+        renderer_classes=[JSONRenderer],
+    )
+    def force_pull(self, _request, **_kwargs):
+        """ Force pull an existing image """
+
+        image: Image = self.get_object()
+        agent_url = image.host.endpoint
+
+        url = f"{agent_url}/api/engine/images"
+
+        try:
+            serializer = self.get_serializer(image)
+            data = serializer.data
+            data["force"] = True
+
+            resp = requests.post(url, timeout=10, json={"data": data})
+            resp.raise_for_status()
+
+        except requests.HTTPError:
+            return Response(
+                {"success": False, "payload": resp.text},
+                status=status.HTTP_502_BAD_GATEWAY,
+                content_type="application/json",
+            )
+
+        return Response(
+            {"success": True, "payload": resp.json()},
+            status=status.HTTP_200_OK,
+            content_type="application/json",
+        )
+
 
 class VolumeViewSet(NetBoxModelViewSet):
     """Volume view set class"""
