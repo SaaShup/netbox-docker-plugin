@@ -54,6 +54,46 @@
   </div>
   <div class="col col-md-6">
     <div class="card">
+      <h5 class="card-header">LABELS</h5>
+      <div class="card-body htmx-container table-responsive"
+        hx-get="{% url 'plugins:netbox_docker_plugin:label_list' %}?container_id={{ object.pk }}"
+        hx-trigger="load"
+      ></div>
+      {% if perms.netbox_docker_plugin.add_env %}
+        <div class="card-footer text-end noprint">
+          <a href="{% url 'plugins:netbox_docker_plugin:label_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
+            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Label
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<h2>Runtime</h2>
+<div class="row mb-3">
+  <div class="col col-md-6">
+    <div class="card">
+      <h5 class="card-header">ENVIRONMENT VARIABLES</h5>
+      <div class="card-body htmx-container table-responsive"
+        hx-get="{% url 'plugins:netbox_docker_plugin:env_list' %}?container_id={{ object.pk }}"
+        hx-trigger="load"
+      ></div>
+      {% if perms.netbox_docker_plugin.add_env %}
+        <div class="card-footer text-end noprint">
+          <a href="{% url 'plugins:netbox_docker_plugin:env_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
+            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add an Env Variable
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<h2>Networking</h2>
+<div class="row mb-3">
+  <div class="col col-md-6">
+    <div class="card">
       <h5 class="card-header">PORT MAPPINGS</h5>
       <div class="card-body htmx-container table-responsive"
         hx-get="{% url 'plugins:netbox_docker_plugin:port_list' %}?container_id={{ object.pk }}"
@@ -67,34 +107,8 @@
         </div>
       {% endif %}
     </div>
-    <div class="card">
-      <h5 class="card-header">MOUNTS</h5>
-      <div class="card-body htmx-container table-responsive"
-        hx-get="{% url 'plugins:netbox_docker_plugin:mount_list' %}?container_id={{ object.pk }}"
-        hx-trigger="load"
-      ></div>
-      {% if perms.netbox_docker_plugin.add_env %}
-        <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:mount_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
-            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> New Mount
-          </a>
-        </div>
-      {% endif %}
-    </div>
-    <div class="card">
-      <h5 class="card-header">BINDS</h5>
-      <div class="card-body htmx-container table-responsive"
-        hx-get="{% url 'plugins:netbox_docker_plugin:bind_list' %}?container_id={{ object.pk }}"
-        hx-trigger="load"
-      ></div>
-      {% if perms.netbox_docker_plugin.add_env %}
-        <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:bind_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
-            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> New Bind
-          </a>
-        </div>
-      {% endif %}
-    </div>
+  </div>
+  <div class="col col-md-6">
     <div class="card">
       <h5 class="card-header">NETWORK SETTINGS</h5>
       <div class="card-body htmx-container table-responsive"
@@ -109,30 +123,38 @@
         </div>
       {% endif %}
     </div>
+  </div>
+</div>
+
+<h2>Storage</h2>
+<div class="row mb-3">
+  <div class="col col-md-6">
     <div class="card">
-      <h5 class="card-header">ENV VARIABLE</h5>
+      <h5 class="card-header">MOUNTS</h5>
       <div class="card-body htmx-container table-responsive"
-        hx-get="{% url 'plugins:netbox_docker_plugin:env_list' %}?container_id={{ object.pk }}"
+        hx-get="{% url 'plugins:netbox_docker_plugin:mount_list' %}?container_id={{ object.pk }}"
         hx-trigger="load"
       ></div>
       {% if perms.netbox_docker_plugin.add_env %}
         <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:env_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
-            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add an Env Variable
+          <a href="{% url 'plugins:netbox_docker_plugin:mount_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
+            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> New Mount
           </a>
         </div>
       {% endif %}
     </div>
+  </div>
+  <div class="col col-md-6">
     <div class="card">
-      <h5 class="card-header">LABELS</h5>
+      <h5 class="card-header">BINDS</h5>
       <div class="card-body htmx-container table-responsive"
-        hx-get="{% url 'plugins:netbox_docker_plugin:label_list' %}?container_id={{ object.pk }}"
+        hx-get="{% url 'plugins:netbox_docker_plugin:bind_list' %}?container_id={{ object.pk }}"
         hx-trigger="load"
       ></div>
       {% if perms.netbox_docker_plugin.add_env %}
         <div class="card-footer text-end noprint">
-          <a href="{% url 'plugins:netbox_docker_plugin:label_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
-            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Label
+          <a href="{% url 'plugins:netbox_docker_plugin:bind_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
+            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> New Bind
           </a>
         </div>
       {% endif %}
