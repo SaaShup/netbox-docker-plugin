@@ -2,6 +2,83 @@
 
 {% load plugins %}
 
+{% block extra_controls %}
+<button
+  class="btn btn-sm btn-success"
+  onclick="
+    (async () => {
+      this.setAttribute('disabled', 'disabled')
+
+      const notificationData = {}
+
+      try {
+        const resp = await fetch(
+          '/api/plugins/docker/images/{{ object.pk }}/force_pull/',
+          {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': window.CSRF_TOKEN,
+            },
+          },
+        )
+
+        const data = await resp.json()
+        console.log(data)
+
+        notificationData.kind = 'success'
+        notificationData.icon = ['mdi', 'mdi-check']
+        notificationData.message = 'Pulling image again'
+      }
+      catch (err) {
+        console.error(err)
+
+        notificationData.kind = 'danger'
+        notificationData.icon = ['mdi', 'mdi-alert']
+        notificationData.message = 'Failed to force pull image'
+      }
+      finally {
+        this.removeAttribute('disabled')
+      }
+
+      const notification = document.createElement('div')
+      notification.classList.add('toast', 'toast-dark', 'border-0', 'shadow-sm', 'rounded-0')
+      notification.setAttribute('role', 'alert')
+      notification.setAttribute('aria-live', 'assertive')
+      notification.setAttribute('aria-atomic', 'true')
+      notification.dataset['bsDelay'] = 10_000
+
+      const header = document.createElement('div')
+      header.classList.add('toast-header', `bg-${notificationData.kind}`, 'rounded-0')
+
+      const headerIcon = document.createElement('i')
+      headerIcon.classList.add(...notificationData.icon, 'me-2')
+
+      const headerTitle = document.createElement('span')
+      headerTitle.innerText = notificationData.message
+
+      const closeButton = document.createElement('button')
+      closeButton.classList.add('btn-close', 'me-0', 'm-auto')
+      closeButton.setAttribute('type', 'button')
+      closeButton.setAttribute('aria-label', 'Close')
+      closeButton.dataset['bsDismiss'] = 'toast'
+
+      header.appendChild(headerIcon)
+      header.appendChild(headerTitle)
+      header.appendChild(closeButton)
+
+      notification.appendChild(header)
+
+      document.querySelector('.toast-container').appendChild(notification)
+
+      const toast = new Toast(notification)
+      toast.show()
+    })()
+  "
+>
+  <i class="mdi mdi-reload"></i> Force Pull
+</button>
+{% endblock %}
+
 {% block content %}
 <div class="row mb-3">
   <div class="col col-md-6">

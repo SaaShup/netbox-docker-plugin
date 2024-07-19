@@ -1,5 +1,10 @@
 """Image Test Case"""
 
+import requests_mock
+from django.urls import reverse
+from django.contrib.contenttypes.models import ContentType
+from rest_framework import status
+from users.models import ObjectPermission
 from utilities.testing import APIViewTestCases
 from netbox_docker_plugin.models.host import Host
 from netbox_docker_plugin.models.image import Image
@@ -66,3 +71,35 @@ class ImageApiTestCase(
                 "registry": registry.pk,
             },
         ]
+
+    def test_force_pull_endpoint(self):
+        """Test force pull endpoint"""
+
+        image = Image.objects.get(name="image1")
+
+        endpoint = reverse(
+            viewname=f"plugins-api:{self._get_view_namespace()}:image-force-pull",
+            kwargs={"pk": image.pk},
+        )
+
+        # Add object-level permission
+        obj_perm = ObjectPermission(
+            name="Test permission",
+            constraints={"pk": image.pk},
+            actions=["add"],
+        )
+        obj_perm.save()
+        # pylint: disable=E1101
+        obj_perm.users.add(self.user)
+        # pylint: disable=E1101
+        obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
+
+        with requests_mock.Mocker() as m:
+            m.post(
+                "http://localhost:8080/api/engine/images",
+                text="{}",
+            )
+
+            response = self.client.post(endpoint, **self.header)
+            self.assertHttpStatus(response, status.HTTP_200_OK)
+            self.assertEqual(response.data, {"success": True, "payload": {}})
