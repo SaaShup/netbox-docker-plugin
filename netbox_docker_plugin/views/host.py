@@ -2,6 +2,7 @@
 
 from users.models import Token
 from utilities.query import count_related
+from utilities.views import ViewTab, register_model_view
 from netbox.views import generic
 from .. import tables, filtersets
 from ..forms import host
@@ -13,6 +14,7 @@ from ..models.container import Container
 from ..models.registry import Registry
 
 
+@register_model_view(Host)
 class HostView(generic.ObjectView):
     """Host view definition"""
 
@@ -47,6 +49,15 @@ class HostView(generic.ObjectView):
         return {
             "related_models": related_models,
         }
+
+
+@register_model_view(Host, name="graph", path="graph")
+class HostGraphView(generic.ObjectView):
+    """Logs tab in Container view"""
+
+    queryset = Host.objects.all()
+    tab = ViewTab(label="Graph")
+    template_name = "netbox_docker_plugin/host-graph.html"
 
 
 class HostListView(generic.ObjectListView):
