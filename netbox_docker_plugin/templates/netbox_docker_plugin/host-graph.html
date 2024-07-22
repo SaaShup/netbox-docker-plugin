@@ -1,0 +1,211 @@
+{% extends 'generic/object.html' %}
+
+{% load plugins %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div
+          id="graph"
+          style="
+            display: block;
+            width: 100%;
+            min-height: 350px;
+          "
+        ></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block head %}
+<script
+  type="application/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.1/cytoscape.min.js"
+  integrity="sha512-kv2oCpI8sYlWvr442qCcFNgXW9swhLRlDJ/39GlfZLGAWOqgU/Kz30YCYBm0yLumVzRvYEMU6uSxFniGzitKiA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+
+<script type="application/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    const elt = document.getElementById('graph');
+
+    const cy = cytoscape({
+      container: elt,
+      elements: [
+        // {% for registry in object.registries.all %}
+          {
+            data: {
+              id: 'registry:{{ registry.pk }}',
+              name: '{{ registry.name }}',
+            },
+            classes: ['registry'],
+          },
+        // {% endfor %}
+        // {% for image in object.images.all %}
+          {
+            data: {
+              id: 'image:{{ image.pk }}',
+              name: '{{ image.name }}',
+            },
+            classes: [
+              'image',
+              // {% if image.Digest %}
+                'pulled',
+              // {% endif %}
+            ],
+          },
+          {
+            data: {
+              id: 'registry-image:{{ image.registry.pk }}:{{ image.pk }}',
+              source: 'registry:{{ image.registry.pk }}',
+              target: 'image:{{ image.pk }}',
+            },
+          },
+        // {% endfor %}
+        // {% for network in object.networks.all %}
+          {
+            data: {
+              id: 'network:{{ network.pk }}',
+              name: '{{ network.name }}',
+            },
+            classes: ['network'],
+          },
+        // {% endfor %}
+        // {% for volume in object.volumes.all %}
+          {
+            data: {
+              id: 'volume:{{ volume.pk }}',
+              name: '{{ volume.name }}',
+            },
+            classes: ['volume'],
+          },
+        // {% endfor %}
+        // {% for container in object.containers.all %}
+          {
+            data: {
+              id: 'container:{{ container.pk }}',
+              name: '{{ container.name }}',
+            },
+            classes: [
+              'container',
+              // {% if container.state == "running" %}
+                'running',
+              // {% endif %}
+            ],
+          },
+          {
+            data: {
+              id: 'image-container:{{ container.image.pk }}:{{ container.pk }}',
+              source: 'image:{{ container.image.pk }}',
+              target: 'container:{{ container.pk }}',
+            },
+          },
+          // {% for network in container.networks.all %}
+            {
+              data: {
+                id: 'network-container:{{ network.pk }}:{{ container.pk }}',
+                source: 'network:{{ network.pk }}',
+                target: 'container:{{ container.pk }}',
+              },
+            },
+          // {% endfor %}
+          // {% for volume in container.volumes.all %}
+            {
+              data: {
+                id: 'volume-container:{{ volume.pk }}:{{ container.pk }}',
+                source: 'volume:{{ volume.pk }}',
+                target: 'container:{{ container.pk }}',
+              },
+            },
+          // {% endfor %}
+        // {% endfor %}
+      ],
+
+      style: [ // the stylesheet for the graph
+        {
+          selector: 'node',
+          style: {
+            'outline-width': 2,
+            'outline-color': '#CCCCCC',
+            'background-color': '#59594A',
+            'label': ''
+          },
+        },
+        {
+          selector: 'node.hover',
+          style: {
+            'label': 'data(name)',
+          },
+        },
+        {
+          selector: 'node.image',
+          style: {
+            'background-color': '#BE6E46',
+          },
+        },
+        {
+          selector: 'node.image.pulled',
+          style: {
+            'background-color': '#A3BFA8',
+          }
+        },
+        {
+          selector: 'node.network',
+          style: {
+            'shape': 'hexagon',
+          },
+        },
+        {
+          selector: 'node.volume',
+          style: {
+            'shape': 'triangle',
+          },
+        },
+        {
+          selector: 'node.container',
+          style: {
+            'background-color': '#BE6E46',
+            'shape': 'rectangle',
+          },
+        },
+        {
+          selector: 'node.container.running',
+          style: {
+            'background-color': '#A3BFA8',
+          },
+        },
+        {
+          selector: 'edge',
+          style: {
+            'width': 3,
+            'line-color': '#ccc',
+            'target-arrow-color': '#ccc',
+            'target-arrow-shape': 'triangle',
+            'curve-style': 'bezier'
+          }
+        }
+      ],
+
+      layout: {
+        name: 'cose',
+        nodeDimensionsIncludeLabels: true,
+      },
+    })
+
+    cy.on('mouseover', 'node', function (evt) {
+      const node = evt.target
+      node.addClass('hover')
+    })
+
+    cy.on('mouseout', 'node', function (evt) {
+      const node = evt.target
+      node.removeClass('hover')
+    })
+  })
+</script>
+{% endblock %}
