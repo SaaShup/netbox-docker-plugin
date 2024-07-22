@@ -42,6 +42,11 @@ urlpatterns = (
         name="host_delete",
     ),
     path(
+        "hosts/<int:pk>/graph/",
+        host_views.HostGraphView.as_view(),
+        name="host_graph",
+    ),
+    path(
         "hosts/<int:pk>/changelog/",
         ObjectChangeLogView.as_view(),
         name="host_changelog",
