@@ -14,7 +14,11 @@ from netbox.forms import (
 )
 from ..models.volume import Volume
 from ..models.host import Host
-from ..models.container import Container, ContainerRestartPolicyChoices
+from ..models.container import (
+    Container,
+    ContainerRestartPolicyChoices,
+    ContainerCapAddChoices,
+)
 from ..models.image import Image
 
 
@@ -30,6 +34,7 @@ class ContainerForm(NetBoxModelForm):
         required=True,
         query_params={"host_id": "$host"},
     )
+    cap_add = forms.MultipleChoiceField(choices=ContainerCapAddChoices, required=False)
 
     class Meta:
         """Container form definition Meta class"""
@@ -41,6 +46,7 @@ class ContainerForm(NetBoxModelForm):
             "name",
             "hostname",
             "restart_policy",
+            "cap_add",
             "tags",
         )
         labels = {
@@ -49,7 +55,9 @@ class ContainerForm(NetBoxModelForm):
             "image": "Image",
             "hostname": "Hostname",
             "restart_policy": "Restart Policy",
+            "cap_add": "Add Host capabilities",
         }
+
 
 class ContainerEditForm(NetBoxModelForm):
     """Container form definition class"""
@@ -60,6 +68,7 @@ class ContainerEditForm(NetBoxModelForm):
         required=True,
         query_params={"host_id": "$host"},
     )
+    cap_add = forms.MultipleChoiceField(choices=ContainerCapAddChoices, required=False)
 
     class Meta:
         """Container form definition Meta class"""
@@ -70,6 +79,7 @@ class ContainerEditForm(NetBoxModelForm):
             "name",
             "hostname",
             "restart_policy",
+            "cap_add",
             "tags",
         )
         labels = {
@@ -77,6 +87,7 @@ class ContainerEditForm(NetBoxModelForm):
             "image": "Image",
             "hostname": "Hostname",
             "restart_policy": "Restart Policy",
+            "cap_add": "Add Host capabilities",
         }
 
 

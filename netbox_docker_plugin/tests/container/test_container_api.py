@@ -29,6 +29,7 @@ class ContainerApiTestCase(
     model = Container
     brief_fields = [
         "ContainerID",
+        "cap_add",
         "display",
         "hostname",
         "id",
@@ -168,6 +169,7 @@ class ContainerApiTestCase(
                 "ports": [],
                 "env": [{"var_name": "ENV", "value": ""}],
                 "labels": [],
+                "cap_add": ["NET_ADMIN"]
             },
         ]
 

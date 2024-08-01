@@ -1,0 +1,26 @@
+# pylint: disable=C0103
+"""Migration file"""
+
+import django.contrib.postgres.fields
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+    """Migration file"""
+
+    dependencies = [
+        ("netbox_docker_plugin", "0029_alter_container_state"),
+    ]
+
+    operations = [
+        migrations.AddField(
+            model_name="container",
+            name="cap_add",
+            field=django.contrib.postgres.fields.ArrayField(
+                base_field=models.CharField(blank=True, max_length=32, null=True),
+                blank=True,
+                null=True,
+                size=None,
+            ),
+        ),
+    ]
