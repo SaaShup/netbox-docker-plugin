@@ -256,6 +256,7 @@ class ContainerTable(NetBoxTable):
             "ContainerID",
             "hostname",
             "restart_policy",
+            "cap_add",
             "port_count",
             "mount_count",
             "bind_count",
