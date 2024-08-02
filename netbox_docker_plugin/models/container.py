@@ -2,6 +2,7 @@
 
 # pylint: disable=E1101
 
+from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.functions import Lower
@@ -84,6 +85,16 @@ class PortTypeChoices(ChoiceSet):
     ]
 
 
+class ContainerCapAddChoices(ChoiceSet):
+    """cap-add choices definition class"""
+
+    key = "Container.cap_add"
+
+    CHOICES = [
+        ("NET_ADMIN", "NET_ADMIN"),
+    ]
+
+
 class Container(NetBoxModel):
     """Container definition class"""
 
@@ -132,39 +143,48 @@ class Container(NetBoxModel):
         choices=ContainerRestartPolicyChoices,
         default=ContainerRestartPolicyChoices.DEFAULT_VALUE,
     )
+    cap_add = ArrayField(
+        models.CharField(
+            max_length=32, blank=True, null=True, choices=ContainerCapAddChoices
+        ),
+        null=True,
+        blank=True,
+    )
 
     @property
     def can_create(self) -> bool:
-        """ Check if the container can be created """
+        """Check if the container can be created"""
         return self.state == "none"
 
     @property
     def can_start(self) -> bool:
-        """ Check if the container can be started """
+        """Check if the container can be started"""
         return self.state in ["created", "exited", "dead"]
 
     @property
     def can_stop(self) -> bool:
-        """ Check if the container can be stopped """
+        """Check if the container can be stopped"""
         return self.state in ["running"]
 
     @property
     def can_restart(self) -> bool:
-        """ Check if the container can be restarted """
+        """Check if the container can be restarted"""
         return self.state in ["running"]
 
     @property
     def can_recreate(self) -> bool:
-        """ Check if the container can be recreated """
+        """Check if the container can be recreated"""
         return self.state in ["created", "running", "exited", "dead"]
 
     @property
     def can_delete(self) -> bool:
-        """ Check if the container can be deleted """
-        return (
-            self.host.state == HostStateChoices.STATE_DELETED
-            or self.state in ["created", "paused", "exited", "dead"]
-        )
+        """Check if the container can be deleted"""
+        return self.host.state == HostStateChoices.STATE_DELETED or self.state in [
+            "created",
+            "paused",
+            "exited",
+            "dead",
+        ]
 
     class Meta:
         """Image Model Meta Class"""
