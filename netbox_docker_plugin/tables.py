@@ -14,6 +14,7 @@ from .models.container import (
     Mount,
     Bind,
     NetworkSetting,
+    Device,
 )
 from .models.registry import Registry
 from .templatetags.host import remove_password
@@ -239,6 +240,11 @@ class ContainerTable(NetBoxTable):
         url_params={"container_id": "pk"},
         verbose_name="Labels count",
     )
+    device_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:device_list",
+        url_params={"container_id": "pk"},
+        verbose_name="Devices count",
+    )
     tags = columns.TagColumn()
 
     class Meta(NetBoxTable.Meta):
@@ -263,6 +269,7 @@ class ContainerTable(NetBoxTable):
             "networksetting_count",
             "env_count",
             "label_count",
+            "device_count",
             "tags",
         )
         default_columns = (
@@ -394,4 +401,27 @@ class NetworkSettingTable(NetBoxTable):
         default_columns = (
             "container",
             "network",
+        )
+
+
+class DeviceTable(NetBoxTable):
+    """Device Table definition class"""
+
+    container = tables.Column(linkify=True)
+
+    actions = columns.ActionsColumn(actions=("edit", "delete"))
+
+    class Meta(NetBoxTable.Meta):
+        """Device Table definition Meta class"""
+
+        model = Device
+        fields = (
+            "container",
+            "host_path",
+            "container_path",
+        )
+        default_columns = (
+            "container",
+            "host_path",
+            "container_path",
         )

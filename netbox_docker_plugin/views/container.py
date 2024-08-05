@@ -13,6 +13,7 @@ from ..models.container import (
     NetworkSetting,
     Env,
     Label,
+    Device,
 )
 
 
@@ -29,6 +30,7 @@ class ContainerView(generic.ObjectView):
         "binds",
         "ports",
         "network_settings",
+        "devices",
     )
 
 
@@ -74,6 +76,7 @@ class ContainerListView(generic.ObjectListView):
         networksetting_count=count_related(NetworkSetting, "container"),
         env_count=count_related(Env, "container"),
         label_count=count_related(Label, "container"),
+        device_count=count_related(Device, "container"),
     )
 
     table = tables.ContainerTable
