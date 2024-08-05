@@ -15,6 +15,7 @@ from .models.container import (
     Mount,
     Bind,
     NetworkSetting,
+    Device,
 )
 from .models.registry import Registry
 
@@ -287,4 +288,20 @@ class NetworkSettingFilterSet(BaseFilterSet):
         """NetworkSetting filterset definition meta class"""
 
         model = NetworkSetting
+        fields = ("id",)
+
+
+class DeviceFilterSet(BaseFilterSet):
+    """Device filterset definition class"""
+
+    container_id = ModelMultipleChoiceFilter(
+        field_name="container_id",
+        queryset=Container.objects.all(),
+        label="Container (ID)",
+    )
+
+    class Meta:
+        """Device filterset definition meta class"""
+
+        model = Device
         fields = ("id",)

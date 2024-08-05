@@ -136,6 +136,7 @@ class ContainerViewSet(NetBoxModelViewSet):
     """Container view set class"""
 
     queryset = Container.objects.prefetch_related(
+        "devices",
         "network_settings",
         "mounts",
         "binds",
