@@ -18,6 +18,7 @@ from ..models.container import (
     Mount,
     Bind,
     NetworkSetting,
+    Device,
 )
 from ..models.registry import Registry
 
@@ -95,7 +96,7 @@ class NestedVolumeSerializer(WritableNestedSerializer):
             params = dict_to_filter_params(data)
             if Volume.objects.filter(**params).count() == 0:
                 host = Host.objects.get(pk=params["host"])
-                volume = Volume(host= host, name= params["name"])
+                volume = Volume(host=host, name=params["name"])
                 volume.save()
                 return volume
 
@@ -372,6 +373,19 @@ class NetworkSettingSerializer(serializers.ModelSerializer):
         fields = ("network",)
 
 
+class DeviceSerializer(serializers.ModelSerializer):
+    """Container Device Serializer class"""
+
+    class Meta:
+        """Container Device Serializer Meta class"""
+
+        model = Device
+        fields = (
+            "host_path",
+            "container_path",
+        )
+
+
 class ContainerSerializer(NetBoxModelSerializer):
     """Container Serializer class"""
 
@@ -386,6 +400,7 @@ class ContainerSerializer(NetBoxModelSerializer):
     mounts = MountSerializer(many=True, required=False)
     binds = BindSerializer(many=True, required=False)
     network_settings = NetworkSettingSerializer(many=True, required=False)
+    devices = DeviceSerializer(many=True, required=False)
 
     class Meta:
         """Container Serializer Meta class"""
@@ -411,6 +426,7 @@ class ContainerSerializer(NetBoxModelSerializer):
             "mounts",
             "binds",
             "network_settings",
+            "devices",
             "custom_fields",
             "created",
             "last_updated",
@@ -425,11 +441,13 @@ class ContainerSerializer(NetBoxModelSerializer):
         attrs.pop("mounts", None)
         attrs.pop("binds", None)
         attrs.pop("network_settings", None)
+        attrs.pop("devices", None)
 
         super().validate(attrs)
 
         return data
 
+    # pylint: disable=R0912
     def create(self, validated_data):
         ports_data = validated_data.pop("ports", None)
         env_data = validated_data.pop("env", None)
@@ -437,6 +455,7 @@ class ContainerSerializer(NetBoxModelSerializer):
         mounts_data = validated_data.pop("mounts", None)
         binds_data = validated_data.pop("binds", None)
         network_settings_data = validated_data.pop("network_settings", None)
+        devices_data = validated_data.pop("devices", None)
 
         container = super().create(validated_data)
 
@@ -470,8 +489,15 @@ class ContainerSerializer(NetBoxModelSerializer):
                 obj.full_clean()
                 obj.save()
 
+        if devices_data is not None:
+            for device in devices_data:
+                obj = Device(container=container, **device)
+                obj.full_clean()
+                obj.save()
+
         return container
 
+    # pylint: disable=R0912
     def update(self, instance, validated_data):
         ports_data = validated_data.pop("ports", None)
         env_data = validated_data.pop("env", None)
@@ -479,6 +505,7 @@ class ContainerSerializer(NetBoxModelSerializer):
         mounts_data = validated_data.pop("mounts", None)
         binds_data = validated_data.pop("binds", None)
         network_settings_data = validated_data.pop("network_settings", None)
+        devices_data = validated_data.pop("devices", None)
 
         container = super().update(instance, validated_data)
 
@@ -515,6 +542,13 @@ class ContainerSerializer(NetBoxModelSerializer):
             NetworkSetting.objects.filter(container=container).delete()
             for network_setting in network_settings_data:
                 obj = NetworkSetting(container=container, **network_setting)
+                obj.full_clean()
+                obj.save()
+
+        if devices_data is not None:
+            Device.objects.filter(container=container).delete()
+            for device in devices_data:
+                obj = Device(container=container, **device)
                 obj.full_clean()
                 obj.save()
 
@@ -587,10 +621,11 @@ class HostSerializer(NetBoxModelSerializer):
             "registries",
         )
 
+
 class ContainerCommandSerializer(serializers.Serializer):
     """Container command Serializer class"""
 
-    cmd=serializers.ListField(child=serializers.CharField())
+    cmd = serializers.ListField(child=serializers.CharField())
 
     def create(self, validated_data):
         pass

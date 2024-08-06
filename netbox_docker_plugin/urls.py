@@ -21,6 +21,7 @@ from .views import (
     bind as bind_views,
     network_setting as network_setting_views,
     registry as registry_views,
+    device as device_views,
 )
 
 urlpatterns = (
@@ -404,5 +405,26 @@ urlpatterns = (
         ObjectJournalView.as_view(),
         name="registry_journal",
         kwargs={"model": Registry},
+    ),
+    # Device
+    path(
+        "devices/",
+        device_views.DeviceListView.as_view(),
+        name="device_list",
+    ),
+    path(
+        "devices/add/",
+        device_views.DeviceEditView.as_view(),
+        name="device_add",
+    ),
+    path(
+        "devices/<int:pk>/edit/",
+        device_views.DeviceEditView.as_view(),
+        name="device_edit",
+    ),
+    path(
+        "devices/<int:pk>/delete/",
+        device_views.DeviceDeleteView.as_view(),
+        name="device_delete",
     ),
 )
