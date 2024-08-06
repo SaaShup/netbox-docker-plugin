@@ -459,3 +459,41 @@ class NetworkSetting(models.Model):
                     + f"{self.container.host}."
                 }
             )
+
+
+class Device(models.Model):
+    """Device definition class"""
+
+    objects = RestrictedQuerySet.as_manager()
+
+    container = models.ForeignKey(
+        Container, on_delete=models.CASCADE, related_name="devices"
+    )
+    host_path = models.CharField(
+        max_length=1024,
+        validators=[
+            MinLengthValidator(limit_value=1),
+            MaxLengthValidator(limit_value=1024),
+        ],
+    )
+    container_path = models.CharField(
+        max_length=1024,
+        validators=[
+            MinLengthValidator(limit_value=1),
+            MaxLengthValidator(limit_value=1024),
+        ],
+    )
+
+    class Meta:
+        """Device Model Meta Class"""
+
+        ordering = ("container", "container_path", "host_path")
+        constraints = (
+            models.UniqueConstraint(
+                fields=["container", "container_path", "host_path"],
+                name="%(app_label)s_%(class)s_unique_device",
+            ),
+        )
+
+    def __str__(self):
+        return f"{self.host_path}:{self.container_path}"

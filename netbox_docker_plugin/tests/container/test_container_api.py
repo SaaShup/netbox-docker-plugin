@@ -47,6 +47,7 @@ class ContainerApiTestCase(
         "mounts",
         "binds",
         "network_settings",
+        "devices",
     ]
 
     @classmethod
@@ -121,6 +122,9 @@ class ContainerApiTestCase(
                 "network_settings": [
                     {"network": network1.pk},
                 ],
+                "devices": [
+                    {"host_path": "/dev/sda", "container_path": "/dev/xvdc"},
+                ]
             },
             {
                 "host": host2.pk,
