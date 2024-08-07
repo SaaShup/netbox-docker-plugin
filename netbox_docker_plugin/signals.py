@@ -42,6 +42,7 @@ def restrict_container_actions(instance, **_kwargs):
             instance.operation == "restart" and not instance.can_restart,
             instance.operation == "stop" and not instance.can_stop,
             instance.operation == "recreate" and not instance.can_recreate,
+            instance.operation == "kill" and not instance.can_kill,
         ]
     ):
         raise AbortRequest(

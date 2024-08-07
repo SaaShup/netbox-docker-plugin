@@ -45,6 +45,20 @@
   </button>
 </form>
 
+<form action="{% url 'plugins:netbox_docker_plugin:container_operation' pk=object.id operation='kill' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="operation" value="kill">
+  <button
+    type="submit"
+    class="btn btn-dark"
+    {% if not object.can_kill %}
+    disabled
+    {% endif %}
+  >
+    <i class="mdi mdi-skull"></i> Kill
+  </button>
+</form>
+
 <form action="{% url 'plugins:netbox_docker_plugin:container_operation' pk=object.id operation='recreate' %}" method="post">
   {% csrf_token %}
   <input type="hidden" name="operation" value="recreate">
