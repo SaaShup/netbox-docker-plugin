@@ -10,12 +10,12 @@ from netbox_docker_plugin.models.registry import Registry
 
 
 class ContainerActionTestCase(TestCase):
-    """ Test the various scenarii of container actions """
+    """Test the various scenarii of container actions"""
 
     objects = {}
 
     def test_allowed_operations(self):
-        """ Test that only specific operations are allowed according to a state """
+        """Test that only specific operations are allowed according to a state"""
 
         cases = [
             ("create", ["none"]),
@@ -23,7 +23,19 @@ class ContainerActionTestCase(TestCase):
             ("stop", ["running"]),
             ("restart", ["running"]),
             ("recreate", ["created", "exited", "dead", "running"]),
-            ("noop", ["created", "restarting", "running", "paused", "exited", "dead", "none"]),
+            ("kill", ["created", "restarting", "running", "exited", "dead"]),
+            (
+                "noop",
+                [
+                    "created",
+                    "restarting",
+                    "running",
+                    "paused",
+                    "exited",
+                    "dead",
+                    "none",
+                ],
+            ),
         ]
 
         for operation, states in cases:
@@ -48,14 +60,18 @@ class ContainerActionTestCase(TestCase):
                     )
 
     def test_forbidden_operations(self):
-        """ Test that forbidden operations raise an AbortRequest """
+        """Test that forbidden operations raise an AbortRequest"""
 
         cases = [
-            ("create", ["created", "restarting", "running", "paused", "exited", "dead"]),
+            (
+                "create",
+                ["created", "restarting", "running", "paused", "exited", "dead"],
+            ),
             ("start", ["running", "restarting", "paused", "none"]),
             ("stop", ["created", "restarting", "paused", "exited", "dead", "none"]),
             ("restart", ["created", "restarting", "paused", "exited", "dead", "none"]),
             ("recreate", ["restarting", "paused", "none"]),
+            ("kill", ["paused", "none"]),
         ]
 
         for operation, states in cases:
@@ -79,7 +95,7 @@ class ContainerActionTestCase(TestCase):
                             obj.save()
 
     def test_delete_non_running_container(self):
-        """ Test that a non running container can be deleted """
+        """Test that a non running container can be deleted"""
 
         for state in ["created", "paused", "exited", "dead"]:
             with self.subTest(operation="delete", state=state):
@@ -98,7 +114,7 @@ class ContainerActionTestCase(TestCase):
                 self.assertFalse(Container.objects.filter(name=name).exists())
 
     def test_delete_running_container(self):
-        """ Test that a running container cannot be deleted """
+        """Test that a running container cannot be deleted"""
 
         for state in ["running", "restarting", "none"]:
             with self.subTest(operation="delete", state=state):
@@ -119,9 +135,17 @@ class ContainerActionTestCase(TestCase):
                         obj.delete()
 
     def test_delete_container_on_deleted_host(self):
-        """ Test that a container on a deleted host can be deleted """
+        """Test that a container on a deleted host can be deleted"""
 
-        for state in ["created", "running", "restarted", "paused", "exited", "dead", "none"]:
+        for state in [
+            "created",
+            "running",
+            "restarted",
+            "paused",
+            "exited",
+            "dead",
+            "none",
+        ]:
             with self.subTest(operation="delete", state=state):
                 with transaction.atomic():
                     name = f"container-delete-{state}"
