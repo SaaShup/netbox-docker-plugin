@@ -53,6 +53,7 @@ class ContainerOperationChoices(ChoiceSet):
         ("restart", "Restart", "blue"),
         ("stop", "Stop", "blue"),
         ("recreate", "Recreate", "blue"),
+        ("kill", "Kill", "red"),
         ("none", "None", "white"),
     ]
 
@@ -187,6 +188,11 @@ class Container(NetBoxModel):
             "exited",
             "dead",
         ]
+
+    @property
+    def can_kill(self) -> bool:
+        """Check if the container can be killed"""
+        return self.state in ["created", "restarting", "running", "exited", "dead"]
 
     class Meta:
         """Image Model Meta Class"""
