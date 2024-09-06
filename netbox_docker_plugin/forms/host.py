@@ -72,3 +72,13 @@ class HostBulkEditForm(NetBoxModelBulkEditForm):
 
     model = Host
     fieldsets = (FieldSet("endpoint", name="General"),)
+
+
+class HostOperationForm(NetBoxModelForm):
+    """Host Operation form definition class"""
+
+    class Meta:
+        """Host form definition Meta class"""
+
+        model = Host
+        fields = ("operation",)

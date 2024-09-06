@@ -29,6 +29,7 @@ class HostApiTestCase(
         "endpoint",
         "id",
         "name",
+        "operation",
         "state",
         "url",
     ]
