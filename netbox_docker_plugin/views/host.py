@@ -130,3 +130,14 @@ class HostBulkDeleteView(generic.BulkDeleteView):
     queryset = Host.objects.all()
     filterset = filtersets.HostFilterSet
     table = tables.HostTable
+
+
+class HostOperationView(generic.ObjectEditView):
+    """Host operation view definition"""
+
+    def get_object(self, **kwargs):
+        new_kwargs = {"pk": kwargs["pk"]}
+        return super().get_object(**new_kwargs)
+
+    queryset = Host.objects.all()
+    form = host.HostOperationForm

@@ -161,6 +161,33 @@ class ContainerActionTestCase(TestCase):
 
                 self.assertFalse(Container.objects.filter(name=name).exists())
 
+    def test_delete_container_on_refreshing_host(self):
+        """Test that a container on a refreshing host can be deleted"""
+
+        for state in [
+            "created",
+            "running",
+            "restarted",
+            "paused",
+            "exited",
+            "dead",
+            "none",
+        ]:
+            with self.subTest(operation="delete", state=state):
+                with transaction.atomic():
+                    name = f"container-delete-{state}"
+                    obj = Container.objects.create(
+                        host=self.objects["host3"],
+                        image=self.objects["image2"],
+                        name=name,
+                        operation="none",
+                        state=state,
+                    )
+
+                    obj.delete()
+
+                self.assertFalse(Container.objects.filter(name=name).exists())
+
     @classmethod
     def setUpTestData(cls):
         cls.objects["host1"] = Host.objects.create(
@@ -192,4 +219,9 @@ class ContainerActionTestCase(TestCase):
             host=cls.objects["host2"],
             registry=cls.objects["registry2"],
             name="image2",
+        )
+        cls.objects["host3"] = Host.objects.create(
+            endpoint="http://localhost:8080",
+            name="host3",
+            state=HostStateChoices.STATE_REFRESHING,
         )
