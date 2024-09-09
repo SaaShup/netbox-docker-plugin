@@ -43,6 +43,7 @@ class NestedHostSerializer(WritableNestedSerializer):
             "state",
             "agent_version",
             "docker_api_version",
+            "operation",
         )
 
 
@@ -610,6 +611,7 @@ class HostSerializer(NetBoxModelSerializer):
             "netbox_base_url",
             "agent_version",
             "docker_api_version",
+            "operation",
             "custom_fields",
             "created",
             "last_updated",
