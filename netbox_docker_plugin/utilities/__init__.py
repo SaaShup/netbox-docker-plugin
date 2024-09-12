@@ -133,6 +133,19 @@ webhooks = [
         "ssl_verification": False,
     },
     {
+        "name": "[Docker] Modify host",
+        "content_types": "host",
+        "enabled": True,
+        "type_create": False,
+        "type_update": True,
+        "type_delete": False,
+        "type_job_start": False,
+        "type_job_end": False,
+        "http_method": "POST",
+        "payload_url": "{{ data.endpoint }}/api/engine/endpoint",
+        "ssl_verification": False,
+    },
+    {
         "name": "[Docker] Modify image",
         "content_types": "image",
         "enabled": True,
@@ -198,7 +211,7 @@ def create_webhook(app_config, **kwargs):
                         type_job_start=webhook["type_job_start"],
                         type_job_end=webhook["type_job_end"],
                         action_object_id=obj.pk,
-                        action_object_type=wh_content_type
+                        action_object_type=wh_content_type,
                     )
                     eventrule.save()
 

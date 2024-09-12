@@ -180,7 +180,10 @@ class Container(NetBoxModel):
     @property
     def can_delete(self) -> bool:
         """Check if the container can be deleted"""
-        return self.host.state == HostStateChoices.STATE_DELETED or self.state in [
+        return self.host.state in [
+            HostStateChoices.STATE_DELETED,
+            HostStateChoices.STATE_REFRESHING,
+        ] or self.state in [
             "created",
             "paused",
             "exited",

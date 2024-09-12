@@ -20,11 +20,27 @@ class HostStateChoices(ChoiceSet):
     STATE_CREATED = "created"
     STATE_DELETED = "deleted"
     STATE_RUNNING = "running"
+    STATE_REFRESHING = "refreshing"
 
     CHOICES = [
         (STATE_CREATED, "Created", "dark"),
         (STATE_RUNNING, "Running", "blue"),
         (STATE_DELETED, "Deleted", "blue"),
+        (STATE_REFRESHING, "Refreshing", "blue"),
+    ]
+
+
+class HostOperationChoices(ChoiceSet):
+    """Host operation choices definition class"""
+
+    key = "Host.operation"
+
+    OPERATION_REFRESH = "refresh"
+    OPERATION_NONE = "none"
+
+    CHOICES = [
+        (OPERATION_REFRESH, "Refresh", "blue"),
+        (OPERATION_NONE, "None", "white"),
     ]
 
 
@@ -62,6 +78,11 @@ class Host(NetBoxModel):
         null=True,
         blank=True,
     )
+    operation = models.CharField(
+        max_length=32,
+        choices=HostOperationChoices,
+        default=HostOperationChoices.OPERATION_NONE,
+    )
 
     class Meta:
         """Host Model Meta Class"""
@@ -80,3 +101,11 @@ class Host(NetBoxModel):
         self.save()
 
         return super().delete(using, keep_parents)
+
+    def save(
+        self, force_insert=False, force_update=False, using=None, update_fields=None
+    ):
+        if self.operation == HostOperationChoices.OPERATION_REFRESH:
+            self.state = HostStateChoices.STATE_REFRESHING
+
+        return super().save(force_insert, force_update, using, update_fields)

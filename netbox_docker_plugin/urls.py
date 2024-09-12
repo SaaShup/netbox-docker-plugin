@@ -43,6 +43,11 @@ urlpatterns = (
         name="host_delete",
     ),
     path(
+        "hosts/<int:pk>/operation/<str:operation>/",
+        host_views.HostOperationView.as_view(),
+        name="host_operation",
+    ),
+    path(
         "hosts/<int:pk>/graph/",
         host_views.HostGraphView.as_view(),
         name="host_graph",
