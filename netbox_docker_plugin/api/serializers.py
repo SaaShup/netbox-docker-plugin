@@ -4,7 +4,7 @@
 
 from rest_framework import serializers
 from utilities.query import dict_to_filter_params
-from users.api.nested_serializers import NestedTokenSerializer
+from users.models import Token
 from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
 from ..models.host import Host
 from ..models.image import Image
@@ -21,6 +21,15 @@ from ..models.container import (
     Device,
 )
 from ..models.registry import Registry
+
+
+class NestedTokenSerializer(WritableNestedSerializer):
+    """Nested Token Serializer class"""
+
+    class Meta:
+        """Nested Token Serializer Meta class"""
+        model = Token
+        fields = ["id", "url", "display_url", "display", "key", "write_enabled"]
 
 
 class NestedHostSerializer(WritableNestedSerializer):

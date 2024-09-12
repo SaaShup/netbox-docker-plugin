@@ -202,14 +202,27 @@ def create_webhook(app_config, **kwargs):
                     )
                     obj.save()
 
+                    event_types = []
+
+                    if webhook["type_create"]:
+                        event_types.append("object_created")
+
+                    if webhook["type_update"]:
+                        event_types.append("object_updated")
+
+                    if webhook["type_delete"]:
+                        event_types.append("object_deleted")
+
+                    if webhook["type_job_start"]:
+                        event_types.append("job_started")
+
+                    if webhook["type_job_end"]:
+                        event_types.append("job_completed")
+
                     eventrule = EventRule(
                         name=webhook["name"],
                         description="Added automatically by the Netbox Docker Plugin",
-                        type_create=webhook["type_create"],
-                        type_update=webhook["type_update"],
-                        type_delete=webhook["type_delete"],
-                        type_job_start=webhook["type_job_start"],
-                        type_job_end=webhook["type_job_end"],
+                        event_types=event_types,
                         action_object_id=obj.pk,
                         action_object_type=wh_content_type,
                     )

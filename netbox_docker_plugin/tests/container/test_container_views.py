@@ -66,7 +66,7 @@ class ContainerViewsTestCase(
             "host": host1.pk,
             "image": image1.pk,
             "restart_policy": "unless-stopped",
-            "cap_add": "NET_ADMIN",
+            "cap_add": ["NET_ADMIN"],
         }
 
         cls.csv_data = (
