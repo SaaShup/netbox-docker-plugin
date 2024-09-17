@@ -4,14 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "netbox-docker-plugin"
-version = "2.9.0"
+version = "3.0.0"
 authors = [
   { name="Vincent Simonin", email="vincent@saashup.com" },
   { name="David Delassus", email="david.jose.delassus@gmail.com" }
 ]
 description = "Manage Docker with Netbox & style."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
 ]

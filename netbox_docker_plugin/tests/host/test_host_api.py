@@ -1,8 +1,8 @@
 """Host API Test Case"""
 
 from core.models import ObjectType
-from extras.choices import ObjectChangeActionChoices
-from extras.models import ObjectChange
+from core.choices import ObjectChangeActionChoices
+from core.models import ObjectChange
 from users.models import ObjectPermission
 from rest_framework import status
 from utilities.testing import APIViewTestCases

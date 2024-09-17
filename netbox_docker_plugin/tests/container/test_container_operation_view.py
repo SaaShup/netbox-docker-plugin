@@ -4,11 +4,11 @@
 from django.urls import reverse
 from django.test import override_settings
 from core.models import ObjectType
+from core.models import ObjectChange
+from core.choices import ObjectChangeActionChoices
 from utilities.testing import ModelViewTestCase
 from utilities.testing.utils import disable_warnings, post_data
 from users.models import ObjectPermission
-from extras.choices import ObjectChangeActionChoices
-from extras.models import ObjectChange
 from netbox_docker_plugin.models.host import Host
 from netbox_docker_plugin.models.container import Container
 from netbox_docker_plugin.models.image import Image

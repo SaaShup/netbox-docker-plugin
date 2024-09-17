@@ -27,6 +27,14 @@ Once the plugin and webhooks are installed, you can:
 
 ## Installation
 
+Below the compatibility list of the Netbox Docker PLugin and Netbox. Please chose the right version of the plugin depending of the Netbox version you use:
+
+| Netbox Version | Netbox Docker Plugin Version |
+| -------------- | ---------------------------- |
+| 3.\*           | 1.\*                         |
+| 4.0.\*         | 2.\*                         |
+| 4.1.\*         | 3.\*                         |
+
 You can follow [the official plugins installation
 instructions](https://docs.netbox.dev/en/stable/plugins/#installing-plugins).
 

@@ -1,9 +1,9 @@
 """Host Views Test Case"""
 
 from core.models import ObjectType
+from core.choices import ObjectChangeActionChoices
+from core.models import ObjectChange
 from django.core.exceptions import ObjectDoesNotExist
-from extras.choices import ObjectChangeActionChoices
-from extras.models import ObjectChange
 from users.models import ObjectPermission
 from utilities.testing import ViewTestCases, post_data
 from netbox_docker_plugin.models.host import Host
