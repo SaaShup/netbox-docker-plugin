@@ -27,7 +27,7 @@
 
 {% block head %}
 <script type="application/javascript">
-  htmx.onLoad(function (elt) {
+  document.addEventListener("htmx:load", function (elt) {
     const logPanel = document.getElementById("container-logs-panel")
     const followButton = document.getElementById("container-logs-button")
     const checkbox = document.getElementById("container-logs-cb")
