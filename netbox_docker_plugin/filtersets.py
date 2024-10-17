@@ -113,7 +113,7 @@ class VolumeFilterSet(NetBoxModelFilterSet):
         """Volume filterset definition meta class"""
 
         model = Volume
-        fields = ("id", "name", "driver", "mounts")
+        fields = ("id", "name", "max_size", "driver", "mounts")
 
     # pylint: disable=W0613
     def search(self, queryset, name, value):

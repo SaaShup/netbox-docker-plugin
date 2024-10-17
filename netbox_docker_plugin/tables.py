@@ -170,8 +170,23 @@ class VolumeTable(NetBoxTable):
         """Volume Table definition Meta class"""
 
         model = Volume
-        fields = ("pk", "id", "host", "name", "driver", "mount_count", "tags")
-        default_columns = ("name", "driver", "host", "mount_count")
+        fields = (
+            "pk",
+            "id",
+            "host",
+            "name",
+            "max_size",
+            "driver",
+            "mount_count",
+            "tags",
+        )
+        default_columns = (
+            "name",
+            "max_size",
+            "driver",
+            "host",
+            "mount_count",
+        )
 
 
 class NetworkTable(NetBoxTable):

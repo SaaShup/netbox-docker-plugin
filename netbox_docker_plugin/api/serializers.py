@@ -95,6 +95,7 @@ class NestedVolumeSerializer(WritableNestedSerializer):
             "url",
             "display",
             "name",
+            "max_size",
             "driver",
         )
 
@@ -106,7 +107,11 @@ class NestedVolumeSerializer(WritableNestedSerializer):
             params = dict_to_filter_params(data)
             if Volume.objects.filter(**params).count() == 0:
                 host = Host.objects.get(pk=params["host"])
-                volume = Volume(host=host, name=params["name"])
+                volume = Volume(
+                    host=host,
+                    name=params["name"],
+                    max_size=params.get("max_size"),
+                )
                 volume.save()
                 return volume
 
@@ -263,6 +268,7 @@ class VolumeSerializer(NetBoxModelSerializer):
             "display",
             "host",
             "name",
+            "max_size",
             "driver",
             "custom_fields",
             "created",

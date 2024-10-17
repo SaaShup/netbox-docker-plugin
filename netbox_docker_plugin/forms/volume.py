@@ -21,11 +21,13 @@ class VolumeForm(NetBoxModelForm):
         fields = (
             "host",
             "name",
+            "max_size",
             "driver",
             "tags",
         )
         labels = {
             "name": "Name",
+            "max_size": "Optional Maximum Size of Volume (in MB)",
             "host": "Host",
             "driver": "Driver",
         }
@@ -36,6 +38,7 @@ class VolumeFilterForm(NetBoxModelFilterSetForm):
 
     model = Volume
     name = forms.CharField(label="Name", max_length=256, min_length=1, required=False)
+    max_size = forms.IntegerField(label="Max Size (MB)", required=False)
     driver = forms.ChoiceField(
         label="Driver",
         choices=VolumeDriverChoices,
@@ -58,9 +61,10 @@ class VolumeImportForm(NetBoxModelImportForm):
         """Volume importation form definition Meta class"""
 
         model = Volume
-        fields = ("name", "driver", "host")
+        fields = ("name", "max_size", "driver", "host")
         labels = {
             "name": "Unique Image name",
+            "max_size": "Optional Maximum Size of Volume (in MB)",
             "driver": 'Volume provider. Can be "local"',
             "host": "Host identifier",
         }
