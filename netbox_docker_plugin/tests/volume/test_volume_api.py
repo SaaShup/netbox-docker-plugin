@@ -24,7 +24,7 @@ class VolumeApiTestCase(
     """Volume Test Case Class"""
 
     model = Volume
-    brief_fields = ["display", "driver", "id", "name", "url"]
+    brief_fields = ["display", "driver", "id", "max_size", "name", "url"]
 
     @classmethod
     def setUpTestData(cls) -> None:
