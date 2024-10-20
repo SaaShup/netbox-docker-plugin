@@ -15,6 +15,10 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="volume",
             name="max_size",
-            field=models.PositiveIntegerField(null=True, default=None),
+            field=models.PositiveIntegerField(
+                null=True,
+                blank=True,
+                default=None,
+            ),
         ),
     ]

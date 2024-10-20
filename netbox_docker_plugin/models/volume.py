@@ -36,6 +36,7 @@ class Volume(NetBoxModel):
     )
     max_size = models.PositiveIntegerField(
         null=True,
+        blank=True,
         default=None,
     )
     driver = models.CharField(
