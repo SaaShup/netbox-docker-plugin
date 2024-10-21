@@ -166,6 +166,10 @@ class VolumeTable(NetBoxTable):
     )
     tags = columns.TagColumn()
 
+    def render_max_size(self, value):
+        """Render the volume max size with unity"""
+        return f"{value} MB"
+
     class Meta(NetBoxTable.Meta):
         """Volume Table definition Meta class"""
 

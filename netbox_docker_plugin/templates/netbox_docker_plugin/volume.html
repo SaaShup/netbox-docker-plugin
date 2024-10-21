@@ -21,6 +21,16 @@
             <th scope="row">Driver</th>
             <td>{{ object.get_driver_display }}</td>
           </tr>
+          <tr>
+            <th scope="row">Max size</th>
+            <td>
+              {% if object.max_size is None %}
+                {{ object.max_size|placeholder }}
+              {% else %}
+                {{ object.max_size }}&nbsp;MByte
+              {% endif %}
+            </td>
+          </tr>
         </table>
       </div>
     </div>
