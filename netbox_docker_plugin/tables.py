@@ -166,12 +166,31 @@ class VolumeTable(NetBoxTable):
     )
     tags = columns.TagColumn()
 
+    def render_max_size(self, value):
+        """Render the volume max size with unity"""
+        return f"{value} MB"
+
     class Meta(NetBoxTable.Meta):
         """Volume Table definition Meta class"""
 
         model = Volume
-        fields = ("pk", "id", "host", "name", "driver", "mount_count", "tags")
-        default_columns = ("name", "driver", "host", "mount_count")
+        fields = (
+            "pk",
+            "id",
+            "host",
+            "name",
+            "max_size",
+            "driver",
+            "mount_count",
+            "tags",
+        )
+        default_columns = (
+            "name",
+            "max_size",
+            "driver",
+            "host",
+            "mount_count",
+        )
 
 
 class NetworkTable(NetBoxTable):

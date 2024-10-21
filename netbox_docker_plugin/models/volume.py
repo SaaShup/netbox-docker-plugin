@@ -34,6 +34,11 @@ class Volume(NetBoxModel):
             MaxLengthValidator(limit_value=255),
         ],
     )
+    max_size = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        default=None,
+    )
     driver = models.CharField(
         max_length=32,
         choices=VolumeDriverChoices,
