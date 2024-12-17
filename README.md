@@ -19,11 +19,16 @@ sequenceDiagram
 Once the plugin and webhooks are installed, you can:
 
 1. Create hosts that point to
-   [agents](https://github.com/SaaShup/netbox-docker-agent) you had installed
+   [agents](https://github.com/SaaShup/netbox-docker-agent) you had installed *
 2. Retrieve informations from Docker API with the help of the agent
 3. Create containers on host with an image, expose ports, add env variables and
    labels, mount volumes, set networks.
 4. Manage the container status, start, stop, restart.
+
+* adding a host with curl needs a specific **Origin** header to make it working. Example : 
+```
+curl -X POST -H "Authorization: Token xxxxx" -H "Content-Type: application/json" -H "Origin: https://myhost" https://myhost/api/plugins/docker/hosts/ -d '{"name": "test-add", "endpoint": "[https://xxxx:xxxx@test.com:1990"}](https://xxxx:xxxx@test.com:1990%22%7D)'
+```
 
 ## Installation
 
