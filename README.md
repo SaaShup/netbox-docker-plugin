@@ -27,7 +27,7 @@ Once the plugin and webhooks are installed, you can:
 
 * adding a host with curl needs a specific **Origin** header to make it working. Example : 
 ```
-curl -X POST -H "Authorization: Token xxxxx" -H "Content-Type: application/json" -H **"Origin: https://myhost"** https://myhost/api/plugins/docker/hosts/ -d '{"name": "test-add", "endpoint": "[https://xxxx:xxxx@test.com:1990"}](https://xxxx:xxxx@test.com:1990%22%7D)'
+curl -X POST -H "Authorization: Token xxxxx" -H "Content-Type: application/json" -H "Origin: https://myhost" https://myhost/api/plugins/docker/hosts/ -d '{"name": "test-add", "endpoint": "[https://xxxx:xxxx@test.com:1990"}](https://xxxx:xxxx@test.com:1990%22%7D)'
 ```
 
 ## Installation
