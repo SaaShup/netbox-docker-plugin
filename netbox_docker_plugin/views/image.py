@@ -1,5 +1,3 @@
-"""Image views definitions"""
-
 from utilities.query import count_related
 from netbox.views import generic
 from .. import tables, filtersets
@@ -25,12 +23,8 @@ class ImageListView(generic.ObjectListView):
     filterset_form = image.ImageFilterForm
 
 
-class ImageEditView(generic.ObjectEditView):
-    """Image edition view definition"""
-
-    queryset = Image.objects.all()
-    form = image.ImageForm
-
+# La vue ImageEditView a été supprimée.
+# Cela désactive la possibilité d'éditer une image dans l'interface.
 
 class ImageBulkEditView(generic.BulkEditView):
     """Image bulk edition view definition"""

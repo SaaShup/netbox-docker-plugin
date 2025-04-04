@@ -1,5 +1,3 @@
-"""Image Forms definitions"""
-
 from django import forms
 from utilities.forms.rendering import FieldSet
 from utilities.forms.fields import (
@@ -18,37 +16,8 @@ from ..models.host import Host
 from ..models.registry import Registry
 
 
-class ImageForm(NetBoxModelForm):
-    """Image form definition class"""
-
-    host = DynamicModelChoiceField(
-        label="Host", queryset=Host.objects.all(), required=True
-    )
-    registry = DynamicModelChoiceField(
-        label="Registry",
-        queryset=Registry.objects.all(),
-        required=True,
-        query_params={"host_id": "$host"},
-    )
-
-    class Meta:
-        """Image form definition Meta class"""
-
-        model = Image
-        fields = (
-            "host",
-            "registry",
-            "name",
-            "version",
-            "tags",
-        )
-        labels = {
-            "name": "Name",
-            "host": "Host",
-            "registry": "Registry",
-            "version": "Version",
-        }
-
+# Le formulaire ImageForm a été supprimé pour désactiver l'édition d'images.
+# Toute la logique concernant l'édition d'image a été retirée ici.
 
 class ImageFilterForm(NetBoxModelFilterSetForm):
     """Image filter form definition class"""

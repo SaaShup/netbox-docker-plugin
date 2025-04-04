@@ -1,5 +1,3 @@
-"""Image Models definitions"""
-
 from django.db import models
 from django.urls import reverse
 from django.core.validators import (
@@ -8,6 +6,7 @@ from django.core.validators import (
     MinValueValidator,
     MaxValueValidator,
 )
+from django.contrib.auth.models import User  # Importation du modèle User
 from netbox.models import NetBoxModel
 from .host import Host
 from .registry import Registry
@@ -21,6 +20,13 @@ class Image(NetBoxModel):
         Registry,
         on_delete=models.CASCADE,
         related_name="images",
+    )
+    user = models.ForeignKey(
+        User,  # Ajout de la clé étrangère vers le modèle User
+        on_delete=models.CASCADE,
+        related_name="images",  # Vous pouvez ajuster le related_name si nécessaire
+        null=True,  # Permettre à l'image de ne pas avoir d'utilisateur
+        blank=True,  # Permettre à l'image de ne pas avoir d'utilisateur
     )
     name = models.CharField(
         max_length=255,
