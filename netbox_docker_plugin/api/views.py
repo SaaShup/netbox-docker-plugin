@@ -70,7 +70,7 @@ class ImageViewSet(NetBoxModelViewSet):
     queryset = Image.objects.prefetch_related("host", "tags", "containers")
     filterset_class = filtersets.ImageFilterSet
     serializer_class = ImageSerializer
-    http_method_names = ["get", "post", "patch", "delete", "options"]
+    http_method_names = ["get", "post", "delete", "options"]  # Removed PATCH method
 
     @extend_schema(
         operation_id="plugins_docker_image_force_pull",

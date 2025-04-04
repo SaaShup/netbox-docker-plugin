@@ -27,19 +27,6 @@ registry_button = [
     ),
 ]
 
-image_buttons = [
-    PluginMenuButton(
-        link="plugins:netbox_docker_plugin:image_add",
-        title="Add",
-        icon_class="mdi mdi-plus-thick"
-    ),
-    PluginMenuButton(
-        link="plugins:netbox_docker_plugin:image_import",
-        title="Import",
-        icon_class="mdi mdi-upload"
-    ),
-]
-
 volume_buttons = [
     PluginMenuButton(
         link="plugins:netbox_docker_plugin:volume_add",
@@ -91,12 +78,6 @@ host_item = [
         link_text="Registries",
         buttons=registry_button,
         permissions=["netbox_docker_plugin.view_registry"],
-    ),
-    PluginMenuItem(
-        link="plugins:netbox_docker_plugin:image_list",
-        link_text="Images",
-        buttons=image_buttons,
-        permissions=["netbox_docker_plugin.view_image"],
     ),
     PluginMenuItem(
         link="plugins:netbox_docker_plugin:volume_list",
