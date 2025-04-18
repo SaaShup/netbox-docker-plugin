@@ -6,6 +6,10 @@ Manage Docker with Netbox & style. Made to work with [netbox-docker-agent](https
 
 ![UI Container view with dependencies](/docs/assets/screenshot.png)
 
+Thanks [dzove855](https://github.com/dzove855) for the presentation of the plugin the 15th April 2025 during the Netbox Community Call.
+
+[![Netbox Docker Plugin presentation at Netbox Community call the 15th April 2025](https://img.youtube.com/vi/gRamXtFAspQ/sddefault.jpg)](https://youtu.be/gRamXtFAspQ?t=1870)
+
 ## How does it work?
 
 ```mermaid
@@ -25,7 +29,7 @@ Once the plugin and webhooks are installed, you can:
    labels, mount volumes, set networks.
 4. Manage the container status, start, stop, restart.
 
-* adding a host with curl needs a specific **Origin** header to make it working. Example : 
+* adding a host with curl needs a specific **Origin** header to make it working. Example :
 ```
 curl -X POST -H "Authorization: Token xxxxx" -H "Content-Type: application/json" -H "Origin: https://myhost" https://myhost/api/plugins/docker/hosts/ -d '{"name": "test-add", "endpoint": "[https://xxxx:xxxx@test.com:1990"}](https://xxxx:xxxx@test.com:1990%22%7D)'
 ```
