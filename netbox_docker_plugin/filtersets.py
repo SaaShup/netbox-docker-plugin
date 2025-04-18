@@ -89,7 +89,15 @@ class ImageFilterSet(NetBoxModelFilterSet):
         """Image filterset definition meta class"""
 
         model = Image
-        fields = ("id", "name", "version", "size", "ImageID", "containers")
+        fields = (
+            "id",
+            "name",
+            "version",
+            "size",
+            "ImageID",
+            "Digest",
+            "containers",
+        )
 
     # pylint: disable=W0613
     def search(self, queryset, name, value):
