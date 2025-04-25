@@ -73,6 +73,19 @@ class ContainerRestartPolicyChoices(ChoiceSet):
     ]
 
 
+class ContainerLogDriverChoices(ChoiceSet):
+    """Container log driver choices definition class"""
+
+    key = "Container.log_driver"
+
+    DEFAULT_VALUE = "json-log"
+
+    CHOICES = [
+        ("json-log", "json-log", "blue"),
+        ("syslog", "syslog", "blue"),
+    ]
+
+
 class PortTypeChoices(ChoiceSet):
     """Port type choices definition class"""
 
@@ -152,6 +165,11 @@ class Container(NetBoxModel):
         ),
         null=True,
         blank=True,
+    )
+    log_driver = models.CharField(
+        max_length=32,
+        choices=ContainerLogDriverChoices,
+        default=ContainerLogDriverChoices.DEFAULT_VALUE,
     )
 
     @property
@@ -347,6 +365,45 @@ class Env(models.Model):
 
     def __str__(self):
         return f"{self.var_name}"
+
+
+class LogDriverOption(models.Model):
+    """Log driver option definition class"""
+
+    objects = RestrictedQuerySet.as_manager()
+
+    container = models.ForeignKey(
+        Container, on_delete=models.CASCADE, related_name="log_driver_options"
+    )
+    option_name = models.CharField(
+        max_length=255,
+        validators=[
+            MinLengthValidator(limit_value=1),
+            MaxLengthValidator(limit_value=255),
+        ],
+    )
+    value = models.CharField(
+        blank=True,
+        max_length=4096,
+        validators=[
+            MaxLengthValidator(limit_value=4096),
+        ],
+    )
+
+    class Meta:
+        """Log driver option Model Meta Class"""
+
+        ordering = ("container", "option_name")
+        constraints = (
+            models.UniqueConstraint(
+                "option_name",
+                "container",
+                name="%(app_label)s_%(class)s_unique_option_name_container'",
+            ),
+        )
+
+    def __str__(self):
+        return f"{self.option_name}"
 
 
 class Mount(models.Model):

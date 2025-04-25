@@ -67,6 +67,7 @@ class ContainerViewsTestCase(
             "image": image1.pk,
             "restart_policy": "unless-stopped",
             "cap_add": ["NET_ADMIN"],
+            "log_driver": "syslog",
         }
 
         cls.csv_data = (
@@ -78,10 +79,11 @@ class ContainerViewsTestCase(
         cls.bulk_edit_data = {
             "hostname": "h",
             "restart_policy": "always",
+            "log_driver": "syslog",
         }
 
         cls.csv_update_data = (
-            "id,name,host,image,hostname,restart_policy",
-            f"{container1.pk},container1,{host1.pk},{image1.pk},,on-failure",
-            f"{container2.pk},container2,{host1.pk},{image1.pk},container2,unless-stopped",
+            "id,name,host,image,hostname,restart_policy,log_driver",
+            f"{container1.pk},container1,{host1.pk},{image1.pk},,on-failure,syslog",
+            f"{container2.pk},container2,{host1.pk},{image1.pk},container2,unless-stopped,json-log",
         )
