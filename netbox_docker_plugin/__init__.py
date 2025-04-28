@@ -11,7 +11,7 @@ class NetBoxDockerConfig(PluginConfig):
     name = "netbox_docker_plugin"
     verbose_name = " NetBox Docker Plugin"
     description = "Manage Docker"
-    version = "3.1.0"
+    version = "3.3.0"
     base_url = "docker"
     min_version = "4.1.0"
     author = "Vincent Simonin <vincent@saashup.com>, David Delassus <david.jose.delassus@gmail.com>"

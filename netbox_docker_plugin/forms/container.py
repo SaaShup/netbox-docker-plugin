@@ -15,7 +15,12 @@ from netbox.forms import (
 )
 from ..models.volume import Volume
 from ..models.host import Host
-from ..models.container import Container, ContainerRestartPolicyChoices, ContainerCapAddChoices
+from ..models.container import (
+    Container,
+    ContainerRestartPolicyChoices,
+    ContainerCapAddChoices,
+    ContainerLogDriverChoices,
+)
 from ..models.image import Image
 
 
@@ -44,6 +49,7 @@ class ContainerForm(NetBoxModelForm):
             "hostname",
             "restart_policy",
             "cap_add",
+            "log_driver",
             "tags",
         )
         labels = {
@@ -53,6 +59,7 @@ class ContainerForm(NetBoxModelForm):
             "hostname": "Hostname",
             "restart_policy": "Restart Policy",
             "cap_add": "Add Host capabilities",
+            "log_driver": "Logging driver",
         }
 
 
@@ -77,6 +84,7 @@ class ContainerEditForm(NetBoxModelForm):
             "hostname",
             "restart_policy",
             "cap_add",
+            "log_driver",
             "tags",
         )
         labels = {
@@ -85,6 +93,7 @@ class ContainerEditForm(NetBoxModelForm):
             "hostname": "Hostname",
             "restart_policy": "Restart Policy",
             "cap_add": "Add Host capabilities",
+            "log_driver": "Logging driver",
         }
 
 
@@ -112,6 +121,9 @@ class ContainerFilterForm(NetBoxModelFilterSetForm):
     restart_policy = forms.ChoiceField(
         label="Restart Policy", choices=ContainerRestartPolicyChoices, required=False
     )
+    log_driver = forms.ChoiceField(
+        label="Logging driver", choices=ContainerLogDriverChoices, required=False
+    )
     tag = TagFilterField(model)
 
 
@@ -124,6 +136,13 @@ class ContainerImportForm(NetBoxModelImportForm):
         required=False,
         help_text="Container restart policy. Can be `no`, `on-failure`, "
         + "`always`, `unless-stopped`.",
+    )
+
+    log_driver = forms.ChoiceField(
+        label="Logging driver",
+        choices=ContainerLogDriverChoices,
+        required=False,
+        help_text="Logging driver. Can be `json-log`, `syslog`.",
     )
 
     class Meta:
@@ -151,12 +170,17 @@ class ContainerBulkEditForm(NetBoxModelBulkEditForm):
         choices=ContainerRestartPolicyChoices,
         required=True,
     )
+    log_driver = forms.ChoiceField(
+        label="Logging driver",
+        choices=ContainerLogDriverChoices,
+        required=True,
+    )
     hostname = forms.CharField(
         label="Hostname", max_length=256, min_length=1, required=False
     )
 
     model = Container
-    fieldsets = (FieldSet("restart_policy", "hostname", name="General"),)
+    fieldsets = (FieldSet("restart_policy", "log_driver", "hostname", name="General"),)
 
 
 class ContainerOperationForm(NetBoxModelForm):

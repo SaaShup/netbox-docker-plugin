@@ -22,6 +22,7 @@ from .views import (
     network_setting as network_setting_views,
     registry as registry_views,
     device as device_views,
+    log_driver_option as log_driver_option_views
 )
 
 urlpatterns = (
@@ -264,6 +265,27 @@ urlpatterns = (
         "env/<int:pk>/delete/",
         env_views.EnvDeleteView.as_view(),
         name="env_delete",
+    ),
+    # Log Driver Option
+    path(
+        "log-driver-options/",
+        log_driver_option_views.LogDriverOptionListView.as_view(),
+        name="logdriveroption_list",
+    ),
+    path(
+        "log-driver-options/add/",
+        log_driver_option_views.LogDriverOptionEditView.as_view(),
+        name="logdriveroption_add",
+    ),
+    path(
+        "log-driver-options/<int:pk>/edit/",
+        log_driver_option_views.LogDriverOptionEditView.as_view(),
+        name="logdriveroption_edit",
+    ),
+    path(
+        "log-driver-options/<int:pk>/delete/",
+        log_driver_option_views.LogDriverOptionDeleteView.as_view(),
+        name="logdriveroption_delete",
     ),
     # Label
     path(

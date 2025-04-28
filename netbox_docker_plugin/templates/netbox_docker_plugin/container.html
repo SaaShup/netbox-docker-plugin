@@ -49,12 +49,30 @@
             <th scope="row">Operation</th>
             <td>{{ object.get_operation_display }}</td>
           </tr>
+          <tr>
+            <th scope="row">Logging driver</th>
+            <td>{{ object.get_log_driver_display }}</td>
+          </tr>
         </table>
       </div>
     </div>
     {% include 'inc/panels/custom_fields.html' %}
     {% include 'inc/panels/tags.html' %}
     {% plugin_left_page object %}
+    <div class="card">
+      <h5 class="card-header">LOG DRIVER OPTIONS</h5>
+      <div class="card-body htmx-container table-responsive"
+        hx-get="{% url 'plugins:netbox_docker_plugin:logdriveroption_list' %}?container_id={{ object.pk }}"
+        hx-trigger="load"
+      ></div>
+      {% if perms.netbox_docker_plugin.add_env %}
+        <div class="card-footer text-end noprint">
+          <a href="{% url 'plugins:netbox_docker_plugin:logdriveroption_add' %}?container={{ object.pk }}&return_url={{ object.get_absolute_url }}" class="btn btn-primary">
+            <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Logging driver option
+          </a>
+        </div>
+      {% endif %}
+    </div>
   </div>
   <div class="col col-md-6">
     <div class="card">
