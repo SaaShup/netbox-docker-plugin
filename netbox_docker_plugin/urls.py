@@ -29,7 +29,7 @@ urlpatterns = (
     # Host
     path("hosts/", host_views.HostListView.as_view(), name="host_list"),
     path("hosts/add/", host_views.HostEditView.as_view(), name="host_add"),
-    path("hosts/import/", host_views.HostBulkImportView.as_view(), name="host_import"),
+    path("hosts/import/", host_views.HostBulkImportView.as_view(), name="host_bulk_import"),
     path("hosts/edit/", host_views.HostBulkEditView.as_view(), name="host_bulk_edit"),
     path(
         "hosts/delete/",
@@ -69,7 +69,7 @@ urlpatterns = (
     path("images/", image_views.ImageListView.as_view(), name="image_list"),
     path("images/add/", image_views.ImageEditView.as_view(), name="image_add"),
     path(
-        "images/import/", image_views.ImageBulkImportView.as_view(), name="image_import"
+        "images/import/", image_views.ImageBulkImportView.as_view(), name="image_bulk_import"
     ),
     path(
         "images/edit/", image_views.ImageBulkEditView.as_view(), name="image_bulk_edit"
@@ -106,7 +106,7 @@ urlpatterns = (
     path(
         "volumes/import/",
         volume_views.VolumeBulkImportView.as_view(),
-        name="volume_import",
+        name="volume_bulk_import",
     ),
     path(
         "volumes/delete/",
@@ -142,7 +142,7 @@ urlpatterns = (
     path(
         "networks/import/",
         network_views.NetworkBulkImportView.as_view(),
-        name="network_import",
+        name="network_bulk_import",
     ),
     path(
         "networks/edit/",
@@ -191,7 +191,7 @@ urlpatterns = (
     path(
         "containers/import/",
         container_views.ContainerBulkImportView.as_view(),
-        name="container_import",
+        name="container_bulk_import",
     ),
     path(
         "containers/edit/",
