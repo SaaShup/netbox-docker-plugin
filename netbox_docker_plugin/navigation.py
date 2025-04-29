@@ -13,7 +13,7 @@ host_buttons = [
         icon_class="mdi mdi-plus-thick"
     ),
     PluginMenuButton(
-        link="plugins:netbox_docker_plugin:host_import",
+        link="plugins:netbox_docker_plugin:host_bulk_import",
         title="Import",
         icon_class="mdi mdi-upload"
     ),
@@ -34,7 +34,7 @@ image_buttons = [
         icon_class="mdi mdi-plus-thick"
     ),
     PluginMenuButton(
-        link="plugins:netbox_docker_plugin:image_import",
+        link="plugins:netbox_docker_plugin:image_bulk_import",
         title="Import",
         icon_class="mdi mdi-upload"
     ),
@@ -47,7 +47,7 @@ volume_buttons = [
         icon_class="mdi mdi-plus-thick"
     ),
     PluginMenuButton(
-        link="plugins:netbox_docker_plugin:volume_import",
+        link="plugins:netbox_docker_plugin:volume_bulk_import",
         title="Import",
         icon_class="mdi mdi-upload"
     ),
@@ -60,7 +60,7 @@ network_buttons = [
         icon_class="mdi mdi-plus-thick"
     ),
     PluginMenuButton(
-        link="plugins:netbox_docker_plugin:network_import",
+        link="plugins:netbox_docker_plugin:network_bulk_import",
         title="Import",
         icon_class="mdi mdi-upload"
     ),
@@ -73,7 +73,7 @@ container_buttons = [
         icon_class="mdi mdi-plus-thick"
     ),
     PluginMenuButton(
-        link="plugins:netbox_docker_plugin:container_import",
+        link="plugins:netbox_docker_plugin:container_bulk_import",
         title="Import",
         icon_class="mdi mdi-upload"
     ),

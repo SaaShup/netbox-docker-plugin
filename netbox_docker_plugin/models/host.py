@@ -103,9 +103,9 @@ class Host(NetBoxModel):
         return super().delete(using, keep_parents)
 
     def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
+        self, *args, **kwargs
     ):
         if self.operation == HostOperationChoices.OPERATION_REFRESH:
             self.state = HostStateChoices.STATE_REFRESHING
 
-        return super().save(force_insert, force_update, using, update_fields)
+        return super().save(*args, **kwargs)
