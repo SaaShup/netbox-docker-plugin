@@ -85,5 +85,6 @@ class ContainerViewsTestCase(
         cls.csv_update_data = (
             "id,name,host,image,hostname,restart_policy,log_driver",
             f"{container1.pk},container1,{host1.pk},{image1.pk},,on-failure,syslog",
-            f"{container2.pk},container2,{host1.pk},{image1.pk},container2,unless-stopped,json-log",
+            f"{container2.pk},container2,{host1.pk}"
+            + f",{image1.pk},container2,unless-stopped,json-file",
         )
