@@ -73,19 +73,6 @@ class ContainerRestartPolicyChoices(ChoiceSet):
     ]
 
 
-class ContainerLogDriverChoices(ChoiceSet):
-    """Container log driver choices definition class"""
-
-    key = "Container.log_driver"
-
-    DEFAULT_VALUE = "json-log"
-
-    CHOICES = [
-        ("json-log", "json-log", "blue"),
-        ("syslog", "syslog", "blue"),
-    ]
-
-
 class PortTypeChoices(ChoiceSet):
     """Port type choices definition class"""
 
@@ -111,6 +98,8 @@ class ContainerCapAddChoices(ChoiceSet):
 
 class Container(NetBoxModel):
     """Container definition class"""
+
+    DEFAULT_LOG_DRIVER = "json-file"
 
     host = models.ForeignKey(Host, on_delete=models.CASCADE, related_name="containers")
     image = models.ForeignKey(
@@ -168,8 +157,7 @@ class Container(NetBoxModel):
     )
     log_driver = models.CharField(
         max_length=32,
-        choices=ContainerLogDriverChoices,
-        default=ContainerLogDriverChoices.DEFAULT_VALUE,
+        default=DEFAULT_LOG_DRIVER,
     )
 
     @property

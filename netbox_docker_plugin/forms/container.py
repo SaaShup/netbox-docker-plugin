@@ -19,7 +19,6 @@ from ..models.container import (
     Container,
     ContainerRestartPolicyChoices,
     ContainerCapAddChoices,
-    ContainerLogDriverChoices,
 )
 from ..models.image import Image
 
@@ -122,7 +121,7 @@ class ContainerFilterForm(NetBoxModelFilterSetForm):
         label="Restart Policy", choices=ContainerRestartPolicyChoices, required=False
     )
     log_driver = forms.ChoiceField(
-        label="Logging driver", choices=ContainerLogDriverChoices, required=False
+        label="Logging driver", required=False
     )
     tag = TagFilterField(model)
 
@@ -138,11 +137,10 @@ class ContainerImportForm(NetBoxModelImportForm):
         + "`always`, `unless-stopped`.",
     )
 
-    log_driver = forms.ChoiceField(
+    log_driver = forms.CharField(
         label="Logging driver",
-        choices=ContainerLogDriverChoices,
         required=False,
-        help_text="Logging driver. Can be `json-log`, `syslog`.",
+        help_text="Logging driver. Can be `json-file`, `syslog`.",
     )
 
     class Meta:
@@ -170,10 +168,9 @@ class ContainerBulkEditForm(NetBoxModelBulkEditForm):
         choices=ContainerRestartPolicyChoices,
         required=True,
     )
-    log_driver = forms.ChoiceField(
+    log_driver = forms.CharField(
         label="Logging driver",
-        choices=ContainerLogDriverChoices,
-        required=True,
+        required=False,
     )
     hostname = forms.CharField(
         label="Hostname", max_length=256, min_length=1, required=False
