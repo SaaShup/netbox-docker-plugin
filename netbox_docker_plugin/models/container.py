@@ -333,9 +333,9 @@ class Env(models.Model):
     )
     value = models.CharField(
         blank=True,
-        max_length=4096,
+        max_length=32768,
         validators=[
-            MaxLengthValidator(limit_value=4096),
+            MaxLengthValidator(limit_value=32768),
         ],
     )
 
