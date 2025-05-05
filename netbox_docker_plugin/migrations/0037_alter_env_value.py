@@ -17,10 +17,10 @@ class Migration(migrations.Migration):
             model_name="env",
             name="value",
             field=models.CharField(
+                blank=True,
                 max_length=32768,
                 validators=[
-                    django.core.validators.MinLengthValidator(limit_value=1),
-                    django.core.validators.MaxLengthValidator(limit_value=32768),
+                    django.core.validators.MaxLengthValidator(limit_value=32768)
                 ],
             ),
         ),
