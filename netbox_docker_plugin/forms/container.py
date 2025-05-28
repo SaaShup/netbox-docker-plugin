@@ -49,6 +49,7 @@ class ContainerForm(NetBoxModelForm):
             "restart_policy",
             "cap_add",
             "log_driver",
+            "cmd",
             "tags",
         )
         labels = {
@@ -59,6 +60,7 @@ class ContainerForm(NetBoxModelForm):
             "restart_policy": "Restart Policy",
             "cap_add": "Add Host capabilities",
             "log_driver": "Logging driver",
+            "cmd": "Command",
         }
 
 
@@ -84,6 +86,7 @@ class ContainerEditForm(NetBoxModelForm):
             "restart_policy",
             "cap_add",
             "log_driver",
+            "cmd",
             "tags",
         )
         labels = {
@@ -93,6 +96,7 @@ class ContainerEditForm(NetBoxModelForm):
             "restart_policy": "Restart Policy",
             "cap_add": "Add Host capabilities",
             "log_driver": "Logging driver",
+            "cmd": "Command",
         }
 
 

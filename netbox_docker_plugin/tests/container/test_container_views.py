@@ -68,6 +68,7 @@ class ContainerViewsTestCase(
             "restart_policy": "unless-stopped",
             "cap_add": ["NET_ADMIN"],
             "log_driver": "syslog",
+            "cmd": "ls,-al"
         }
 
         cls.csv_data = (
