@@ -44,6 +44,7 @@ Below the compatibility list of the Netbox Docker PLugin and Netbox. Please chos
 | 4.0.\*         | 2.\*                         |
 | 4.1.\*         | 3.\*                         |
 | 4.2.\*         | 4.\*                         |
+| 4.3.\*         | 4.\*                         |
 
 You can follow [the official plugins installation
 instructions](https://docs.netbox.dev/en/stable/plugins/#installing-plugins).

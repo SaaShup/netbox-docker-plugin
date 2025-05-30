@@ -30,6 +30,7 @@ class ContainerApiTestCase(
     brief_fields = [
         "ContainerID",
         "cap_add",
+        "cmd",
         "display",
         "hostname",
         "id",
@@ -95,6 +96,7 @@ class ContainerApiTestCase(
             name="container3",
             operation="none",
             state="created",
+            cmd=["ls", "-al"]
         )
 
         cls.create_data = [
@@ -181,6 +183,7 @@ class ContainerApiTestCase(
                 "env": [{"var_name": "ENV", "value": ""}],
                 "labels": [],
                 "cap_add": ["NET_ADMIN"],
+                "cmd": ["cat", "/etc/hosts"]
             },
         ]
 

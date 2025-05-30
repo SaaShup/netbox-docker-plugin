@@ -159,6 +159,13 @@ class Container(NetBoxModel):
         max_length=32,
         default=DEFAULT_LOG_DRIVER,
     )
+    cmd = ArrayField(
+        models.CharField(
+            max_length=1024, blank=True, null=True
+        ),
+        null=True,
+        blank=True,
+    )
 
     @property
     def can_create(self) -> bool:
