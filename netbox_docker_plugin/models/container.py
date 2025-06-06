@@ -256,7 +256,7 @@ class Port(models.Model):
     )
     public_port = models.IntegerField(
         validators=[
-            MinValueValidator(limit_value=0),
+            MinValueValidator(limit_value=-1),
             MaxValueValidator(limit_value=65535),
         ],
     )

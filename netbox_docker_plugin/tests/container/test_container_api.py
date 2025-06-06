@@ -108,6 +108,8 @@ class ContainerApiTestCase(
                 "ports": [
                     {"public_port": 80, "private_port": 80, "type": "tcp"},
                     {"public_port": 443, "private_port": 443, "type": "tcp"},
+                    {"public_port": 0, "private_port": 8080, "type": "tcp"},
+                    {"public_port": -1, "private_port": 8080, "type": "tcp"},
                 ],
                 "env": [
                     {"var_name": "ENV", "value": "prod"},
