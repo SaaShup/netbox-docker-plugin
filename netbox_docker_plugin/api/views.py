@@ -145,6 +145,7 @@ class ContainerViewSet(NetBoxModelViewSet):
         "host",
         "ports",
         "labels",
+        "log_driver_options",
         "tags",
     )
     filterset_class = filtersets.ContainerFilterSet
