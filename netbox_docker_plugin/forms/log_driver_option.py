@@ -5,7 +5,7 @@ from utilities.forms.fields import DynamicModelChoiceField
 from ..models.container import LogDriverOption, Container
 
 
-class LogDriverOptionForm(forms.ModelForm):
+class LogDriverOptionForm(BootstrapMixin, forms.ModelForm):
     """Log Driver option form definition class"""
 
     container = DynamicModelChoiceField(
