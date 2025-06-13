@@ -16,6 +16,7 @@ from .models.container import (
     Bind,
     NetworkSetting,
     Device,
+    LogDriverOption,
 )
 from .models.registry import Registry
 
@@ -199,6 +200,25 @@ class EnvFilterSet(BaseFilterSet):
         fields = (
             "id",
             "var_name",
+        )
+
+
+class LogDriverOptionFilterSet(BaseFilterSet):
+    """Log driver option filterset definition class"""
+
+    container_id = ModelMultipleChoiceFilter(
+        field_name="container_id",
+        queryset=Container.objects.all(),
+        label="Container (ID)",
+    )
+
+    class Meta:
+        """Log driver option filterset definition meta class"""
+
+        model = LogDriverOption
+        fields = (
+            "id",
+            "option_name",
         )
 
 

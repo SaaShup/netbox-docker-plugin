@@ -33,6 +33,7 @@ class ContainerApiTestCase(
         "display",
         "hostname",
         "id",
+        "log_driver",
         "name",
         "operation",
         "restart_policy",
@@ -48,6 +49,7 @@ class ContainerApiTestCase(
         "binds",
         "network_settings",
         "devices",
+        "log_driver_options",
     ]
 
     @classmethod
@@ -100,6 +102,7 @@ class ContainerApiTestCase(
                 "host": host1.pk,
                 "image": image1.pk,
                 "name": "container5",
+                "log_driver": "syslog",
                 "ports": [
                     {"public_port": 80, "private_port": 80, "type": "tcp"},
                     {"public_port": 443, "private_port": 443, "type": "tcp"},
@@ -126,7 +129,10 @@ class ContainerApiTestCase(
                 ],
                 "devices": [
                     {"host_path": "/dev/sda", "container_path": "/dev/xvdc"},
-                ]
+                ],
+                "log_driver_options": [
+                    {"option_name": "syslog-address", "value": "udp://127.0.0.1:514"},
+                ],
             },
             {
                 "host": host2.pk,
@@ -155,6 +161,7 @@ class ContainerApiTestCase(
                     {"source": "/data", "volume": volume3.pk},
                     {"source": "/etc", "volume": volume3.pk},
                 ],
+                "log_driver_options": [],
             },
             {
                 "host": host2.pk,
