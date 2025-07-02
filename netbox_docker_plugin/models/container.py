@@ -99,8 +99,6 @@ class ContainerCapAddChoices(ChoiceSet):
 class Container(NetBoxModel):
     """Container definition class"""
 
-    DEFAULT_LOG_DRIVER = "json-file"
-
     host = models.ForeignKey(Host, on_delete=models.CASCADE, related_name="containers")
     image = models.ForeignKey(
         Image, on_delete=models.RESTRICT, related_name="containers"
@@ -155,7 +153,8 @@ class Container(NetBoxModel):
     )
     log_driver = models.CharField(
         max_length=32,
-        default=DEFAULT_LOG_DRIVER,
+        blank=True,
+        null=True,
     )
 
     @property
