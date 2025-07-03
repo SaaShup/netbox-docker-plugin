@@ -78,5 +78,3 @@ jobs:
           thresholdAll: 0.9
           thresholdNew: 0.9
           thresholdModified: 0.9
-          passIcon: "✅"
-          failIcon: "❌"
