@@ -34,7 +34,6 @@ class ContainerStateChoices(ChoiceSet):
         ("restarting", "Restarting", "blue"),
         ("running", "Running", "blue"),
         ("paused", "Pause", "blue"),
-        ("unpause", "Unpause", "blue"),
         ("exited", "Exited", "blue"),
         ("dead", "Dead", "blue"),
         ("none", "None", "white"),
@@ -212,6 +211,16 @@ class Container(NetBoxModel):
     def can_kill(self) -> bool:
         """Check if the container can be killed"""
         return self.state in ["created", "restarting", "running", "exited", "dead"]
+
+    @property
+    def can_pause(self) -> bool:
+        """Check if the container can be paused"""
+        return self.state in ["running"]
+
+    @property
+    def can_unpause(self) -> bool:
+        """Check if the container can be unpaused"""
+        return self.state in ["paused"]
 
     class Meta:
         """Image Model Meta Class"""
