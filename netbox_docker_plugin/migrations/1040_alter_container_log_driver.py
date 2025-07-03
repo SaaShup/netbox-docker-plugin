@@ -1,7 +1,6 @@
 # pylint: disable=C0103
 """Migration file"""
 
-import django.core.validators
 from django.db import migrations, models
 
 
@@ -14,8 +13,8 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name="container",
-            name="log_driver",
+            model_name='container',
+            name='log_driver',
             field=models.CharField(max_length=32, null=True, blank=True),
         ),
     ]
