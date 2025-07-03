@@ -71,7 +71,7 @@ jobs:
           coverage report -m
           coverage xml -o coverage.xml
       - name: Get Cover
-        uses: orgoro/coverage@v3.1
+        uses: orgoro/coverage@v3.2
         with:
           coverageFile: netbox/coverage.xml
           token: ${{ secrets.GITHUB_TOKEN }}
