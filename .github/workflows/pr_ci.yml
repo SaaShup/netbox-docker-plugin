@@ -70,13 +70,3 @@ jobs:
           coverage run --include='*/netbox_docker_plugin/*' netbox/manage.py test netbox_docker_plugin.tests -v 2
           coverage report -m
           coverage xml -o coverage.xml
-      - name: Get Cover
-        uses: orgoro/coverage@v3.1
-        with:
-          coverageFile: netbox/coverage.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          thresholdAll: 0.9
-          thresholdNew: 0.9
-          thresholdModified: 0.9
-          passIcon: "✅"
-          failIcon: "❌"
