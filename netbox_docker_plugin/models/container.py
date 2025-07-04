@@ -33,7 +33,7 @@ class ContainerStateChoices(ChoiceSet):
         ("created", "Created", "dark"),
         ("restarting", "Restarting", "blue"),
         ("running", "Running", "blue"),
-        ("paused", "Pause", "blue"),
+        ("paused", "Paused", "blue"),
         ("exited", "Exited", "blue"),
         ("dead", "Dead", "blue"),
         ("none", "None", "white"),
