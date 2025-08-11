@@ -17,35 +17,33 @@
 <div class="row mb-3">
   <div class="col col-md-6">
     <div class="card">
-      <h5 class="card-header">HOST</h5>
-      <div class="card-body">
-        <table class="table table-hover attr-table">
-          <tr>
-            <th scope="row">Name</th>
-            <td>{{ object.name }}</td>
-          </tr>
-          <tr>
-            <th scope="row">Endpoint</th>
-            <td>{{ object.endpoint|remove_password }}</td>
-          </tr>
-          <tr>
-            <th scope="row">State</th>
-            <td>{{ object.get_state_display }}</td>
-          </tr>
-          <tr>
-            <th scope="row">Agent Version</th>
-            <td>{{ object.agent_version|placeholder }}</td>
-          </tr>
-          <tr>
-            <th scope="row">Docker API Version</th>
-            <td>{{ object.docker_api_version|placeholder }}</td>
-          </tr>
-          <tr>
-            <th scope="row">Operation</th>
-            <td>{{ object.get_operation_display }}</td>
-          </tr>
-        </table>
-      </div>
+      <h2 class="card-header">Host</h2>
+      <table class="table table-hover attr-table">
+        <tr>
+          <th scope="row">Name</th>
+          <td>{{ object.name }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Endpoint</th>
+          <td>{{ object.endpoint|remove_password }}</td>
+        </tr>
+        <tr>
+          <th scope="row">State</th>
+          <td>{{ object.get_state_display }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Agent Version</th>
+          <td>{{ object.agent_version|placeholder }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Docker API Version</th>
+          <td>{{ object.docker_api_version|placeholder }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Operation</th>
+          <td>{{ object.get_operation_display }}</td>
+        </tr>
+      </table>
     </div>
     {% include 'inc/panels/custom_fields.html' %}
     {% include 'inc/panels/tags.html' %}
@@ -59,82 +57,86 @@
 <div class="row">
   <div class="col col-md-12">
     <div class="card">
-      <h5 class="card-header">Registry</h5>
-      <div class="card-body htmx-container table-responsive"
-        hx-get="{% url 'plugins:netbox_docker_plugin:registry_list' %}?host_id={{ object.pk }}" hx-trigger="load"></div>
-      {% if perms.netbox_docker_plugin.add_container %}
-      <div class="card-footer text-end noprint">
-        <a href="{% url 'plugins:netbox_docker_plugin:registry_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}"
-          class="btn btn-primary">
-          <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Registry
-        </a>
-      </div>
-      {% endif %}
+      <h2 class="card-header">
+        Registry
+        {% if perms.netbox_docker_plugin.add_container %}
+          <div class="card-actions">
+            <a href="{% url 'plugins:netbox_docker_plugin:registry_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}"
+              class="btn btn-ghost-primary btn-sm">
+              <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Registry
+            </a>
+          </div>
+        {% endif %}
+      </h2>
+      {% htmx_table 'plugins:netbox_docker_plugin:registry_list' host_id=object.pk %}
     </div>
     {% plugin_full_width_page object %}
   </div>
   <div class="col col-md-12">
     <div class="card">
-      <h5 class="card-header">Container</h5>
-      <div class="card-body htmx-container table-responsive"
-        hx-get="{% url 'plugins:netbox_docker_plugin:container_list' %}?host_id={{ object.pk }}" hx-trigger="load">
-      </div>
-      {% if perms.netbox_docker_plugin.add_container %}
-      <div class="card-footer text-end noprint">
-        <a href="{% url 'plugins:netbox_docker_plugin:container_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}"
-          class="btn btn-primary">
-          <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Container
-        </a>
-      </div>
-      {% endif %}
+      <h2 class="card-header">
+        Container
+        {% if perms.netbox_docker_plugin.add_container %}
+          <div class="card-actions">
+            <a href="{% url 'plugins:netbox_docker_plugin:container_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}"
+              class="btn btn-ghost-primary btn-sm">
+              <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Container
+            </a>
+          </div>
+        {% endif %}
+      </h2>
+      {% htmx_table 'plugins:netbox_docker_plugin:container_list' host_id=object.pk %}
     </div>
     {% plugin_full_width_page object %}
   </div>
   <div class="col col-md-12">
     <div class="card">
-      <h5 class="card-header">Images</h5>
-      <div class="card-body htmx-container table-responsive"
-        hx-get="{% url 'plugins:netbox_docker_plugin:image_list' %}?host_id={{ object.pk }}" hx-trigger="load"></div>
-      {% if perms.netbox_docker_plugin.add_image %}
-      <div class="card-footer text-end noprint">
-        <a href="{% url 'plugins:netbox_docker_plugin:image_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}"
-          class="btn btn-primary">
-          <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add an Image
-        </a>
-      </div>
-      {% endif %}
+      <h2 class="card-header">
+        Images
+        {% if perms.netbox_docker_plugin.add_image %}
+          <div class="card-actions">
+            <a href="{% url 'plugins:netbox_docker_plugin:image_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}"
+              class="btn btn-ghost-primary btn-sm">
+              <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add an Image
+            </a>
+          </div>
+        {% endif %}
+      </h2>
+      {% htmx_table 'plugins:netbox_docker_plugin:image_list' host_id=object.pk %}
     </div>
     {% plugin_full_width_page object %}
   </div>
   <div class="col col-md-12">
     <div class="card">
-      <h5 class="card-header">Volumes</h5>
-      <div class="card-body htmx-container table-responsive"
-        hx-get="{% url 'plugins:netbox_docker_plugin:volume_list' %}?host_id={{ object.pk }}" hx-trigger="load"></div>
-      {% if perms.netbox_docker_plugin.add_volume %}
-      <div class="card-footer text-end noprint">
-        <a href="{% url 'plugins:netbox_docker_plugin:volume_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}"
-          class="btn btn-primary">
-          <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Volume
-        </a>
-      </div>
-      {% endif %}
+      <h2 class="card-header">
+        Volumes
+        {% if perms.netbox_docker_plugin.add_volume %}
+          <div class="card-actions">
+            <a href="{% url 'plugins:netbox_docker_plugin:volume_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}"
+              class="btn btn-ghost-primary btn-sm">
+              <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Volume
+            </a>
+          </div>
+        {% endif %}
+      </h2>
+      {% htmx_table 'plugins:netbox_docker_plugin:volume_list' host_id=object.pk %}
     </div>
     {% plugin_full_width_page object %}
   </div>
   <div class="col col-md-12">
     <div class="card">
-      <h5 class="card-header">Networks</h5>
-      <div class="card-body htmx-container table-responsive"
-        hx-get="{% url 'plugins:netbox_docker_plugin:network_list' %}?host_id={{ object.pk }}" hx-trigger="load"></div>
-      {% if perms.netbox_docker_plugin.add_network %}
-      <div class="card-footer text-end noprint">
-        <a href="{% url 'plugins:netbox_docker_plugin:network_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}"
-          class="btn btn-primary">
-          <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Network
-        </a>
-      </div>
-      {% endif %}
+      <h2 class="card-header">
+        Networks
+        {% if perms.netbox_docker_plugin.add_network %}
+          <div class="card-actions">
+            <a href="{% url 'plugins:netbox_docker_plugin:network_add' %}?host={{ object.pk }}&return_url={{ object.get_absolute_url }}"
+              class="btn btn-ghost-primary btn-sm">
+              <i class="mdi mdi-plus-thick" aria-hidden="true"></i> Add a Network
+            </a>
+          </div>
+        {% endif %}
+      </h2>
+      {% htmx_table 'plugins:netbox_docker_plugin:network_list' host_id=object.pk %}
     </div>
     {% plugin_full_width_page object %}
   </div>

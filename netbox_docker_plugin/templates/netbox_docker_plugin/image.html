@@ -69,53 +69,48 @@
 <div class="row mb-3">
   <div class="col col-md-6">
     <div class="card">
-      <h5 class="card-header">IMAGE</h5>
-      <div class="card-body">
-        <table class="table table-hover attr-table">
-          <tr>
-            <th scope="row">Host</th>
-            <td><a href="{{ object.host.get_absolute_url }}">{{ object.host }}</a></td>
-          </tr>
-          <tr>
-            <th scope="row">Name & Version</th>
-            <td>{{ object.name }}:{{ object.version }}</td>
-          </tr>
-          <tr>
-            <th scope="row">Registry</th>
-            <td><a href="{{ object.registry.get_absolute_url }}">{{ object.registry }}</a></td>
-          </tr>
-          <tr>
-            <th scope="row">Size</th>
-            <td>{{ object.size }}&nbsp;MByte</td>
-          </tr>
-          <tr>
-            <th scope="row">ImageID</th>
-            <td>{{ object.ImageID|placeholder }}</td>
-          </tr>
-          <tr>
-            <th scope="row">Digest</th>
-            <td>
-              {% if object.Digest is None %}
-                {{ object.Digest|placeholder }}
-              {% else %}
-                {{ object.Digest|truncatechars:32 }}
-              {% endif %}
-            </td>
-          </tr>
-        </table>
-      </div>
+      <h2 class="card-header">Image</h2>
+      <table class="table table-hover attr-table">
+        <tr>
+          <th scope="row">Host</th>
+          <td><a href="{{ object.host.get_absolute_url }}">{{ object.host }}</a></td>
+        </tr>
+        <tr>
+          <th scope="row">Name & Version</th>
+          <td>{{ object.name }}:{{ object.version }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Registry</th>
+          <td><a href="{{ object.registry.get_absolute_url }}">{{ object.registry }}</a></td>
+        </tr>
+        <tr>
+          <th scope="row">Size</th>
+          <td>{{ object.size }}&nbsp;MByte</td>
+        </tr>
+        <tr>
+          <th scope="row">ImageID</th>
+          <td>{{ object.ImageID|placeholder }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Digest</th>
+          <td>
+            {% if object.Digest is None %}
+              {{ object.Digest|placeholder }}
+            {% else %}
+              {{ object.Digest|truncatechars:32 }}
+            {% endif %}
+          </td>
+        </tr>
+      </table>
     </div>
     {% include 'inc/panels/custom_fields.html' %}
     {% include 'inc/panels/tags.html' %}
     {% plugin_left_page object %}
   </div>
-  <div class="col col-md-6">
+  <div class="col col-md-12">
     <div class="card">
-      <h5 class="card-header">USED BY</h5>
-      <div class="card-body htmx-container table-responsive"
-        hx-get="{% url 'plugins:netbox_docker_plugin:container_list' %}?image_id={{ object.pk }}"
-        hx-trigger="load"
-      ></div>
+      <h2 class="card-header">Used By</h2>
+      {% htmx_table 'plugins:netbox_docker_plugin:container_list' image_id=object.pk %}
     </div>
   </div>
 </div>
