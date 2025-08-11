@@ -31,6 +31,24 @@
   </button>
 </form>
 
+{% if object.state == 'paused' %}
+<form action="{% url 'plugins:netbox_docker_plugin:container_operation' pk=object.id operation='unpause' %}" method="post">
+    {% csrf_token %}
+  <input type="hidden" name="operation" value="unpause">
+  <button type="submit" class="btn btn-danger">
+      <i class="mdi mdi-play"></i>Unpause</button>
+</form>
+
+{% elif object.state == 'running' %}
+<form action="{% url 'plugins:netbox_docker_plugin:container_operation' pk=object.id operation='pause' %}" method="post">
+  {% csrf_token %}
+  <input type="hidden" name="operation" value="pause">
+  <button type="submit" class="btn btn-success">
+      <i class="mdi mdi-stop"></i> Pause
+  </button>
+</form>
+{% endif %}
+
 <form action="{% url 'plugins:netbox_docker_plugin:container_operation' pk=object.id operation='restart' %}" method="post">
   {% csrf_token %}
   <input type="hidden" name="operation" value="restart">
