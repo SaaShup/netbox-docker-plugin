@@ -29,10 +29,18 @@ Once the plugin and webhooks are installed, you can:
    labels, mount volumes, set networks.
 4. Manage the container status, start, stop, restart.
 
-* adding a host with curl needs a specific **Origin** header to make it working. Example :
-```
-curl -X POST -H "Authorization: Token xxxxx" -H "Content-Type: application/json" -H "Origin: https://myhost" https://myhost/api/plugins/docker/hosts/ -d '{"name": "test-add", "endpoint": "[https://xxxx:xxxx@test.com:1990"}](https://xxxx:xxxx@test.com:1990%22%7D)'
-```
+
+> [!NOTE]  
+> Adding a host with curl needs a specific `Origin` HTTP header to make it working. Example :
+>
+> ```bash
+> curl \
+>     -H "Authorization: Token YOUR-NETBOX-APIKEY" \
+>     -H "Content-Type: application/json" \
+>     -H "Origin: https://YOUR-NETBOX-HOST" \
+>     -X POST https://YOUR-NETBOX-HOST/api/plugins/docker/hosts/ \
+>     -d '{"name": "YOUR-AGENT-NAME", "endpoint": "https://AGENT-USER:PASSWORD@YOUR-AGENT-HOST:PORT"}'
+> ```
 
 ## Installation
 
