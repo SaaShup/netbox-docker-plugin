@@ -1,6 +1,7 @@
 """Registry views definitions"""
 
 from utilities.query import count_related
+from utilities.views import GetRelatedModelsMixin
 from netbox.views import generic
 from .. import tables, filtersets
 from ..forms import registry
@@ -8,21 +9,19 @@ from ..models.image import Image
 from ..models.registry import Registry
 
 
-class RegistryView(generic.ObjectView):
+class RegistryView(GetRelatedModelsMixin, generic.ObjectView):
     """Registry view definition"""
 
     queryset = Registry.objects.prefetch_related("images")
 
     def get_extra_context(self, request, instance):
-        related_models = (
-            (
-                Image.objects.filter(registry=instance),
-                "registry_id",
-            ),
-        )
-
         return {
-            "related_models": related_models,
+            "related_models": self.get_related_models(
+                request,
+                instance,
+                omit=(),
+                extra=(),
+            ),
         }
 
 

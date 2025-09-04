@@ -2,7 +2,7 @@
 
 from users.models import Token
 from utilities.query import count_related
-from utilities.views import ViewTab, register_model_view
+from utilities.views import ViewTab, GetRelatedModelsMixin, register_model_view
 from netbox.views import generic
 from .. import tables, filtersets
 from ..forms import host
@@ -15,7 +15,7 @@ from ..models.registry import Registry
 
 
 @register_model_view(Host)
-class HostView(generic.ObjectView):
+class HostView(GetRelatedModelsMixin, generic.ObjectView):
     """Host view definition"""
 
     queryset = Host.objects.prefetch_related(
@@ -23,31 +23,13 @@ class HostView(generic.ObjectView):
     )
 
     def get_extra_context(self, request, instance):
-        related_models = (
-            (
-                Image.objects.filter(host=instance),
-                "host_id",
-            ),
-            (
-                Volume.objects.filter(host=instance),
-                "host_id",
-            ),
-            (
-                Network.objects.filter(host=instance),
-                "host_id",
-            ),
-            (
-                Container.objects.filter(host=instance),
-                "host_id",
-            ),
-            (
-                Registry.objects.filter(host=instance),
-                "host_id",
-            ),
-        )
-
         return {
-            "related_models": related_models,
+            "related_models": self.get_related_models(
+                request,
+                instance,
+                omit=(),
+                extra=(),
+            ),
         }
 
 
