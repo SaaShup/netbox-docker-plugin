@@ -47,13 +47,13 @@ class HostViewSet(NetBoxModelViewSet):
     def perform_create(self, serializer):
         if isinstance(serializer.validated_data, Sequence):
             for obj in serializer.validated_data:
-                token = Token(user=self.request.user, write_enabled=True)
+                token = Token(user=self.request.user, write_enabled=True, description="DockerAgent")
                 token.save()
 
                 obj["token"] = token
                 obj["netbox_base_url"] = self.request.stream.META["HTTP_ORIGIN"]
         else:
-            token = Token(user=self.request.user, write_enabled=True)
+            token = Token(user=self.request.user, write_enabled=True, description="DockerAgent")
             token.save()
 
             serializer.validated_data["token"] = token
