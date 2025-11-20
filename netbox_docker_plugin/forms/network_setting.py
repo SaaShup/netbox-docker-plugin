@@ -3,7 +3,6 @@
 from django import forms
 from utilities.forms.fields import (
     DynamicModelMultipleChoiceField,
-    DynamicModelChoiceField,
 )
 from netbox.forms import (
     NetBoxModelFilterSetForm,
@@ -15,10 +14,13 @@ from ..models.network import Network
 class NetworkSettingForm(forms.ModelForm):
     """NetworkSetting form definition class"""
 
-    container = DynamicModelChoiceField(
-        label="Container", queryset=Container.objects.all(), required=True
+    container = forms.ModelChoiceField(
+        label="Container",
+        queryset=Container.objects.all(),
+        required=True,
+        widget=forms.HiddenInput,
     )
-    network = DynamicModelChoiceField(
+    network = forms.ModelChoiceField(
         label="Network", queryset=Network.objects.all(), required=True
     )
 
@@ -26,14 +28,27 @@ class NetworkSettingForm(forms.ModelForm):
         """NetworkSetting form definition Meta class"""
 
         model = NetworkSetting
-        fields = (
-            "container",
-            "network"
-        )
+        fields = ("container", "network")
         labels = {
-            "container": "Container",
             "network": "Network",
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if "data" in kwargs:
+            container = Container.objects.filter(id=kwargs["data"]["container"])
+        elif "initial" in kwargs and "container" in kwargs["initial"]:
+            container = Container.objects.filter(id=kwargs["initial"]["container"])
+        else:
+            container = Container.objects.filter(id=self.instance.container.id)
+
+        self.fields["network"].queryset = Network.objects.filter(
+            host=container.first().host
+        )
+
+        self.instance._meta.verbose_name = f"Network setting — {container.first()}"
+
 
 class NetworkSettingFilterForm(NetBoxModelFilterSetForm):
     """Mount filter form definition class"""

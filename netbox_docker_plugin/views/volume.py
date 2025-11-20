@@ -32,6 +32,16 @@ class VolumeListView(generic.ObjectListView):
     filterset_form = volume.VolumeFilterForm
 
 
+class MinVolumeListView(generic.ObjectListView):
+    """Volume list view definition"""
+
+    queryset = Volume.objects.annotate(
+        mount_count=count_related(Mount, "volume"),
+    )
+    table = tables.MinVolumeTable
+    filterset = filtersets.VolumeFilterSet
+
+
 class VolumeBulkImportView(generic.BulkImportView):
     """Volume bulk import view definition"""
 

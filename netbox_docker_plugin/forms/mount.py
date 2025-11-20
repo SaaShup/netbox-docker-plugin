@@ -3,7 +3,6 @@
 from django import forms
 from utilities.forms.fields import (
     DynamicModelMultipleChoiceField,
-    DynamicModelChoiceField,
 )
 from netbox.forms import (
     NetBoxModelFilterSetForm,
@@ -15,10 +14,13 @@ from ..models.volume import Volume
 class MountForm(forms.ModelForm):
     """Mount form definition class"""
 
-    container = DynamicModelChoiceField(
-        label="Container", queryset=Container.objects.all(), required=True
+    container = forms.ModelChoiceField(
+        label="Container",
+        queryset=Container.objects.all(),
+        required=True,
+        widget=forms.HiddenInput,
     )
-    volume = DynamicModelChoiceField(
+    volume = forms.ModelChoiceField(
         label="Volume", queryset=Volume.objects.all(), required=True
     )
 
@@ -33,11 +35,26 @@ class MountForm(forms.ModelForm):
             "read_only",
         )
         labels = {
-            "container": "Container",
             "source": "Source directory",
             "volume": "Volume",
             "read_only": "Mount as read-only within the container",
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if "data" in kwargs:
+            container = Container.objects.filter(id=kwargs["data"]["container"])
+        elif "initial" in kwargs and "container" in kwargs["initial"]:
+            container = Container.objects.filter(id=kwargs["initial"]["container"])
+        else:
+            container = Container.objects.filter(id=self.instance.container.id)
+
+        self.fields["volume"].queryset = Volume.objects.filter(
+            host=container.first().host
+        )
+
+        self.instance._meta.verbose_name = f"Mount — {container.first()}"
 
 
 class MountFilterForm(NetBoxModelFilterSetForm):

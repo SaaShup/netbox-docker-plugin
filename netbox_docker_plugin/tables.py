@@ -84,6 +84,7 @@ class HostTable(NetBoxTable):
 class RegistryTable(NetBoxTable):
     """Registry Table definition class"""
 
+    host = tables.Column(linkify=True)
     name = tables.Column(linkify=True)
     image_count = columns.LinkedCountColumn(
         viewname="plugins:netbox_docker_plugin:image_list",
@@ -99,6 +100,7 @@ class RegistryTable(NetBoxTable):
         fields = (
             "pk",
             "id",
+            "host",
             "name",
             "serveraddress",
             "username",
@@ -107,8 +109,29 @@ class RegistryTable(NetBoxTable):
             "tags",
         )
         default_columns = (
+            "host",
             "name",
             "serveraddress",
+            "image_count",
+        )
+
+
+class MinRegistryTable(NetBoxTable):
+    """Registry Table definition class"""
+
+    name = tables.Column(linkify=True)
+    image_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:image_list",
+        url_params={"registry_id": "pk"},
+        verbose_name="Images count",
+    )
+
+    class Meta(NetBoxTable.Meta):
+        """Registry Table definition Meta class"""
+
+        model = Registry
+        fields = (
+            "name",
             "image_count",
         )
 
@@ -147,11 +170,40 @@ class ImageTable(NetBoxTable):
             "tags",
         )
         default_columns = (
+            "host",
             "name",
             "version",
             "registry",
             "size",
-            "host",
+            "container_count",
+        )
+
+
+class MinImageTable(NetBoxTable):
+    """Image Table definition class"""
+
+    registry = tables.Column(linkify=True)
+    name = tables.Column(linkify=True)
+    container_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:container_list",
+        url_params={"image_id": "pk"},
+        verbose_name="Used by (containers)",
+    )
+
+    def render_size(self, value):
+        """Render the image size with unity"""
+        return f"{value} MB"
+
+    class Meta(NetBoxTable.Meta):
+        """Image Table definition Meta class"""
+
+        model = Image
+        fields = (
+            "name",
+            "version",
+            "registry",
+            "size",
+            "ImageID",
             "container_count",
         )
 
@@ -187,10 +239,36 @@ class VolumeTable(NetBoxTable):
             "tags",
         )
         default_columns = (
+            "host",
             "name",
             "max_size",
             "driver",
-            "host",
+            "mount_count",
+        )
+
+
+class MinVolumeTable(NetBoxTable):
+    """Volume Table definition class"""
+
+    name = tables.Column(linkify=True)
+    mount_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:mount_list",
+        url_params={"volume_id": "pk"},
+        verbose_name="Used by (mounts)",
+    )
+
+    def render_max_size(self, value):
+        """Render the volume max size with unity"""
+        return f"{value} MB"
+
+    class Meta(NetBoxTable.Meta):
+        """Volume Table definition Meta class"""
+
+        model = Volume
+        fields = (
+            "name",
+            "max_size",
+            "driver",
             "mount_count",
         )
 
@@ -222,11 +300,34 @@ class NetworkTable(NetBoxTable):
             "networksetting_count",
             "tags",
         )
-        default_columns = ("name", "driver", "state", "host", "networksetting_count")
+        default_columns = ("host", "name", "driver", "state", "networksetting_count")
+
+
+class MinNetworkTable(NetBoxTable):
+    """Network Table definition class"""
+
+    name = tables.Column(linkify=True)
+    networksetting_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:networksetting_list",
+        url_params={"network_id": "pk"},
+        verbose_name="Used by (network settings)",
+    )
+
+    class Meta(NetBoxTable.Meta):
+        """Network Table definition Meta class"""
+
+        model = Network
+        fields = (
+            "name",
+            "driver",
+            "NetworkID",
+            "state",
+            "networksetting_count",
+        )
 
 
 class ContainerTable(NetBoxTable):
-    """Network Table definition class"""
+    """Container Table definition class"""
 
     host = tables.Column(linkify=True)
     image = tables.Column(linkify=True)
@@ -295,8 +396,66 @@ class ContainerTable(NetBoxTable):
             "tags",
         )
         default_columns = (
-            "name",
             "host",
+            "name",
+            "image",
+            "state",
+            "port_count",
+            "mount_count",
+            "bind_count",
+            "networksetting_count",
+            "env_count",
+            "label_count",
+        )
+
+
+class MinContainerTable(NetBoxTable):
+    """Container Table definition class"""
+
+    image = tables.Column(linkify=True)
+    name = tables.Column(linkify=True)
+    port_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:port_list",
+        url_params={"container_id": "pk"},
+        verbose_name="Ports count",
+    )
+    mount_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:mount_list",
+        url_params={"container_id": "pk"},
+        verbose_name="Mounts count",
+    )
+    bind_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:bind_list",
+        url_params={"container_id": "pk"},
+        verbose_name="Binds count",
+    )
+    networksetting_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:networksetting_list",
+        url_params={"container_id": "pk"},
+        verbose_name="Network Settings count",
+    )
+    env_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:env_list",
+        url_params={"container_id": "pk"},
+        verbose_name="Env variables count",
+    )
+    label_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:label_list",
+        url_params={"container_id": "pk"},
+        verbose_name="Labels count",
+    )
+    device_count = columns.LinkedCountColumn(
+        viewname="plugins:netbox_docker_plugin:device_list",
+        url_params={"container_id": "pk"},
+        verbose_name="Devices count",
+    )
+
+    class Meta(NetBoxTable.Meta):
+        """Container Table definition Meta class"""
+
+        model = Container
+        fields = (
+            "name",
             "image",
             "state",
             "port_count",
@@ -320,7 +479,7 @@ class EnvTable(NetBoxTable):
 
         model = Env
         fields = ("container", "var_name", "value")
-        default_columns = ("container", "var_name", "value")
+        default_columns = ("var_name", "value")
 
 
 class LogDriverOptionTable(NetBoxTable):
@@ -335,7 +494,7 @@ class LogDriverOptionTable(NetBoxTable):
 
         model = LogDriverOption
         fields = ("container", "option_name", "value")
-        default_columns = ("container", "option_name", "value")
+        default_columns = ("option_name", "value")
 
 
 class LabelTable(NetBoxTable):
@@ -350,7 +509,7 @@ class LabelTable(NetBoxTable):
 
         model = Label
         fields = ("container", "key", "value")
-        default_columns = ("container", "key", "value")
+        default_columns = ("key", "value")
 
 
 class PortTable(NetBoxTable):
@@ -365,7 +524,7 @@ class PortTable(NetBoxTable):
 
         model = Port
         fields = ("container", "public_port", "private_port", "type")
-        default_columns = ("container", "public_port", "private_port", "type")
+        default_columns = ("public_port", "private_port", "type")
 
 
 class MountTable(NetBoxTable):
@@ -387,7 +546,6 @@ class MountTable(NetBoxTable):
             "read_only",
         )
         default_columns = (
-            "container",
             "source",
             "volume",
             "read_only",
@@ -412,7 +570,6 @@ class BindTable(NetBoxTable):
             "read_only",
         )
         default_columns = (
-            "container",
             "host_path",
             "container_path",
             "read_only",
@@ -435,10 +592,7 @@ class NetworkSettingTable(NetBoxTable):
             "container",
             "network",
         )
-        default_columns = (
-            "container",
-            "network",
-        )
+        default_columns = ("network",)
 
 
 class DeviceTable(NetBoxTable):
@@ -458,7 +612,6 @@ class DeviceTable(NetBoxTable):
             "container_path",
         )
         default_columns = (
-            "container",
             "host_path",
             "container_path",
         )
@@ -476,4 +629,4 @@ class SysctlTable(NetBoxTable):
 
         model = Sysctl
         fields = ("container", "key", "value")
-        default_columns = ("container", "key", "value")
+        default_columns = ("key", "value")

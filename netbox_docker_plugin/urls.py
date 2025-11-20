@@ -72,6 +72,11 @@ urlpatterns = (
     ),
     # Image
     path("images/", image_views.ImageListView.as_view(), name="image_list"),
+    path(
+        "min-images/",
+        image_views.MinImageListView.as_view(),
+        name="min_image_list",
+    ),
     path("images/add/", image_views.ImageEditView.as_view(), name="image_add"),
     path(
         "images/import/",
@@ -109,6 +114,11 @@ urlpatterns = (
     ),
     # Volume
     path("volumes/", volume_views.VolumeListView.as_view(), name="volume_list"),
+    path(
+        "min-volumes/",
+        volume_views.MinVolumeListView.as_view(),
+        name="min_volume_list",
+    ),
     path("volumes/add/", volume_views.VolumeEditView.as_view(), name="volume_add"),
     path(
         "volumes/import/",
@@ -145,6 +155,11 @@ urlpatterns = (
     ),
     # Network
     path("networks/", network_views.NetworkListView.as_view(), name="network_list"),
+    path(
+        "min-networks/",
+        network_views.MinNetworkListView.as_view(),
+        name="min_network_list",
+    ),
     path("networks/add/", network_views.NetworkEditView.as_view(), name="network_add"),
     path(
         "networks/import/",
@@ -189,6 +204,11 @@ urlpatterns = (
         "containers/",
         container_views.ContainerListView.as_view(),
         name="container_list",
+    ),
+    path(
+        "min-containers/",
+        container_views.MinContainerListView.as_view(),
+        name="min_container_list",
     ),
     path(
         "containers/add/",
@@ -404,6 +424,11 @@ urlpatterns = (
         "registries/",
         registry_views.RegistryListView.as_view(),
         name="registry_list",
+    ),
+    path(
+        "min-registries/",
+        registry_views.MinRegistryListView.as_view(),
+        name="min_registry_list",
     ),
     path(
         "registries/add/",

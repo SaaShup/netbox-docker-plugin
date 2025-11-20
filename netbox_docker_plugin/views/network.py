@@ -7,6 +7,7 @@ from ..forms import network
 from ..models.network import Network
 from ..models.container import NetworkSetting
 
+
 class NetworkView(generic.ObjectView):
     """Network view definition"""
 
@@ -22,6 +23,16 @@ class NetworkListView(generic.ObjectListView):
     table = tables.NetworkTable
     filterset = filtersets.NetworkFilterSet
     filterset_form = network.NetworkFilterForm
+
+
+class MinNetworkListView(generic.ObjectListView):
+    """Network list view definition"""
+
+    queryset = Network.objects.annotate(
+        networksetting_count=count_related(NetworkSetting, "network"),
+    )
+    table = tables.MinNetworkTable
+    filterset = filtersets.NetworkFilterSet
 
 
 class NetworkEditView(generic.ObjectEditView):

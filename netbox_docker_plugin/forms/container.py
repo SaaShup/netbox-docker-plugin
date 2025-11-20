@@ -67,11 +67,10 @@ class ContainerForm(NetBoxModelForm):
 class ContainerEditForm(NetBoxModelForm):
     """Container form definition class"""
 
-    image = DynamicModelChoiceField(
+    image = forms.ModelChoiceField(
         label="Image",
         queryset=Image.objects.all(),
         required=True,
-        query_params={"host_id": "$host"},
     )
     cap_add = forms.MultipleChoiceField(choices=ContainerCapAddChoices, required=False)
 
@@ -99,6 +98,11 @@ class ContainerEditForm(NetBoxModelForm):
             "cmd": "Command",
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["image"].queryset = Image.objects.filter(host=self.instance.host)
+
 
 class ContainerFilterForm(NetBoxModelFilterSetForm):
     """Container filter form definition class"""
@@ -124,9 +128,7 @@ class ContainerFilterForm(NetBoxModelFilterSetForm):
     restart_policy = forms.ChoiceField(
         label="Restart Policy", choices=ContainerRestartPolicyChoices, required=False
     )
-    log_driver = forms.ChoiceField(
-        label="Logging driver", required=False
-    )
+    log_driver = forms.ChoiceField(label="Logging driver", required=False)
     tag = TagFilterField(model)
 
 

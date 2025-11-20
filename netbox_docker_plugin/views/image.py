@@ -25,6 +25,16 @@ class ImageListView(generic.ObjectListView):
     filterset_form = image.ImageFilterForm
 
 
+class MinImageListView(generic.ObjectListView):
+    """Image list view definition"""
+
+    queryset = Image.objects.annotate(
+        container_count=count_related(Container, "image"),
+    )
+    table = tables.MinImageTable
+    filterset = filtersets.ImageFilterSet
+
+
 class ImageEditView(generic.ObjectEditView):
     """Image edition view definition"""
 

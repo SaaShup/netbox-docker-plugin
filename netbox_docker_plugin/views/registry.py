@@ -36,6 +36,16 @@ class RegistryListView(generic.ObjectListView):
     filterset_form = registry.RegistryFilterForm
 
 
+class MinRegistryListView(generic.ObjectListView):
+    """Registry list view definition"""
+
+    queryset = Registry.objects.annotate(
+        image_count=count_related(Image, "registry"),
+    )
+    table = tables.MinRegistryTable
+    filterset = filtersets.RegistryFilterSet
+
+
 class RegistryEditView(generic.ObjectEditView):
     """Registry edition view definition"""
 
