@@ -109,6 +109,7 @@ class ContainerCapAddChoices(ChoiceSet):
         ("SYS_CHROOT", "SYS_CHROOT"),
         ("SYS_PTRACE", "SYS_PTRACE"),
         ("SYS_RESOURCE", "SYS_RESOURCE"),
+        ("SYS_NICE", "SYS_NICE"),
     ]
 
 
