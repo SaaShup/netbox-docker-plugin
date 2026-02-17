@@ -3,7 +3,7 @@ name: main branch CI
 on:
   push:
     branches:
-      - "main"
+      - "main_v2"
 
 jobs:
   testing:
@@ -55,7 +55,8 @@ jobs:
         run: |
           ln -s $(pwd)/../netbox-docker-plugin/netbox_configuration/configuration_testing.py netbox/netbox/configuration.py
           python -m pip install --upgrade pip
-          pip install -r requirements.txt -U
+          sed -i 's/psycopg\[c,pool\]==3\.2\.1/psycopg[binary,pool]==3.2.1/' requirements.txt
+          pip install --prefer-binary -r requirements.txt
       - name: Run Pylint
         run: |
           pip install pylint

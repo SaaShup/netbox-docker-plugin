@@ -19,6 +19,7 @@ from ..models.container import (
     Bind,
     NetworkSetting,
     Device,
+    LogDriverOption,
 )
 from ..models.registry import Registry
 
@@ -149,6 +150,7 @@ class NestedContainerSerializer(WritableNestedSerializer):
             "operation",
             "hostname",
             "cap_add",
+            "log_driver",
         )
 
 
@@ -322,6 +324,19 @@ class EnvSerializer(serializers.ModelSerializer):
         )
 
 
+class LogDriverOptionSerializer(serializers.ModelSerializer):
+    """Container Log Driver Option Serializer class"""
+
+    class Meta:
+        """Container Log Driver Option Serializer Meta class"""
+
+        model = LogDriverOption
+        fields = (
+            "option_name",
+            "value",
+        )
+
+
 class LabelSerializer(serializers.ModelSerializer):
     """Container Label Serializer class"""
 
@@ -405,6 +420,7 @@ class ContainerSerializer(NetBoxModelSerializer):
     binds = BindSerializer(many=True, required=False)
     network_settings = NetworkSettingSerializer(many=True, required=False)
     devices = DeviceSerializer(many=True, required=False)
+    log_driver_options = LogDriverOptionSerializer(many=True, required=False)
 
     class Meta:
         """Container Serializer Meta class"""
@@ -431,6 +447,8 @@ class ContainerSerializer(NetBoxModelSerializer):
             "binds",
             "network_settings",
             "devices",
+            "log_driver",
+            "log_driver_options",
             "custom_fields",
             "created",
             "last_updated",
@@ -456,6 +474,7 @@ class ContainerSerializer(NetBoxModelSerializer):
     def create(self, validated_data):
         ports_data = validated_data.pop("ports", None)
         env_data = validated_data.pop("env", None)
+        log_driver_options_data = validated_data.pop("log_driver_options", None)
         labels_data = validated_data.pop("labels", None)
         mounts_data = validated_data.pop("mounts", None)
         binds_data = validated_data.pop("binds", None)
@@ -471,6 +490,10 @@ class ContainerSerializer(NetBoxModelSerializer):
         if env_data is not None:
             for env in env_data:
                 Env.objects.create(container=container, **env)
+
+        if log_driver_options_data is not None:
+            for option in log_driver_options_data:
+                LogDriverOption.objects.create(container=container, **option)
 
         if labels_data is not None:
             for label in labels_data:
@@ -506,6 +529,7 @@ class ContainerSerializer(NetBoxModelSerializer):
     def update(self, instance, validated_data):
         ports_data = validated_data.pop("ports", None)
         env_data = validated_data.pop("env", None)
+        log_driver_options_data = validated_data.pop("log_driver_options", None)
         labels_data = validated_data.pop("labels", None)
         mounts_data = validated_data.pop("mounts", None)
         binds_data = validated_data.pop("binds", None)
@@ -523,6 +547,11 @@ class ContainerSerializer(NetBoxModelSerializer):
             Env.objects.filter(container=container).delete()
             for env in env_data:
                 Env.objects.create(container=container, **env)
+
+        if log_driver_options_data is not None:
+            LogDriverOption.objects.filter(container=container).delete()
+            for option in log_driver_options_data:
+                LogDriverOption.objects.create(container=container, **option)
 
         if labels_data is not None:
             Label.objects.filter(container=container).delete()

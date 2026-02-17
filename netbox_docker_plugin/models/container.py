@@ -93,6 +93,20 @@ class ContainerCapAddChoices(ChoiceSet):
 
     CHOICES = [
         ("NET_ADMIN", "NET_ADMIN"),
+        ("CHOWN", "CHOWN"),
+        ("DAC_OVERRIDE", "DAC_OVERRIDE"),
+        ("DAC_READ_SEARCH", "DAC_READ_SEARCH"),
+        ("FOWNER", "FOWNER"),
+        ("FSETID", "FSETID"),
+        ("KILL", "KILL"),
+        ("NET_RAW", "NET_RAW"),
+        ("SETFCAP", "SETFCAP"),
+        ("SETGID", "SETGID"),
+        ("SETUID", "SETUID"),
+        ("SYS_ADMIN", "SYS_ADMIN"),
+        ("SYS_CHROOT", "SYS_CHROOT"),
+        ("SYS_PTRACE", "SYS_PTRACE"),
+        ("SYS_RESOURCE", "SYS_RESOURCE"),
     ]
 
 
@@ -152,6 +166,11 @@ class Container(NetBoxModel):
         ),
         null=True,
         blank=True,
+    )
+    log_driver = models.CharField(
+        max_length=32,
+        blank=True,
+        null=True,
     )
 
     @property
@@ -243,7 +262,7 @@ class Port(models.Model):
     )
     public_port = models.IntegerField(
         validators=[
-            MinValueValidator(limit_value=0),
+            MinValueValidator(limit_value=-1),
             MaxValueValidator(limit_value=65535),
         ],
     )
@@ -347,6 +366,45 @@ class Env(models.Model):
 
     def __str__(self):
         return f"{self.var_name}"
+
+
+class LogDriverOption(models.Model):
+    """Log driver option definition class"""
+
+    objects = RestrictedQuerySet.as_manager()
+
+    container = models.ForeignKey(
+        Container, on_delete=models.CASCADE, related_name="log_driver_options"
+    )
+    option_name = models.CharField(
+        max_length=255,
+        validators=[
+            MinLengthValidator(limit_value=1),
+            MaxLengthValidator(limit_value=255),
+        ],
+    )
+    value = models.CharField(
+        blank=True,
+        max_length=4096,
+        validators=[
+            MaxLengthValidator(limit_value=4096),
+        ],
+    )
+
+    class Meta:
+        """Log driver option Model Meta Class"""
+
+        ordering = ("container", "option_name")
+        constraints = (
+            models.UniqueConstraint(
+                "option_name",
+                "container",
+                name="%(app_label)s_%(class)s_unique_option_name_container'",
+            ),
+        )
+
+    def __str__(self):
+        return f"{self.option_name}"
 
 
 class Mount(models.Model):
