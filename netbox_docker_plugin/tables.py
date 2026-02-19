@@ -15,6 +15,7 @@ from .models.container import (
     Bind,
     NetworkSetting,
     Device,
+    LogDriverOption,
 )
 from .models.registry import Registry
 from .templatetags.host import remove_password
@@ -299,6 +300,21 @@ class EnvTable(NetBoxTable):
         model = Env
         fields = ("container", "var_name", "value")
         default_columns = ("container", "var_name", "value")
+
+
+class LogDriverOptionTable(NetBoxTable):
+    """Log driver option Table definition class"""
+
+    container = tables.Column(linkify=True)
+
+    actions = columns.ActionsColumn(actions=("edit", "delete"))
+
+    class Meta(NetBoxTable.Meta):
+        """Log driver option Table definition Meta class"""
+
+        model = LogDriverOption
+        fields = ("container", "option_name", "value")
+        default_columns = ("container", "option_name", "value")
 
 
 class LabelTable(NetBoxTable):

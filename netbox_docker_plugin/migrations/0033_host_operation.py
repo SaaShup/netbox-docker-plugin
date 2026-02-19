@@ -12,9 +12,15 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name="host",
-            name="operation",
-            field=models.CharField(default="none", max_length=32),
-        ),
+        migrations.RunSQL(
+            "ALTER TABLE netbox_docker_plugin_host "
+            + "ADD COLUMN IF NOT EXISTS operation character varying(32);",
+            state_operations=[
+                migrations.AddField(
+                    model_name="host",
+                    name="operation",
+                    field=models.CharField(default="none", max_length=32),
+                ),
+            ],
+        )
     ]

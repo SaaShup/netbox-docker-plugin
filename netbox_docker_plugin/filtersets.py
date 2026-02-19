@@ -16,6 +16,7 @@ from .models.container import (
     Bind,
     NetworkSetting,
     Device,
+    LogDriverOption,
 )
 from .models.registry import Registry
 
@@ -89,7 +90,7 @@ class ImageFilterSet(NetBoxModelFilterSet):
         """Image filterset definition meta class"""
 
         model = Image
-        fields = ("id", "name", "version", "size", "ImageID", "containers")
+        fields = ("id", "name", "version", "size", "ImageID", "Digest", "containers")
 
     # pylint: disable=W0613
     def search(self, queryset, name, value):
@@ -166,7 +167,7 @@ class ContainerFilterSet(NetBoxModelFilterSet):
         """Container filterset definition meta class"""
 
         model = Container
-        fields = ("id", "name", "state", "hostname", "restart_policy")
+        fields = ("id", "name", "state", "hostname", "restart_policy", "ContainerID")
 
     # pylint: disable=W0613
     def search(self, queryset, name, value):
@@ -192,6 +193,25 @@ class EnvFilterSet(BaseFilterSet):
         fields = (
             "id",
             "var_name",
+        )
+
+
+class LogDriverOptionFilterSet(BaseFilterSet):
+    """Log driver option filterset definition class"""
+
+    container_id = ModelMultipleChoiceFilter(
+        field_name="container_id",
+        queryset=Container.objects.all(),
+        label="Container (ID)",
+    )
+
+    class Meta:
+        """Log driver option filterset definition meta class"""
+
+        model = LogDriverOption
+        fields = (
+            "id",
+            "option_name",
         )
 
 

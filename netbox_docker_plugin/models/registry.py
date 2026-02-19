@@ -13,7 +13,7 @@ from .host import Host
 
 
 @receiver(post_save, sender=Host)
-def create_default_registry(sender, **kwargs): # pylint: disable=W0613
+def create_default_registry(sender, **kwargs):  # pylint: disable=W0613
     """Create default registry on Host creation"""
 
     if kwargs.get("created") is True:
