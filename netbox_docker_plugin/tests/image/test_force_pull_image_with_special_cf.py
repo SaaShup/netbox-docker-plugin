@@ -96,7 +96,6 @@ class ForcePullImageWithSpecialCFTestCase(BaseAPITestCase):
         self.assertHttpStatus(response, status.HTTP_200_OK)
         self.assertEqual(response.data, {"success": True, "payload": {}})
 
-    
     def test_force_pull_with_datetime_custom_field(self):
         """Test force pull image with custom field of type DateTime."""
         image_datetime = Image.objects.get(name="image_datetime")
