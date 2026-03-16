@@ -1,3 +1,4 @@
+# pylint: disable=C0301
 """Registry API Test Case"""
 
 from core.models import ObjectType
