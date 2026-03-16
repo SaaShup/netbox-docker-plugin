@@ -1,7 +1,11 @@
+# pylint: disable=C0103
+"""Migration file"""
+
 from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+    """Migration file"""
 
     dependencies = [
         ("netbox_docker_plugin", "1041_sysctl"),
