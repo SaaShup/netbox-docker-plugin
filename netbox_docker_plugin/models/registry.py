@@ -37,7 +37,7 @@ class Registry(NetBoxModel):
         ],
     )
     serveraddress = models.URLField()
-    username = models.CharField(blank=True, null=True, max_length=512)
+    username = models.CharField(blank=True, null=True, max_length=2048)
     password = models.CharField(blank=True, null=True, max_length=512)
     email = models.EmailField(blank=True, null=True, max_length=512)
 
