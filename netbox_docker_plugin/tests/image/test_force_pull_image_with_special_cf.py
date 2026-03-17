@@ -3,7 +3,6 @@
 import datetime
 import requests_mock
 from django.urls import reverse
-from django.contrib.contenttypes.models import ContentType
 from core.models import ObjectType
 from rest_framework import status
 from users.models import ObjectPermission
@@ -28,20 +27,20 @@ class ForcePullImageWithSpecialCFTestCase(BaseAPITestCase):
         cls.registry = Registry.objects.filter(name="dockerhub")[0]
 
         # --- Create custom fields for Image ---
-        ct = ContentType.objects.get_for_model(Image)
+        ot = ObjectType.objects.get_for_model(Image)
 
         cls.cf_date = CustomField.objects.create(
             name="cf_date",
             type="date",
         )
-        cls.cf_date.object_types.set([ct])
+        cls.cf_date.object_types.set([ot])
         cls.cf_date.save()
 
         cls.cf_datetime = CustomField.objects.create(
             name="cf_datetime",
             type="datetime",
         )
-        cls.cf_datetime.object_types.set([ct])
+        cls.cf_datetime.object_types.set([ot])
         cls.cf_datetime.save()
 
         # --- Create images ---
