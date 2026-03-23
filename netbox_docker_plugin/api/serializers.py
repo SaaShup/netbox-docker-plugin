@@ -32,7 +32,16 @@ class NestedTokenSerializer(WritableNestedSerializer):
         """Nested Token Serializer Meta class"""
 
         model = Token
-        fields = ["id", "url", "display_url", "display", "key", "write_enabled"]
+        fields = [
+            "id",
+            "url",
+            "display_url",
+            "display",
+            "key",
+            "token",
+            "version",
+            "write_enabled",
+        ]
 
 
 class NestedHostSerializer(WritableNestedSerializer):

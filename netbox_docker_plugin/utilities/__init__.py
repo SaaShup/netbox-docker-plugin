@@ -25,7 +25,7 @@ webhooks = [
         "type_job_start": False,
         "type_job_end": False,
         "http_method": "GET",
-        "payload_url": "{{ data.endpoint }}/api/engine/endpoint?id={{ data.id }}&token={{ data.token.key }}&endpoint={{ data.endpoint }}&url={{ data.netbox_base_url }}",
+        "payload_url": "{{ data.endpoint }}/api/engine/endpoint?id={{ data.id }}&token=nbt_{{ data.token.key }}.{{ data.token.token }}&endpoint={{ data.endpoint }}&url={{ data.netbox_base_url }}",
         "ssl_verification": False,
     },
     {
@@ -235,6 +235,14 @@ def create_webhook(app_config, **kwargs):
                     # pylint: disable=E1101
                     eventrule.object_types.set([obj_content_type.pk])
                     eventrule.save()
+                else:
+                    if (
+                        results[0].http_method != webhook["http_method"]
+                        or results[0].payload_url != webhook["payload_url"]
+                    ):
+                        results[0].http_method = webhook["http_method"]
+                        results[0].payload_url = webhook["payload_url"]
+                        results[0].save()
 
             return
 
