@@ -38,6 +38,9 @@ REDIS = {
 }
 
 SECRET_KEY = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+API_TOKEN_PEPPERS = {
+    1: "qlksdnfmlqskdjhvmlqsdhlmsnldmvnksqlvnbsqkl=jvbsqkmjvdbdsmkqjvb sdjkhv lzjhqvbqmsjlhv kmsd jvksdqsdqsdqsdqsdqsdqsdqdsqdq"
+}
 
 DEFAULT_PERMISSIONS = {}
 
