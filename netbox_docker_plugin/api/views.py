@@ -4,6 +4,7 @@ from collections.abc import Sequence
 import json
 import requests
 from django.utils.html import escape
+from django.core.serializers.json import DjangoJSONEncoder
 from rest_framework import status
 from rest_framework.renderers import JSONRenderer
 from rest_framework.decorators import action
@@ -97,7 +98,12 @@ class ImageViewSet(NetBoxModelViewSet):
             data = serializer.data
             data["force"] = True
 
-            resp = requests.post(url, timeout=10, json={"data": data})
+            resp = requests.post(
+                url,
+                timeout=10,
+                data=json.dumps({"data": data}, cls=DjangoJSONEncoder),
+                headers={"Content-Type": "application/json"}
+            )
             resp.raise_for_status()
 
         except requests.HTTPError:
