@@ -20,12 +20,14 @@ class HostStateChoices(ChoiceSet):
     STATE_CREATED = "created"
     STATE_DELETED = "deleted"
     STATE_RUNNING = "running"
+    STATE_ERROR = "error"
     STATE_REFRESHING = "refreshing"
 
     CHOICES = [
         (STATE_CREATED, "Created", "dark"),
-        (STATE_RUNNING, "Running", "blue"),
         (STATE_DELETED, "Deleted", "blue"),
+        (STATE_RUNNING, "Running", "blue"),
+        (STATE_ERROR, "Error", "red"),
         (STATE_REFRESHING, "Refreshing", "blue"),
     ]
 
