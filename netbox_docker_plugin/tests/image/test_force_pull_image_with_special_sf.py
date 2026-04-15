@@ -32,15 +32,15 @@ class ForcePullImageWithSpecialCFTestCase(BaseAPITestCase):
         cls.cf_date = CustomField.objects.create(
             name="cf_date",
             type="date",
+            object_type=ot
         )
-        cls.cf_date.content_types.set([ot])
         cls.cf_date.save()
 
         cls.cf_datetime = CustomField.objects.create(
             name="cf_datetime",
             type="datetime",
+            object_type=ot
         )
-        cls.cf_datetime.content_types.set([ot])
         cls.cf_datetime.save()
 
         # --- Create images ---
