@@ -13,6 +13,7 @@ from ..base import BaseModelViewTestCase
 class HostViewsTestCase(BaseModelViewTestCase, ViewTestCases.PrimaryObjectViewTestCase):
     """Host Views Test Case Class"""
 
+    objects = {}
     model = Host
     form_data = {
         "name": "host4",
