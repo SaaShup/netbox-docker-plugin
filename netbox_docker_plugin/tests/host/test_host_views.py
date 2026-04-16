@@ -86,8 +86,8 @@ class HostViewsTestCase(BaseModelViewTestCase, ViewTestCases.PrimaryObjectViewTe
         self.assertHttpStatus(response, 302)
         self.assertFalse(self._get_queryset().filter(pk__in=pk_list).exists())
 
-    def test_container_can_delete_with_error_host(self):
-        """Test that a container on an error host is treated as non-operational"""
+    def test_host_error_state(self):
+        """Test the host error state"""
 
         self.assertEqual(
            self.objects["host_error_state"].state,
