@@ -69,7 +69,7 @@ class ForcePullImageWithSpecialCFTestCase(BaseAPITestCase):
         # pylint: disable=E1101
         obj_perm.users.add(self.user)
         # pylint: disable=E1101
-        obj_perm.content_types.add(ContentType.objects.get_for_model(self.model))
+        obj_perm.object_types.add(ContentType.objects.get_for_model(self.model))
 
     def _force_pull_image(self, image):
         # --- Call add object-level permission ---
