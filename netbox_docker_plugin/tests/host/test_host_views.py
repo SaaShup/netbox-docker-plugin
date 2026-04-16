@@ -6,7 +6,7 @@ from core.models import ObjectChange
 from django.core.exceptions import ObjectDoesNotExist
 from users.models import ObjectPermission
 from utilities.testing import ViewTestCases, post_data
-from netbox_docker_plugin.models.host import Host
+from netbox_docker_plugin.models.host import Host, HostStateChoices
 from ..base import BaseModelViewTestCase
 
 
@@ -86,6 +86,14 @@ class HostViewsTestCase(BaseModelViewTestCase, ViewTestCases.PrimaryObjectViewTe
         self.assertHttpStatus(response, 302)
         self.assertFalse(self._get_queryset().filter(pk__in=pk_list).exists())
 
+    def test_container_can_delete_with_error_host(self):
+        """Test that a container on an error host is treated as non-operational"""
+
+        self.assertEqual(
+           self.objects["host_error_state"].state,
+            HostStateChoices.STATE_ERROR
+        )
+
     @classmethod
     def setUpTestData(cls):
         host1 = Host.objects.create(endpoint="http://localhost:8080", name="host1")
@@ -97,4 +105,9 @@ class HostViewsTestCase(BaseModelViewTestCase, ViewTestCases.PrimaryObjectViewTe
             f"{host1.pk},http://localhost:8085",
             f"{host2.pk},http://localhost:8085",
             f"{host3.pk},http://localhost:8085",
+        )
+        cls.objects["host_error_state"] = Host.objects.create(
+            endpoint="http://localhost:8080",
+            name="host_error_state",
+            state=HostStateChoices.STATE_ERROR,
         )

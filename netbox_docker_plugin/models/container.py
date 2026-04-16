@@ -212,8 +212,7 @@ class Container(NetBoxModel):
         return self.host.state in [
             HostStateChoices.STATE_DELETED,
             HostStateChoices.STATE_REFRESHING,
-            HostStateChoices.STATE_ERROR,
-        ] or self.state in [
+            ] or self.state in [
             "created",
             "paused",
             "exited",

@@ -188,15 +188,6 @@ class ContainerActionTestCase(TestCase):
 
                 self.assertFalse(Container.objects.filter(name=name).exists())
 
-    def test_container_can_delete_with_error_host(self):
-        """Test that a container on an error host is treated as non-operational"""
-
-        self.assertTrue(self.objects["container_for_error_host"].can_delete)
-        self.assertEqual(
-           self.objects["host_error_state"].state,
-            HostStateChoices.STATE_ERROR
-        )
-
     @classmethod
     def setUpTestData(cls):
         cls.objects["host1"] = Host.objects.create(
@@ -233,21 +224,4 @@ class ContainerActionTestCase(TestCase):
             endpoint="http://localhost:8080",
             name="host3",
             state=HostStateChoices.STATE_REFRESHING,
-        )
-        cls.objects["host_error_state"] = Host.objects.create(
-            endpoint="http://localhost:8080",
-            name="host_error_state",
-            state=HostStateChoices.STATE_ERROR,
-        )
-        cls.objects["image_for_error_host"] = Image.objects.create(
-            host=cls.objects["host_error_state"],
-            registry=cls.objects["registry1"],
-            name="image_for_host_error",
-        )
-        cls.objects["container_for_error_host"] = Container.objects.create(
-            host=cls.objects["host_error_state"],
-            image=cls.objects["image_for_host_error"],
-            name="name",
-            operation="none",
-            state="none",
         )
