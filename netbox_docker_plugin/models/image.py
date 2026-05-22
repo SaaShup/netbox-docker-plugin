@@ -41,7 +41,7 @@ class Image(NetBoxModel):
         default=0,
         validators=[
             MinValueValidator(limit_value=0),
-            MaxValueValidator(limit_value=4096),
+            MaxValueValidator(limit_value=8192),
         ],
     )
     ImageID = models.CharField(
