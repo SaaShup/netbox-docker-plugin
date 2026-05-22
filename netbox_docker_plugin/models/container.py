@@ -110,6 +110,41 @@ class ContainerCapAddChoices(ChoiceSet):
         ("SYS_PTRACE", "SYS_PTRACE"),
         ("SYS_RESOURCE", "SYS_RESOURCE"),
         ("SYS_NICE", "SYS_NICE"),
+        ("ALL", "ALL"),
+    ]
+
+
+class ContainerCapDropChoices(ChoiceSet):
+    """cap-drop choices definition class"""
+
+    key = "Container.cap_drop"
+
+    CHOICES = [
+        ("AUDIT_WRITE", "AUDIT_WRITE"),
+        ("CHOWN", "CHOWN"),
+        ("DAC_OVERRIDE", "DAC_OVERRIDE"),
+        ("FOWNER", "FOWNER"),
+        ("FSETID", "FSETID"),
+        ("KILL", "KILL"),
+        ("MKNOD", "MKNOD"),
+        ("NET_BIND_SERVICE", "NET_BIND_SERVICE"),
+        ("NET_RAW", "NET_RAW"),
+        ("SETFCAP", "SETFCAP"),
+        ("SETGID", "SETGID"),
+        ("SETPCAP", "SETPCAP"),
+        ("SETUID", "SETUID"),
+        ("SYS_CHROOT", "SYS_CHROOT"),
+        ("ALL", "ALL"),
+    ]
+
+
+class PidModeChoices(ChoiceSet):
+    """Pid mode choices definition class"""
+
+    key = "Container.pid_mode"
+
+    CHOICES = [
+        ("host", "host"),
     ]
 
 
@@ -170,8 +205,31 @@ class Container(NetBoxModel):
         null=True,
         blank=True,
     )
+    cap_drop = ArrayField(
+        models.CharField(
+            max_length=32, blank=True, null=True, choices=ContainerCapDropChoices
+        ),
+        null=True,
+        blank=True,
+    )
     log_driver = models.CharField(
         max_length=32,
+        null=True,
+        blank=True,
+    )
+    secOpt = ArrayField(
+        models.CharField(max_length=512, blank=True, null=True),
+        null=True,
+        blank=True,
+    )
+    pid_mode = models.CharField(
+        max_length=512,
+        choices=PidModeChoices,
+        null=True,
+        blank=True,
+    )
+    extra_hosts = ArrayField(
+        models.CharField(max_length=512, blank=True, null=True),
         null=True,
         blank=True,
     )

@@ -19,6 +19,7 @@ from ..models.container import (
     Container,
     ContainerRestartPolicyChoices,
     ContainerCapAddChoices,
+    ContainerCapDropChoices,
 )
 from ..models.image import Image
 
@@ -36,6 +37,9 @@ class ContainerForm(NetBoxModelForm):
         query_params={"host_id": "$host"},
     )
     cap_add = forms.MultipleChoiceField(choices=ContainerCapAddChoices, required=False)
+    cap_drop = forms.MultipleChoiceField(
+        choices=ContainerCapDropChoices, required=False
+    )
 
     class Meta:
         """Container form definition Meta class"""
@@ -48,6 +52,10 @@ class ContainerForm(NetBoxModelForm):
             "hostname",
             "restart_policy",
             "cap_add",
+            "cap_drop",
+            "secOpt",
+            "pid_mode",
+            "extra_hosts",
             "log_driver",
             "cmd",
             "tags",
@@ -59,6 +67,10 @@ class ContainerForm(NetBoxModelForm):
             "hostname": "Hostname",
             "restart_policy": "Restart Policy",
             "cap_add": "Add Host capabilities",
+            "cap_drop": "Drop Host capabilities",
+            "secOpt": "Security options (separate by comma)",
+            "pid_mode": "PID mode",
+            "extra_hosts": "Extra hosts (separate by comma). Specified in the form hostname:IP",
             "log_driver": "Logging driver",
             "cmd": "Command",
         }
@@ -73,6 +85,9 @@ class ContainerEditForm(NetBoxModelForm):
         required=True,
     )
     cap_add = forms.MultipleChoiceField(choices=ContainerCapAddChoices, required=False)
+    cap_drop = forms.MultipleChoiceField(
+        choices=ContainerCapDropChoices, required=False
+    )
 
     class Meta:
         """Container form definition Meta class"""
@@ -84,6 +99,10 @@ class ContainerEditForm(NetBoxModelForm):
             "hostname",
             "restart_policy",
             "cap_add",
+            "cap_drop",
+            "secOpt",
+            "pid_mode",
+            "extra_hosts",
             "log_driver",
             "cmd",
             "tags",
@@ -94,6 +113,10 @@ class ContainerEditForm(NetBoxModelForm):
             "hostname": "Hostname",
             "restart_policy": "Restart Policy",
             "cap_add": "Add Host capabilities",
+            "cap_drop": "Drop Host capabilities",
+            "secOpt": "Security options (separate by comma)",
+            "pid_mode": "PID mode",
+            "extra_hosts": "Extra hosts (separate by comma). Specified in the form hostname:IP",
             "log_driver": "Logging driver",
             "cmd": "Command",
         }

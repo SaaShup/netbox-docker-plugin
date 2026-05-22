@@ -41,6 +41,22 @@
           <td>{{ object.cap_add }}</td>
         </tr>
         <tr>
+          <th scope="row">Host Capacities dropped</th>
+          <td>{{ object.cap_drop }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Security options</th>
+          <td>{{ object.secOpt }}</td>
+        </tr>
+        <tr>
+          <th scope="row">PID mode</th>
+          <td>{{ object.pid_mode|placeholder }}</td>
+        </tr>
+        <tr>
+          <th scope="row">Extra hosts added</th>
+          <td>{{ object.extra_hosts }}</td>
+        </tr>
+        <tr>
           <th scope="row">Status</th>
           <td>{{ object.status|placeholder }}</td>
         </tr>

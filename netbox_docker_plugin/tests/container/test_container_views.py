@@ -67,8 +67,12 @@ class ContainerViewsTestCase(
             "image": image1.pk,
             "restart_policy": "unless-stopped",
             "cap_add": ["NET_ADMIN"],
+            "cap_drop": ["FSETID", "MKNOD"],
+            "pid_mode": "host",
+            "extra_hosts": "test1:192.168.1.2,test2:192.168.1.3",
+            "secOpt": "apparmor:unconfined",
             "log_driver": "syslog",
-            "cmd": "ls,-al"
+            "cmd": "ls,-al",
         }
 
         cls.csv_data = (

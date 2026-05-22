@@ -175,7 +175,11 @@ class NestedContainerSerializer(WritableNestedSerializer):
             "operation",
             "hostname",
             "cap_add",
+            "cap_drop",
             "log_driver",
+            "secOpt",
+            "pid_mode",
+            "extra_hosts",
             "cmd",
         )
 
@@ -481,6 +485,10 @@ class ContainerSerializer(NetBoxModelSerializer):
             "hostname",
             "restart_policy",
             "cap_add",
+            "cap_drop",
+            "secOpt",
+            "pid_mode",
+            "extra_hosts",
             "cmd",
             "ports",
             "env",
