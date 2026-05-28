@@ -16,6 +16,12 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 keywords = ["netbox", "netbox-plugin", "docker"]
+[project.optional-dependencies]
+dev = [
+    "requests-mock",
+    "coverage",
+    "pylint",
+]
 
 [project.urls]
 "Homepage" = "https://github.com/SaaShup/netbox-docker-plugin"
