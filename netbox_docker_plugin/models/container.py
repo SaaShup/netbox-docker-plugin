@@ -2,17 +2,19 @@
 
 # pylint: disable=E1101
 
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.postgres.fields import ArrayField
 from django.core.exceptions import ValidationError
-from django.db import models
-from django.db.models.functions import Lower
-from django.urls import reverse
 from django.core.validators import (
     MinLengthValidator,
     MaxLengthValidator,
     MinValueValidator,
     MaxValueValidator,
 )
+from django.db import models
+from django.db.models.functions import Lower
+from django.urls import reverse
+from extras.models import JournalEntry
 from utilities.choices import ChoiceSet
 from utilities.querysets import RestrictedQuerySet
 from netbox.models import NetBoxModel
@@ -305,6 +307,18 @@ class Container(NetBoxModel):
                 name="%(app_label)s_%(class)s_unique_ContainerID_host",
             ),
         )
+
+    def delete(self, using=None, keep_parents=False):
+        ct = ContentType.objects.get_for_model(self)
+        qs = JournalEntry.objects.filter(
+            assigned_object_type=ct,
+            assigned_object_id=self.pk,
+        )
+        # _raw_delete issues a single SQL DELETE bypassing Django's Collector,
+        # avoiding per-row post_delete signals (ObjectChange writes) that make
+        # bulk journal cleanup O(n) slow.
+        qs._raw_delete(qs.db)  # pylint: disable=protected-access
+        return super().delete(using, keep_parents)
 
     def __str__(self):
         return f"{self.name}"
