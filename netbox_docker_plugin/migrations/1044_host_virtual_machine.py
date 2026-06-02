@@ -13,7 +13,6 @@ class Migration(migrations.Migration):
             "netbox_docker_plugin",
             "1043_container_cap_drop_container_extra_hosts_and_more",
         ),
-        ("virtualization", "0056_virtualmachine_render_config_permission"),
     ]
 
     operations = [
