@@ -3,13 +3,13 @@
 from django import forms
 from utilities.forms.rendering import FieldSet
 from utilities.forms.fields import TagFilterField, DynamicModelChoiceField
+from virtualization.models import VirtualMachine
 from netbox.forms import (
     NetBoxModelForm,
     NetBoxModelImportForm,
     NetBoxModelFilterSetForm,
     NetBoxModelBulkEditForm,
 )
-from virtualization.models import VirtualMachine
 from ..models.host import Host, HostStateChoices
 
 

@@ -9,8 +9,8 @@ from django.core.validators import (
 )
 from utilities.choices import ChoiceSet
 from users.models import Token
-from netbox.models import NetBoxModel
 from virtualization.models import VirtualMachine
+from netbox.models import NetBoxModel
 
 
 class HostStateChoices(ChoiceSet):

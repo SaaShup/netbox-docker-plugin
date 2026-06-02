@@ -5,8 +5,8 @@
 from rest_framework import serializers
 from utilities.query import dict_to_filter_params
 from users.models import Token
-from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
 from virtualization.api.serializers import VirtualMachineSerializer
+from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
 from ..models.host import Host
 from ..models.image import Image
 from ..models.volume import Volume
