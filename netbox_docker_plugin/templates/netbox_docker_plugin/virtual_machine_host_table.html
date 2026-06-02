@@ -1,0 +1,4 @@
+<div class="card">
+    <h2 class="card-header">Docker Host</h2>
+    {% htmx_table 'plugins:netbox_docker_plugin:host_list' virtual_machine=object.pk %}
+</div>

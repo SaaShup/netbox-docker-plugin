@@ -257,8 +257,12 @@ class ContainerViewsTestCase(BaseModelViewTestCase, ModelViewTestCase):
             host=host2, name="registry2", serveraddress="http://localhost:8082"
         )
 
-        image1 = Image.objects.create(host=host1, name="image1", registry=registry1)
-        image2 = Image.objects.create(host=host2, name="image2", registry=registry2)
+        image1 = Image.objects.create(
+            host=host1, name="image1", registry=registry1, ImageID="sha256:abc123"
+        )
+        image2 = Image.objects.create(
+            host=host2, name="image2", registry=registry2, ImageID="sha256:abc456"
+        )
 
         Container.objects.create(
             host=host1,

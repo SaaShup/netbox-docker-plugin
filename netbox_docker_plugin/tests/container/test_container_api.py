@@ -70,8 +70,18 @@ class ContainerApiTestCase(
             host=host2, name="registry2", serveraddress="http://localhost:8082"
         )
 
-        image1 = Image.objects.create(host=host1, name="image1", registry=registry1)
-        image2 = Image.objects.create(host=host2, name="image2", registry=registry2)
+        image1 = Image.objects.create(
+            host=host1,
+            name="image1",
+            registry=registry1,
+            ImageID="sha256:abc123",
+        )
+        image2 = Image.objects.create(
+            host=host2,
+            name="image2",
+            registry=registry2,
+            ImageID="sha256:abc456",
+        )
 
         network1 = Network.objects.create(host=host1, name="network1")
         network2 = Network.objects.create(host=host2, name="network2")
@@ -244,6 +254,7 @@ class ContainerApiTestCase(
             host=host3,
             name="image3",
             registry=registry3,
+            ImageID="sha256:abc789",
         )
         container11 = Container.objects.create(
             host=host3,
@@ -330,8 +341,18 @@ class ContainerApiTestCase(
             host=host2, name="registry5", serveraddress="http://localhost:8082"
         )
 
-        image1 = Image.objects.create(host=host1, name="image", registry=registry1)
-        image2 = Image.objects.create(host=host2, name="image", registry=registry2)
+        image1 = Image.objects.create(
+            host=host1,
+            name="image",
+            registry=registry1,
+            ImageID="sha256:abc101112",
+        )
+        image2 = Image.objects.create(
+            host=host2,
+            name="image",
+            registry=registry2,
+            ImageID="sha256:abc131415",
+        )
 
         container = Container.objects.create(host=host1, image=image1, name="container")
 

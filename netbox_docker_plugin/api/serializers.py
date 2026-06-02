@@ -6,6 +6,7 @@ from rest_framework import serializers
 from utilities.query import dict_to_filter_params
 from users.models import Token
 from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
+from virtualization.api.serializers import VirtualMachineSerializer
 from ..models.host import Host
 from ..models.image import Image
 from ..models.volume import Volume
@@ -693,6 +694,7 @@ class HostSerializer(NetBoxModelSerializer):
     containers = NestedContainerSerializer(many=True, read_only=True)
     registries = NestedRegistrySerializer(many=True, read_only=True)
     token = NestedTokenSerializer(read_only=True)
+    virtual_machine = VirtualMachineSerializer(required=False)
 
     class Meta:
         """Host Serializer Meta class"""
@@ -706,6 +708,7 @@ class HostSerializer(NetBoxModelSerializer):
             "name",
             "state",
             "token",
+            "virtual_machine",
             "netbox_base_url",
             "agent_version",
             "docker_api_version",

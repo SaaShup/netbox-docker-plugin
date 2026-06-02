@@ -28,7 +28,12 @@ class ContainerApiExecTestCase(BaseAPITestCase):
             host=host1, name="registry1", serveraddress="http://localhost:8080"
         )
 
-        image1 = Image.objects.create(host=host1, name="image1", registry=registry1)
+        image1 = Image.objects.create(
+            host=host1,
+            name="image1",
+            registry=registry1,
+            ImageID="sha256:abc123",
+        )
 
         container = Container.objects.create(
             host=host1,
@@ -86,11 +91,11 @@ class ContainerApiExecTestCase(BaseAPITestCase):
             m.put(
                 "http://localhost:8080/api/engine/containers/1234/exec",
                 text="Error",
-                status_code= 500
+                status_code=500,
             )
 
             response = self.client.post(
                 self.endpoint, **self.header, data={"cmd": ["ls"]}, format="json"
             )
             self.assertHttpStatus(response, status.HTTP_502_BAD_GATEWAY)
-            self.assertEqual(response.data, 'Error')
+            self.assertEqual(response.data, "Error")

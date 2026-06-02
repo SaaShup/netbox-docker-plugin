@@ -26,6 +26,7 @@ class HostTable(NetBoxTable):
     """Host Table definition class"""
 
     name = tables.Column(linkify=True)
+    virtual_machine = tables.Column(linkify=True, verbose_name="Virtual Machine")
     image_count = columns.LinkedCountColumn(
         viewname="plugins:netbox_docker_plugin:image_list",
         url_params={"host_id": "pk"},
@@ -62,6 +63,7 @@ class HostTable(NetBoxTable):
             "name",
             "endpoint",
             "state",
+            "virtual_machine",
             "agent_version",
             "docker_api_version",
             "image_count",

@@ -2,18 +2,26 @@
 
 from django import forms
 from utilities.forms.rendering import FieldSet
-from utilities.forms.fields import TagFilterField
+from utilities.forms.fields import TagFilterField, DynamicModelChoiceField
 from netbox.forms import (
     NetBoxModelForm,
     NetBoxModelImportForm,
     NetBoxModelFilterSetForm,
     NetBoxModelBulkEditForm,
 )
+from virtualization.models import VirtualMachine
 from ..models.host import Host, HostStateChoices
 
 
-class HostForm(NetBoxModelForm):
+class HostAddForm(NetBoxModelForm):
     """Host form definition class"""
+
+    virtual_machine = DynamicModelChoiceField(
+        queryset=VirtualMachine.objects.all(),
+        selector=True,
+        required=False,
+        label="Virtual Machine",
+    )
 
     class Meta:
         """Host form definition Meta class"""
@@ -22,6 +30,34 @@ class HostForm(NetBoxModelForm):
         fields = (
             "name",
             "endpoint",
+            "virtual_machine",
+        )
+        help_texts = {"name": "Unique Name", "endpoint": "Docker instance endpoint"}
+        labels = {"name": "Name", "endpoint": "Endpoint"}
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields.pop("tags", None)
+
+
+class HostForm(NetBoxModelForm):
+    """Host form definition class"""
+
+    virtual_machine = DynamicModelChoiceField(
+        queryset=VirtualMachine.objects.all(),
+        selector=True,
+        required=False,
+        label="Virtual Machine",
+    )
+
+    class Meta:
+        """Host form definition Meta class"""
+
+        model = Host
+        fields = (
+            "name",
+            "endpoint",
+            "virtual_machine",
             "tags",
         )
         help_texts = {"name": "Unique Name", "endpoint": "Docker instance endpoint"}

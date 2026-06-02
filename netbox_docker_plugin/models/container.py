@@ -328,11 +328,17 @@ class Container(NetBoxModel):
         return reverse("plugins:netbox_docker_plugin:container", args=[self.pk])
 
     def clean(self):
+        """Validate that the image belongs to the same host and has been pulled."""
         super().clean()
 
         if self.host != self.image.host:
             raise ValidationError(
                 {"image": f"Image {self.image} does not belong to host {self.host}."}
+            )
+
+        if not self.image.ImageID:
+            raise ValidationError(
+                {"image": f"Image {self.image} has no ID yet. Pull or refresh it first."}
             )
 
 

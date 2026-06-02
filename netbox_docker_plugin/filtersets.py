@@ -38,6 +38,7 @@ class HostFilterSet(NetBoxModelFilterSet):
             "state",
             "agent_version",
             "docker_api_version",
+            "virtual_machine",
         )
 
     # pylint: disable=W0613
