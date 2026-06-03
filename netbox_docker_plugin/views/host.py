@@ -19,7 +19,7 @@ class HostView(GetRelatedModelsMixin, generic.ObjectView):
     """Host view definition"""
 
     queryset = Host.objects.prefetch_related(
-        "images", "volumes", "networks", "containers", "registries"
+        "images", "volumes", "networks", "containers", "registries", "virtual_machine"
     )
 
     def get_extra_context(self, request, instance):
@@ -57,21 +57,30 @@ class HostListView(generic.ObjectListView):
     filterset_form = host.HostFilterForm
 
 
-class HostEditView(generic.ObjectEditView):
-    """Host edition view definition"""
+class HostAddView(generic.ObjectEditView):
+    """Host add view definition"""
 
     queryset = Host.objects.all()
-    form = host.HostForm
+    form = host.HostAddForm
 
     def alter_object(self, obj, request, url_args, url_kwargs):
-        if request.method == "POST" and not "pk" in url_kwargs:
-            token = Token(user=self.request.user, write_enabled=True)
+        if request.method == "POST":
+            token = Token(
+                user=self.request.user, write_enabled=True, description="DockerAgent"
+            )
             token.save()
 
             obj.token = token
             obj.netbox_base_url = request.META["HTTP_ORIGIN"]
 
         return super().alter_object(obj, request, url_args, url_kwargs)
+
+
+class HostEditView(generic.ObjectEditView):
+    """Host edition view definition"""
+
+    queryset = Host.objects.all()
+    form = host.HostForm
 
 
 class HostBulkEditView(generic.BulkEditView):

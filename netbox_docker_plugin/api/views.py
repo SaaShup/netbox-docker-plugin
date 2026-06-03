@@ -39,7 +39,13 @@ class HostViewSet(NetBoxModelViewSet):
     """Host view set class"""
 
     queryset = Host.objects.prefetch_related(
-        "images", "volumes", "networks", "containers", "registries", "tags"
+        "images",
+        "volumes",
+        "networks",
+        "containers",
+        "registries",
+        "virtual_machine",
+        "tags",
     )
     filterset_class = filtersets.HostFilterSet
     serializer_class = HostSerializer
@@ -108,7 +114,7 @@ class ImageViewSet(NetBoxModelViewSet):
                 url,
                 timeout=10,
                 data=json.dumps({"data": data}, cls=DjangoJSONEncoder),
-                headers={"Content-Type": "application/json"}
+                headers={"Content-Type": "application/json"},
             )
             resp.raise_for_status()
 

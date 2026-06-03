@@ -29,7 +29,7 @@ from .views import (
 urlpatterns = (
     # Host
     path("hosts/", host_views.HostListView.as_view(), name="host_list"),
-    path("hosts/add/", host_views.HostEditView.as_view(), name="host_add"),
+    path("hosts/add/", host_views.HostAddView.as_view(), name="host_add"),
     path(
         "hosts/import/",
         host_views.HostBulkImportView.as_view(),

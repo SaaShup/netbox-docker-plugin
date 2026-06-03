@@ -9,6 +9,7 @@ from django.core.validators import (
 )
 from utilities.choices import ChoiceSet
 from users.models import Token
+from virtualization.models import VirtualMachine
 from netbox.models import NetBoxModel
 
 
@@ -64,6 +65,12 @@ class Host(NetBoxModel):
         default=HostStateChoices.STATE_CREATED,
     )
     token = models.ForeignKey(Token, on_delete=models.SET_NULL, null=True, blank=True)
+    virtual_machine = models.OneToOneField(
+        VirtualMachine,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
     netbox_base_url = models.CharField(
         max_length=1024,
         validators=[URLValidator()],

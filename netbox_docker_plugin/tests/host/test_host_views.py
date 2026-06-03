@@ -26,6 +26,7 @@ class HostViewsTestCase(BaseModelViewTestCase, ViewTestCases.PrimaryObjectViewTe
         "host7,http://localhost:8084",
     )
     bulk_edit_data = {"endpoint": "http://localhost:8083"}
+    validation_excluded_fields = ["tags"]
 
     def setUp(self):
         super().setUp()
@@ -91,8 +92,7 @@ class HostViewsTestCase(BaseModelViewTestCase, ViewTestCases.PrimaryObjectViewTe
         """Test the host error state"""
 
         self.assertEqual(
-           self.objects["host_error_state"].state,
-            HostStateChoices.STATE_ERROR
+            self.objects["host_error_state"].state, HostStateChoices.STATE_ERROR
         )
 
     @classmethod

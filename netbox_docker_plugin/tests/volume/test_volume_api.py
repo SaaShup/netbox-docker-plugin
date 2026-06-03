@@ -72,7 +72,9 @@ class VolumeApiTestCase(
             host=host, name="registry8", serveraddress="http://localhost:8089"
         )
 
-        image = Image.objects.create(host=host, name="image8", registry=registry)
+        image = Image.objects.create(
+            host=host, name="image8", registry=registry, ImageID="sha256:abc123"
+        )
 
         container = Container.objects.create(host=host, image=image, name="container8")
 

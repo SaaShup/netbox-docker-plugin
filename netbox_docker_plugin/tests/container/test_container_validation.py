@@ -39,6 +39,36 @@ class ContainerValidationTestCase(TestCase):
 
         self.assertTrue(isinstance(container.id, int))
 
+    def test_that_container_image_must_have_an_id(self):
+        """Test that the image must have been pulled (non-empty ImageID)"""
+
+        with self.assertRaises(ValidationError) as cm:
+            container = Container(
+                host=self.objects["host1"],
+                image=self.objects["image1"],
+                name="container_no_image_id",
+                operation="none",
+                state="created",
+            )
+            container.clean()
+
+        self.assertEqual(
+            cm.exception.message_dict["image"],
+            ["Image image1:latest has no ID yet. Pull or refresh it first."],
+        )
+
+    def test_that_container_image_with_id_passes_validation(self):
+        """Test that an image with a non-empty ImageID passes validation"""
+
+        container = Container(
+            host=self.objects["host1"],
+            image=self.objects["image1_pulled"],
+            name="container_with_image_id",
+            operation="none",
+            state="created",
+        )
+        container.clean()  # must not raise
+
     def test_that_container_image_must_be_on_the_same_host(self):
         """Test that Container image must be on the same host"""
 
@@ -137,6 +167,12 @@ class ContainerValidationTestCase(TestCase):
 
         cls.objects["image1"] = Image.objects.create(
             host=cls.objects["host1"], name="image1", registry=cls.objects["registry1"]
+        )
+        cls.objects["image1_pulled"] = Image.objects.create(
+            host=cls.objects["host1"],
+            name="image1_pulled",
+            registry=cls.objects["registry1"],
+            ImageID="sha256:abc123",
         )
         cls.objects["image2"] = Image.objects.create(
             host=cls.objects["host2"], name="image2", registry=cls.objects["registry2"]

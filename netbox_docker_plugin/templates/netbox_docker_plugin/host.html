@@ -28,6 +28,17 @@
           <td>{{ object.endpoint|remove_password }}</td>
         </tr>
         <tr>
+          <th scope="row">Virtual Machine</th>
+          <td>
+            {% if object.virtual_machine %}
+            <a href="{% url 'virtualization:virtualmachine' pk=object.virtual_machine.pk %}">
+              {{ object.virtual_machine|placeholder }}</a>
+            {% else %}
+            {{ object.virtual_machine|placeholder }}</a>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
           <th scope="row">State</th>
           <td>{{ object.get_state_display }}</td>
         </tr>
