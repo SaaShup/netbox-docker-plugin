@@ -4,6 +4,7 @@ import requests_mock
 from django.urls import reverse
 from core.models import ObjectType
 from rest_framework import status
+from tenancy.models import Tenant, TenantGroup
 from users.models import ObjectPermission
 from utilities.testing import APIViewTestCases
 from netbox_docker_plugin.models.host import Host
@@ -41,8 +42,17 @@ class ImageApiTestCase(
 
         registry = Registry.objects.filter(name="dockerhub")[0]
 
+        tenant_group = TenantGroup(name="Group 1", slug="group-1")
+        tenant_group.save()
+        tenant = Tenant.objects.create(
+            name="Tenant 1", slug="tenant-1", group=tenant_group
+        )
+
         Image.objects.create(host=host1, name="image1", registry=registry)
-        Image.objects.create(host=host1, name="image2", registry=registry)
+        Image.objects.create(
+            host=host1, name="image2", registry=registry,
+            tenant=tenant, tenant_group=tenant_group,
+        )
         Image.objects.create(
             host=host2,
             name="image3",
@@ -60,6 +70,8 @@ class ImageApiTestCase(
                 "host": host1.pk,
                 "name": "image5",
                 "registry": registry.pk,
+                "tenant": tenant.pk,
+                "tenant_group": tenant_group.pk,
             },
             {
                 "host": host2.pk,

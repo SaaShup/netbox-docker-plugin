@@ -15,7 +15,7 @@ jobs:
       max-parallel: 4
       matrix:
         python-version: ["3.13"]
-        netbox-version: ["v4.5.10", "v4.6.1"]
+        netbox-version: ["v4.5.10", "v4.6.2"]
     services:
       redis:
         image: redis

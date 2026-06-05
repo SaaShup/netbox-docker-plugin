@@ -8,6 +8,7 @@ from django.core.validators import (
     MinValueValidator,
     MaxValueValidator,
 )
+from tenancy.models import Tenant, TenantGroup
 from netbox.models import NetBoxModel
 from .host import Host
 from .registry import Registry
@@ -16,6 +17,20 @@ from .registry import Registry
 class Image(NetBoxModel):
     """Image definition class"""
 
+    tenant_group = models.ForeignKey(
+        TenantGroup,
+        on_delete=models.SET_NULL,
+        related_name="images",
+        blank=True,
+        null=True,
+    )
+    tenant = models.ForeignKey(
+        Tenant,
+        on_delete=models.SET_NULL,
+        related_name="images",
+        blank=True,
+        null=True,
+    )
     host = models.ForeignKey(Host, on_delete=models.CASCADE, related_name="images")
     registry = models.ForeignKey(
         Registry,

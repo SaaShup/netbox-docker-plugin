@@ -1,0 +1,14 @@
+{
+  "container:api_list_objects": 24,
+  "container:list_objects_with_permission": 22,
+  "host:api_list_objects": 18,
+  "host:list_objects_with_permission": 19,
+  "image:api_list_objects": 18,
+  "image:list_objects_with_permission": 21,
+  "network:api_list_objects": 15,
+  "network:list_objects_with_permission": 20,
+  "registry:api_list_objects": 14,
+  "registry:list_objects_with_permission": 20,
+  "volume:api_list_objects": 15,
+  "volume:list_objects_with_permission": 20
+}

@@ -1,5 +1,6 @@
 """Image Views Test Case"""
 
+from tenancy.models import Tenant, TenantGroup
 from utilities.testing import ViewTestCases
 from netbox_docker_plugin.tests.base import BaseModelViewTestCase
 from netbox_docker_plugin.models.host import Host
@@ -22,6 +23,12 @@ class ImageViewsTestCase(
 
         registry = Registry.objects.filter(name="dockerhub")[0]
 
+        tenant_group = TenantGroup(name="Group 1", slug="group-1")
+        tenant_group.save()
+        tenant = Tenant.objects.create(
+            name="Tenant 1", slug="tenant-1", group=tenant_group
+        )
+
         image1 = Image.objects.create(name="image1", host=host1, registry=registry)
         image2 = Image.objects.create(name="image2", host=host2, registry=registry)
         image3 = Image.objects.create(name="image3", host=host3, registry=registry)
@@ -29,9 +36,10 @@ class ImageViewsTestCase(
         cls.form_data = {
             "name": "image1",
             "version": "v1.2.3",
-            "provider": "github",
             "host": host1.pk,
             "registry": registry.pk,
+            "tenant_group": tenant_group.pk,
+            "tenant": tenant.pk,
         }
 
         cls.csv_data = (
@@ -41,7 +49,10 @@ class ImageViewsTestCase(
             f"image6,v1.2.3,{registry.pk},{host3.pk}",
         )
 
-        cls.bulk_edit_data = {"version": "v1.0.0"}
+        cls.bulk_edit_data = {
+            "version": "v1.0.0",
+            "tenant": tenant.pk,
+        }
 
         cls.csv_update_data = (
             "id,version,registry",
