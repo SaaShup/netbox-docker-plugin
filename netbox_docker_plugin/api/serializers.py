@@ -6,6 +6,7 @@ from rest_framework import serializers
 from utilities.query import dict_to_filter_params
 from users.models import Token
 from virtualization.api.serializers import VirtualMachineSerializer
+from tenancy.api.serializers_.tenants import TenantSerializer, TenantGroupSerializer
 from netbox.api.serializers import NetBoxModelSerializer, WritableNestedSerializer
 from ..models.host import Host
 from ..models.image import Image
@@ -240,6 +241,8 @@ class ImageSerializer(NetBoxModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name="plugins-api:netbox_docker_plugin-api:image-detail"
     )
+    tenant_group = TenantGroupSerializer(nested=True, required=False, allow_null=True)
+    tenant = TenantSerializer(nested=True, required=False, allow_null=True)
     host = NestedHostSerializer()
     containers = NestedContainerSerializer(many=True, read_only=True)
     registry = NestedRegistrySerializer()
@@ -252,6 +255,8 @@ class ImageSerializer(NetBoxModelSerializer):
             "id",
             "url",
             "display",
+            "tenant_group",
+            "tenant",
             "host",
             "name",
             "version",

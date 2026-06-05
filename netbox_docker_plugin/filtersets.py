@@ -2,6 +2,7 @@
 
 from django_filters import filters, ModelMultipleChoiceFilter
 from django.db.models import Q
+from tenancy.models import Tenant, TenantGroup
 from netbox.filtersets import NetBoxModelFilterSet, BaseFilterSet
 from .models.host import Host
 from .models.image import Image
@@ -77,6 +78,16 @@ class ImageFilterSet(NetBoxModelFilterSet):
     """Image filterset definition class"""
 
     name = filters.CharFilter(lookup_expr="icontains")
+    tenant_group_id = ModelMultipleChoiceFilter(
+        field_name="tenant_group_id",
+        queryset=TenantGroup.objects.all(),
+        label="Tenant Group (ID)",
+    )
+    tenant_id = ModelMultipleChoiceFilter(
+        field_name="tenant_id",
+        queryset=Tenant.objects.all(),
+        label="Tenant (ID)",
+    )
     host_id = ModelMultipleChoiceFilter(
         field_name="host_id",
         queryset=Host.objects.all(),

@@ -7,6 +7,7 @@ from utilities.forms.fields import (
     DynamicModelMultipleChoiceField,
     DynamicModelChoiceField,
 )
+from tenancy.models import Tenant, TenantGroup
 from netbox.forms import (
     NetBoxModelForm,
     NetBoxModelImportForm,
@@ -21,6 +22,13 @@ from ..models.registry import Registry
 class ImageForm(NetBoxModelForm):
     """Image form definition class"""
 
+    tenant_group = DynamicModelChoiceField(
+        label="Tenant Group", queryset=TenantGroup.objects.all(), required=False
+    )
+    tenant = DynamicModelChoiceField(
+        label="Tenant", queryset=Tenant.objects.all(), required=False,
+        query_params={"group_id": "$tenant_group"},
+    )
     host = DynamicModelChoiceField(
         label="Host", queryset=Host.objects.all(), required=True
     )
@@ -31,11 +39,18 @@ class ImageForm(NetBoxModelForm):
         query_params={"host_id": "$host"},
     )
 
+    fieldsets = (
+        FieldSet("host", "registry", "name", "version", "tags", name="General"),
+        FieldSet("tenant_group", "tenant", name="Tenancy"),
+    )
+
     class Meta:
         """Image form definition Meta class"""
 
         model = Image
         fields = (
+            "tenant_group",
+            "tenant",
             "host",
             "registry",
             "name",
@@ -44,6 +59,8 @@ class ImageForm(NetBoxModelForm):
         )
         labels = {
             "name": "Name",
+            "tenant_group": "Tenant Group",
+            "tenant": "Tenant",
             "host": "Host",
             "registry": "Registry",
             "version": "Version",
@@ -54,6 +71,16 @@ class ImageFilterForm(NetBoxModelFilterSetForm):
     """Image filter form definition class"""
 
     model = Image
+    tenant_group_id = DynamicModelMultipleChoiceField(
+        queryset=TenantGroup.objects.all(),
+        required=False,
+        label="Tenant Group",
+    )
+    tenant_id = DynamicModelMultipleChoiceField(
+        queryset=Tenant.objects.all(),
+        required=False,
+        label="Tenant",
+    )
     name = forms.CharField(label="Name", max_length=256, min_length=1, required=False)
     version = forms.CharField(
         label="Version", max_length=256, min_length=1, required=False
@@ -97,9 +124,20 @@ class ImageImportForm(NetBoxModelImportForm):
 class ImageBulkEditForm(NetBoxModelBulkEditForm):
     """Image bulk edit form definition class"""
 
+    tenant_group = DynamicModelChoiceField(
+        queryset=TenantGroup.objects.all(),
+        required=False,
+    )
+    tenant = DynamicModelChoiceField(
+        queryset=Tenant.objects.all(),
+        required=False,
+    )
     version = forms.CharField(
         required=False,
     )
 
     model = Image
-    fieldsets = (FieldSet("version", name="General"),)
+    fieldsets = (
+        FieldSet("version", name="General"),
+        FieldSet("tenant_group", "tenant", name="Tenancy"),
+    )

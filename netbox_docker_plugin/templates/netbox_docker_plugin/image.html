@@ -103,6 +103,31 @@
         </tr>
       </table>
     </div>
+    <div class="card">
+      <h2 class="card-header">Tenancy</h2>
+      <table class="table table-hover attr-table">
+        <tr>
+          <th scope="row">Tenant Group</th>
+          <td>
+            {% if object.tenant_group %}
+              <a href="{{ object.tenant_group.get_absolute_url }}">{{ object.tenant_group }}</a>
+            {% else %}
+              {{ None|placeholder }}
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">Tenant</th>
+          <td>
+            {% if object.tenant %}
+              <a href="{{ object.tenant.get_absolute_url }}">{{ object.tenant }}</a>
+            {% else %}
+              {{ None|placeholder }}
+            {% endif %}
+          </td>
+        </tr>
+      </table>
+    </div>
     {% include 'inc/panels/custom_fields.html' %}
     {% include 'inc/panels/tags.html' %}
     {% plugin_left_page object %}

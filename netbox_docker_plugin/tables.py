@@ -141,6 +141,8 @@ class MinRegistryTable(NetBoxTable):
 class ImageTable(NetBoxTable):
     """Image Table definition class"""
 
+    tenant_group = tables.Column(linkify=True)
+    tenant = tables.Column(linkify=True)
     host = tables.Column(linkify=True)
     registry = tables.Column(linkify=True)
     name = tables.Column(linkify=True)
@@ -162,6 +164,8 @@ class ImageTable(NetBoxTable):
         fields = (
             "pk",
             "id",
+            "tenant_group",
+            "tenant",
             "host",
             "name",
             "version",
@@ -172,6 +176,8 @@ class ImageTable(NetBoxTable):
             "tags",
         )
         default_columns = (
+            "tenant_group",
+            "tenant",
             "host",
             "name",
             "version",
