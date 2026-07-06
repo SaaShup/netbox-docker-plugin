@@ -9,7 +9,7 @@ from django.db import migrations, models, connection
 def apply_database_changes(apps, schema_editor):
     table_container = "netbox_docker_plugin_container"
     table_logdriveroption = "netbox_docker_plugin_logdriveroption"
-    index_name = "netbox_docker_plugin_logdriveroption_container_id_option_name_uniq"
+    index_name = "netbox_docker_plugin_logdriveroption_unique_option_name_contain"
 
     with connection.cursor() as cursor:
         existing_tables = connection.introspection.table_names(cursor)
