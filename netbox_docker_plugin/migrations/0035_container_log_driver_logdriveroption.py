@@ -6,7 +6,9 @@ import django.db.models.deletion
 from django.db import migrations, models, connection
 
 
-def apply_database_changes(apps, schema_editor):
+def apply_database_changes(apps, schema_editor): # pylint: disable=W0613
+    """Migration file"""
+
     table_container = "netbox_docker_plugin_container"
     table_logdriveroption = "netbox_docker_plugin_logdriveroption"
     index_name = "netbox_docker_plugin_logdriveroption_unique_option_name_contain"
