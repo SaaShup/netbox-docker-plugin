@@ -3,7 +3,7 @@ name: Pull Request CI
 on:
   pull_request:
     branches:
-      - "main"
+      - "main_v3"
 
 jobs:
   testing:
@@ -58,6 +58,11 @@ jobs:
         run: |
           ln -s $(pwd)/../netbox-docker-plugin/netbox_configuration/configuration_testing.py netbox/netbox/configuration.py
           python -m pip install --upgrade pip
+          # Les runners embarquent les en-tetes PostgreSQL 18, contre lesquels
+          # psycopg-c ne compile pas (macro HAVE_LONG_INT_64 supprimee). La roue
+          # binaire embarque sa propre libpq et evite toute compilation.
+          sed -i 's/^psycopg\[c,pool\]/psycopg[binary,pool]/' requirements.txt
+          grep -q '^psycopg\[binary,pool\]' requirements.txt
           pip install -r requirements.txt -U
       - name: Run Pylint
         run: |
