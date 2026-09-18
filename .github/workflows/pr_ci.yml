@@ -59,6 +59,7 @@ jobs:
           ln -s $(pwd)/../netbox-docker-plugin/netbox_configuration/configuration_testing.py netbox/netbox/configuration.py
           python -m pip install --upgrade pip
           pip install -r requirements.txt -U
+          python -m pip install --upgrade "psycopg[binary]>=3.2.10"
       - name: Run Pylint
         run: |
           pip install pylint
