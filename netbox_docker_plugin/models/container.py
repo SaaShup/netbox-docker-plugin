@@ -73,19 +73,6 @@ class ContainerRestartPolicyChoices(ChoiceSet):
     ]
 
 
-class ContainerLogDriverChoices(ChoiceSet):
-    """Container log driver choices definition class"""
-
-    key = "Container.log_driver"
-
-    DEFAULT_VALUE = "json-log"
-
-    CHOICES = [
-        ("json-log", "json-log", "blue"),
-        ("syslog", "syslog", "blue"),
-    ]
-
-
 class PortTypeChoices(ChoiceSet):
     """Port type choices definition class"""
 
@@ -105,7 +92,27 @@ class ContainerCapAddChoices(ChoiceSet):
     key = "Container.cap_add"
 
     CHOICES = [
+        ("AUDIT_WRITE", "AUDIT_WRITE"),
+        ("CHOWN", "CHOWN"),
+        ("DAC_OVERRIDE", "DAC_OVERRIDE"),
+        ("DAC_READ_SEARCH", "DAC_READ_SEARCH"),
+        ("FOWNER", "FOWNER"),
+        ("FSETID", "FSETID"),
+        ("KILL", "KILL"),
+        ("MKNOD", "MKNOD"),
         ("NET_ADMIN", "NET_ADMIN"),
+        ("NET_BIND_SERVICE", "NET_BIND_SERVICE"),
+        ("NET_RAW", "NET_RAW"),
+        ("SETFCAP", "SETFCAP"),
+        ("SETGID", "SETGID"),
+        ("SETPCAP", "SETPCAP"),
+        ("SETUID", "SETUID"),
+        ("SYS_ADMIN", "SYS_ADMIN"),
+        ("SYS_CHROOT", "SYS_CHROOT"),
+        ("SYS_NICE", "SYS_NICE"),
+        ("SYS_PTRACE", "SYS_PTRACE"),
+        ("SYS_RESOURCE", "SYS_RESOURCE"),
+        ("ALL", "ALL"),
     ]
 
 
@@ -168,8 +175,8 @@ class Container(NetBoxModel):
     )
     log_driver = models.CharField(
         max_length=32,
-        choices=ContainerLogDriverChoices,
-        default=ContainerLogDriverChoices.DEFAULT_VALUE,
+        null=True,
+        blank=True,
     )
 
     @property
@@ -261,7 +268,7 @@ class Port(models.Model):
     )
     public_port = models.IntegerField(
         validators=[
-            MinValueValidator(limit_value=0),
+            MinValueValidator(limit_value=-1),
             MaxValueValidator(limit_value=65535),
         ],
     )
@@ -345,9 +352,9 @@ class Env(models.Model):
     )
     value = models.CharField(
         blank=True,
-        max_length=4096,
+        max_length=32768,
         validators=[
-            MaxLengthValidator(limit_value=4096),
+            MaxLengthValidator(limit_value=32768),
         ],
     )
 
