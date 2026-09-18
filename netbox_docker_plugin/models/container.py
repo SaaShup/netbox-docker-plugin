@@ -178,6 +178,11 @@ class Container(NetBoxModel):
         null=True,
         blank=True,
     )
+    cmd = ArrayField(
+        models.CharField(max_length=1024, blank=True, null=True),
+        null=True,
+        blank=True,
+    )
 
     @property
     def can_create(self) -> bool:

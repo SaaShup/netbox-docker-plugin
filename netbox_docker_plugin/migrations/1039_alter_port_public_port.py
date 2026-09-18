@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     """
 
     dependencies = [
-        ("netbox_docker_plugin", "0037_alter_env_value"),
+        ("netbox_docker_plugin", "0038_container_cmd"),
     ]
 
     operations = [
