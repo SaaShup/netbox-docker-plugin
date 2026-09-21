@@ -94,22 +94,27 @@ class ContainerCapAddChoices(ChoiceSet):
     key = "Container.cap_add"
 
     CHOICES = [
-        ("NET_ADMIN", "NET_ADMIN"),
+        ("AUDIT_WRITE", "AUDIT_WRITE"),
         ("CHOWN", "CHOWN"),
         ("DAC_OVERRIDE", "DAC_OVERRIDE"),
         ("DAC_READ_SEARCH", "DAC_READ_SEARCH"),
         ("FOWNER", "FOWNER"),
         ("FSETID", "FSETID"),
         ("KILL", "KILL"),
+        ("MKNOD", "MKNOD"),
+        ("NET_ADMIN", "NET_ADMIN"),
+        ("NET_BIND_SERVICE", "NET_BIND_SERVICE"),
         ("NET_RAW", "NET_RAW"),
         ("SETFCAP", "SETFCAP"),
         ("SETGID", "SETGID"),
+        ("SETPCAP", "SETPCAP"),
         ("SETUID", "SETUID"),
         ("SYS_ADMIN", "SYS_ADMIN"),
         ("SYS_CHROOT", "SYS_CHROOT"),
+        ("SYS_NICE", "SYS_NICE"),
         ("SYS_PTRACE", "SYS_PTRACE"),
         ("SYS_RESOURCE", "SYS_RESOURCE"),
-        ("SYS_NICE", "SYS_NICE"),
+        ("ALL", "ALL"),
     ]
 
 
