@@ -25,7 +25,7 @@ class ContainerApiExecTestCase(BaseAPITestCase):
         host1 = Host.objects.create(endpoint="http://localhost:8080", name="host1")
 
         registry1 = Registry.objects.create(
-            host=host1, name="registry1", serveraddress="http://localhost:8080"
+            name="registry1", serveraddress="http://localhost:8080"
         )
 
         image1 = Image.objects.create(

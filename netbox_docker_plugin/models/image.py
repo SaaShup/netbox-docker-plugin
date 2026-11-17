@@ -34,7 +34,7 @@ class Image(NetBoxModel):
     host = models.ForeignKey(Host, on_delete=models.CASCADE, related_name="images")
     registry = models.ForeignKey(
         Registry,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="images",
     )
     name = models.CharField(

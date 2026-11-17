@@ -64,10 +64,10 @@ class ContainerApiTestCase(
         host2 = Host.objects.create(endpoint="http://localhost:8080", name="host2")
 
         registry1 = Registry.objects.create(
-            host=host1, name="registry1", serveraddress="http://localhost:8080"
+            name="registry1", serveraddress="http://localhost:8080"
         )
         registry2 = Registry.objects.create(
-            host=host2, name="registry2", serveraddress="http://localhost:8082"
+            name="registry2", serveraddress="http://localhost:8082"
         )
 
         image1 = Image.objects.create(
@@ -246,7 +246,6 @@ class ContainerApiTestCase(
             name="host3",
         )
         registry3 = Registry.objects.create(
-            host=host3,
             name="registry3",
             serveraddress="http://localhost:8080",
         )
@@ -335,10 +334,10 @@ class ContainerApiTestCase(
         host2 = Host.objects.create(name="host5")
 
         registry1 = Registry.objects.create(
-            host=host1, name="registry4", serveraddress="http://localhost:8080"
+            name="registry4", serveraddress="http://localhost:8080"
         )
         registry2 = Registry.objects.create(
-            host=host2, name="registry5", serveraddress="http://localhost:8082"
+            name="registry5", serveraddress="http://localhost:8082"
         )
 
         image1 = Image.objects.create(

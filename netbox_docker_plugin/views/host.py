@@ -19,7 +19,7 @@ class HostView(GetRelatedModelsMixin, generic.ObjectView):
     """Host view definition"""
 
     queryset = Host.objects.prefetch_related(
-        "images", "volumes", "networks", "containers", "registries", "virtual_machine"
+        "images", "volumes", "networks", "containers", "virtual_machine"
     )
 
     def get_extra_context(self, request, instance):
@@ -41,6 +41,11 @@ class HostGraphView(generic.ObjectView):
     tab = ViewTab(label="Graph")
     template_name = "netbox_docker_plugin/host-graph.html"
 
+    def get_extra_context(self, request, instance):
+        return {
+            "registries": Registry.objects.filter(images__host=instance).distinct(),
+        }
+
 
 class HostListView(generic.ObjectListView):
     """Host list view definition"""
@@ -50,7 +55,6 @@ class HostListView(generic.ObjectListView):
         volume_count=count_related(Volume, "host"),
         network_count=count_related(Network, "host"),
         container_count=count_related(Container, "host"),
-        registry_count=count_related(Registry, "host"),
     )
     table = tables.HostTable
     filterset = filtersets.HostFilterSet
