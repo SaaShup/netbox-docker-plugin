@@ -86,7 +86,6 @@ class HostTable(NetBoxTable):
 class RegistryTable(NetBoxTable):
     """Registry Table definition class"""
 
-    host = tables.Column(linkify=True)
     name = tables.Column(linkify=True)
     image_count = columns.LinkedCountColumn(
         viewname="plugins:netbox_docker_plugin:image_list",
@@ -102,7 +101,6 @@ class RegistryTable(NetBoxTable):
         fields = (
             "pk",
             "id",
-            "host",
             "name",
             "serveraddress",
             "username",
@@ -111,7 +109,6 @@ class RegistryTable(NetBoxTable):
             "tags",
         )
         default_columns = (
-            "host",
             "name",
             "serveraddress",
             "image_count",

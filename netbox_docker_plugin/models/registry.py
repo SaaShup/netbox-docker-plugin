@@ -11,26 +11,27 @@ from django.urls import reverse
 from netbox.models import NetBoxModel
 from .host import Host
 
+DEFAULT_REGISTRY_NAME = "dockerhub"
+DEFAULT_REGISTRY_SERVERADDRESS = "https://registry.hub.docker.com/v2/"
+
 
 @receiver(post_save, sender=Host)
-def create_default_registry(sender, **kwargs): # pylint: disable=W0613
-    """Create default registry on Host creation"""
+def create_default_registry(sender, **kwargs):  # pylint: disable=W0613
+    """Ensure the shared default registry exists on Host creation"""
 
     if kwargs.get("created") is True:
-        registry = Registry(
-            host=kwargs.get("instance"),
-            name="dockerhub",
-            serveraddress="https://registry.hub.docker.com/v2/",
+        Registry.objects.get_or_create(
+            name=DEFAULT_REGISTRY_NAME,
+            defaults={"serveraddress": DEFAULT_REGISTRY_SERVERADDRESS},
         )
-        registry.save()
 
 
 class Registry(NetBoxModel):
-    """Registry definition class"""
+    """Registry definition class, shared by all hosts"""
 
-    host = models.ForeignKey(Host, on_delete=models.CASCADE, related_name="registries")
     name = models.CharField(
         max_length=255,
+        unique=True,
         validators=[
             MinLengthValidator(limit_value=1),
             MaxLengthValidator(limit_value=255),
@@ -45,12 +46,6 @@ class Registry(NetBoxModel):
         """Registry Model Meta Class"""
 
         ordering = ("name",)
-        constraints = (
-            models.UniqueConstraint(
-                fields=["host", "name"],
-                name="%(app_label)s_%(class)s_name_host",
-            ),
-        )
 
     def __str__(self):
         return f"{self.name}"

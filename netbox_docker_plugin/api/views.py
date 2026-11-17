@@ -43,7 +43,6 @@ class HostViewSet(NetBoxModelViewSet):
         "volumes",
         "networks",
         "containers",
-        "registries",
         "virtual_machine",
         "tags",
     )
@@ -289,7 +288,7 @@ class ContainerViewSet(NetBoxModelViewSet):
 class RegistryViewSet(NetBoxModelViewSet):
     """Registry view set class"""
 
-    queryset = Registry.objects.prefetch_related("host", "images", "tags")
+    queryset = Registry.objects.prefetch_related("images", "tags")
     filterset_class = filtersets.RegistryFilterSet
     serializer_class = RegistrySerializer
     http_method_names = ["get", "post", "patch", "delete", "options"]

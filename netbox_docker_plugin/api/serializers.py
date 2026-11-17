@@ -665,7 +665,6 @@ class RegistrySerializer(NetBoxModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name="plugins-api:netbox_docker_plugin-api:registry-detail"
     )
-    host = NestedHostSerializer()
     images = NestedImageSerializer(many=True, read_only=True)
 
     class Meta:
@@ -676,7 +675,6 @@ class RegistrySerializer(NetBoxModelSerializer):
             "id",
             "name",
             "url",
-            "host",
             "display",
             "serveraddress",
             "username",
@@ -697,7 +695,6 @@ class HostSerializer(NetBoxModelSerializer):
     volumes = NestedVolumeSerializer(many=True, read_only=True)
     networks = NestedNetworkSerializer(many=True, read_only=True)
     containers = NestedContainerSerializer(many=True, read_only=True)
-    registries = NestedRegistrySerializer(many=True, read_only=True)
     token = NestedTokenSerializer(read_only=True)
     virtual_machine = VirtualMachineSerializer(required=False)
 
@@ -726,7 +723,6 @@ class HostSerializer(NetBoxModelSerializer):
             "volumes",
             "networks",
             "containers",
-            "registries",
         )
         brief_fields = NestedHostSerializer.Meta.fields
 

@@ -25,7 +25,6 @@ class RegistryForm(NetBoxModelForm):
 
         model = Registry
         fields = (
-            "host",
             "name",
             "serveraddress",
             "username",
@@ -41,10 +40,10 @@ class RegistryFilterForm(NetBoxModelFilterSetForm):
     """Registry filter form definition class"""
 
     model = Registry
-    host_id = DynamicModelMultipleChoiceField(
+    used_by_host_id = DynamicModelMultipleChoiceField(
         queryset=Host.objects.all(),
         required=False,
-        label="Host",
+        label="Used by Host",
     )
     name = forms.CharField(label="Name", required=False)
     tag = TagFilterField(model)

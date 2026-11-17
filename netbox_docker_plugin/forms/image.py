@@ -36,7 +36,6 @@ class ImageForm(NetBoxModelForm):
         label="Registry",
         queryset=Registry.objects.all(),
         required=True,
-        query_params={"host_id": "$host"},
     )
 
     fieldsets = (

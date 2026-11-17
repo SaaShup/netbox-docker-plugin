@@ -155,12 +155,10 @@ class ContainerValidationTestCase(TestCase):
         )
 
         cls.objects["registry1"] = Registry.objects.create(
-            host=cls.objects["host1"],
             name="registry1",
             serveraddress="http://localhost:8080",
         )
         cls.objects["registry2"] = Registry.objects.create(
-            host=cls.objects["host2"],
             name="registry2",
             serveraddress="http://localhost:8082",
         )

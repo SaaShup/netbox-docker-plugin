@@ -69,7 +69,7 @@ class VolumeApiTestCase(
         host = Host.objects.create(endpoint="http://localhost:8088", name="host8")
 
         registry = Registry.objects.create(
-            host=host, name="registry8", serveraddress="http://localhost:8089"
+            name="registry8", serveraddress="http://localhost:8089"
         )
 
         image = Image.objects.create(

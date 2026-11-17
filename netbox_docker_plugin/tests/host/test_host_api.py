@@ -89,7 +89,7 @@ class HostApiTestCase(
                 objectchanges[0].action, ObjectChangeActionChoices.ACTION_CREATE
             )
 
-        registries = Registry.objects.filter(host=instance.pk)
+        registries = Registry.objects.filter(name="dockerhub")
         self.assertEqual(len(registries), 1)
 
     def test_delete_object(self):

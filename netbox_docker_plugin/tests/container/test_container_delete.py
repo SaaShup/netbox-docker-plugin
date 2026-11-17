@@ -37,7 +37,6 @@ class ContainerDeleteJournalTestCase(TestCase):
     def setUpTestData(cls):
         cls.host = Host.objects.create(endpoint="http://localhost:8080", name="host1")
         cls.registry = Registry.objects.create(
-            host=cls.host,
             name="registry1",
             serveraddress="http://localhost:8080",
         )
